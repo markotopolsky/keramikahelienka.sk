@@ -1,0 +1,1161 @@
+{
+  "zdroj": "https://www.keramikahelienka.sk/wp-json/wc/store/v1/products",
+  "stiahnute": "2026-09-28",
+  "pocet": 48,
+  "produkty": [
+    {
+      "id": 2755,
+      "nazov": "Váza Modrá vlna",
+      "slug": "vaza-modra-vlna",
+      "url": "https://www.keramikahelienka.sk/produkt/vaza-modra-vlna/",
+      "typ": "simple",
+      "cena_eur": 75.0,
+      "na_sklade": true,
+      "pocet_kusov": 1,
+      "kategorie": [
+        "Vázy / Vases"
+      ],
+      "tagy": [
+        "ceramics",
+        "handmade",
+        "keramika",
+        "sea",
+        "vase",
+        "váza"
+      ],
+      "kratky_popis": "",
+      "popis": "",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/09/vlnita1.jpg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/09/vlnita-3.jpg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/09/vlnita2.jpg"
+      ]
+    },
+    {
+      "id": 2754,
+      "nazov": "Citrónová misa",
+      "slug": "citronova-misa",
+      "url": "https://www.keramikahelienka.sk/produkt/citronova-misa/",
+      "typ": "simple",
+      "cena_eur": 129.0,
+      "na_sklade": true,
+      "pocet_kusov": null,
+      "kategorie": [
+        "Misy / Bowls"
+      ],
+      "tagy": [
+        "ceramics",
+        "design",
+        "dizajn",
+        "handmade",
+        "misa"
+      ],
+      "kratky_popis": "",
+      "popis": "",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/09/img_2348-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/09/img_2347-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/09/img_2346-scaled.jpeg"
+      ]
+    },
+    {
+      "id": 2745,
+      "nazov": "Lampa color",
+      "slug": "lampa-color",
+      "url": "https://www.keramikahelienka.sk/produkt/lampa-color/",
+      "typ": "simple",
+      "cena_eur": 190.0,
+      "na_sklade": true,
+      "pocet_kusov": 1,
+      "kategorie": [
+        "Lampy / Lamps"
+      ],
+      "tagy": [
+        "ceramics",
+        "handmade",
+        "keramika",
+        "lamp",
+        "lampa"
+      ],
+      "kratky_popis": "",
+      "popis": "Glazovaná keramika, korok a drevo.\n\nVeľký závit E27\n\nKábel 1,5m s vypínačom\n\nMožnosť dokúpiť dizajnovú žiarovku za 35€",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/09/IMG_6787-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/09/IMG_6807-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/09/IMG_6805-scaled.jpeg"
+      ]
+    },
+    {
+      "id": 2742,
+      "nazov": "Lampa vyrezávaná",
+      "slug": "lampa-vyrezavana",
+      "url": "https://www.keramikahelienka.sk/produkt/lampa-vyrezavana/",
+      "typ": "simple",
+      "cena_eur": 190.0,
+      "na_sklade": false,
+      "pocet_kusov": null,
+      "kategorie": [
+        "Lampy / Lamps"
+      ],
+      "tagy": [
+        "carving",
+        "handmade",
+        "keramika",
+        "lampa",
+        "love"
+      ],
+      "kratky_popis": "",
+      "popis": "Glazovaná keramika, veľký závit E27, kábel 1,5m\n\nMožnosť dokúpiť dizajnová žiarovku v cene 35€.",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/09/IMG_6833-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/09/IMG_6834-scaled.jpeg"
+      ]
+    },
+    {
+      "id": 2740,
+      "nazov": "Misa Mušľa malá 2",
+      "slug": "misa-musla-mala-2",
+      "url": "https://www.keramikahelienka.sk/produkt/misa-musla-mala-2/",
+      "typ": "simple",
+      "cena_eur": 55.0,
+      "na_sklade": false,
+      "pocet_kusov": null,
+      "kategorie": [
+        "Misy / Bowls"
+      ],
+      "tagy": [
+        "dizajn",
+        "handmade",
+        "kamenina",
+        "keramika",
+        "misa",
+        "more",
+        "rucne modelovana"
+      ],
+      "kratky_popis": "",
+      "popis": "ručne modelovaná lampa z kameniny s morským vzorom\n\nglazovaná, 2x vypálená",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/09/IMG_6573-scaled.jpeg"
+      ]
+    },
+    {
+      "id": 2737,
+      "nazov": "Misa Mušľa malá 1",
+      "slug": "misa-musla-mala",
+      "url": "https://www.keramikahelienka.sk/produkt/misa-musla-mala/",
+      "typ": "simple",
+      "cena_eur": 55.0,
+      "na_sklade": false,
+      "pocet_kusov": null,
+      "kategorie": [
+        "Misy / Bowls"
+      ],
+      "tagy": [
+        "dizajn",
+        "handmade",
+        "kamenina",
+        "keramika",
+        "misa",
+        "more",
+        "rucne modelovana"
+      ],
+      "kratky_popis": "",
+      "popis": "ručne modelovaná lampa z kameniny s morským vzorom\n\nglazovaná, 2x vypálená",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/09/IMG_6780-scaled.jpeg"
+      ]
+    },
+    {
+      "id": 2733,
+      "nazov": "Misa Mušľa 3",
+      "slug": "misa-musla-3",
+      "url": "https://www.keramikahelienka.sk/produkt/misa-musla-3/",
+      "typ": "simple",
+      "cena_eur": 75.0,
+      "na_sklade": false,
+      "pocet_kusov": null,
+      "kategorie": [
+        "Misy / Bowls"
+      ],
+      "tagy": [
+        "dizajn",
+        "handmade",
+        "kamenina",
+        "keramika",
+        "misa",
+        "more",
+        "rucne modelovana"
+      ],
+      "kratky_popis": "",
+      "popis": "ručne modelovaná lampa z kameniny s morským vzorom\n\nglazovaná, 2x vypálená",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/09/IMG_6781-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/09/IMG_6786-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/09/IMG_6782-scaled.jpeg"
+      ]
+    },
+    {
+      "id": 2731,
+      "nazov": "Misa Mušľa 2",
+      "slug": "misa-musla-2",
+      "url": "https://www.keramikahelienka.sk/produkt/misa-musla-2/",
+      "typ": "simple",
+      "cena_eur": 75.0,
+      "na_sklade": false,
+      "pocet_kusov": null,
+      "kategorie": [
+        "Misy / Bowls"
+      ],
+      "tagy": [
+        "dizajn",
+        "handmade",
+        "kamenina",
+        "keramika",
+        "misa",
+        "more",
+        "rucne modelovana"
+      ],
+      "kratky_popis": "",
+      "popis": "ručne modelovaná lampa z kameniny s morským vzorom\n\nglazovaná, 2x vypálená",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/09/IMG_6779-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/09/musla_08.jpg"
+      ]
+    },
+    {
+      "id": 2729,
+      "nazov": "Váza raku",
+      "slug": "vaza-raku",
+      "url": "https://www.keramikahelienka.sk/produkt/vaza-raku/",
+      "typ": "simple",
+      "cena_eur": 99.0,
+      "na_sklade": true,
+      "pocet_kusov": null,
+      "kategorie": [
+        "Vázy / Vases"
+      ],
+      "tagy": [
+        "dizajn",
+        "handmade",
+        "japonska keramika",
+        "kamenina",
+        "raku",
+        "unikatna",
+        "váza"
+      ],
+      "kratky_popis": "",
+      "popis": "Ručne modelovaná váza\n\nVypálená japonskou metódou raku.\n\nUnikátna keramika vytvorená unikátnou metódou, ktorú na Slovensku takmer nikto nepozná.",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/09/IMG_6266-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/09/IMG_6261-scaled.jpeg"
+      ]
+    },
+    {
+      "id": 2726,
+      "nazov": "Raku nádoba",
+      "slug": "raku-nadoba",
+      "url": "https://www.keramikahelienka.sk/produkt/raku-nadoba/",
+      "typ": "simple",
+      "cena_eur": 65.0,
+      "na_sklade": false,
+      "pocet_kusov": null,
+      "kategorie": [
+        "Misy / Bowls"
+      ],
+      "tagy": [
+        "handmade",
+        "keramika",
+        "kon",
+        "miska",
+        "raku",
+        "ručne robená"
+      ],
+      "kratky_popis": "",
+      "popis": "Ručne modelovaná miska s pokrievkou.\n\nVyrobená metódou unikátneho japonského výpalu Raku.\n\nJedinečný kus.",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/09/IMG_6250-scaled.jpeg"
+      ]
+    },
+    {
+      "id": 2723,
+      "nazov": "Raku váza",
+      "slug": "raku-vaza",
+      "url": "https://www.keramikahelienka.sk/produkt/raku-vaza/",
+      "typ": "simple",
+      "cena_eur": 69.0,
+      "na_sklade": true,
+      "pocet_kusov": 1,
+      "kategorie": [
+        "Vázy / Vases"
+      ],
+      "tagy": [
+        "handmade",
+        "japonsko",
+        "matcha",
+        "raku",
+        "rucne modelovana",
+        "váza"
+      ],
+      "kratky_popis": "",
+      "popis": "",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/09/IMG_6248-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/09/IMG_6261-scaled.jpeg"
+      ]
+    },
+    {
+      "id": 2720,
+      "nazov": "Misa Mušľa 1",
+      "slug": "misa-musla-1",
+      "url": "https://www.keramikahelienka.sk/produkt/misa-musla-1/",
+      "typ": "simple",
+      "cena_eur": 75.0,
+      "na_sklade": true,
+      "pocet_kusov": 1,
+      "kategorie": [
+        "Misy / Bowls"
+      ],
+      "tagy": [
+        "dizajn",
+        "handmade",
+        "kamenina",
+        "keramika",
+        "misa",
+        "more",
+        "rucne modelovana"
+      ],
+      "kratky_popis": "",
+      "popis": "ručne modelovaná lampa z kameniny s morským vzorom\n\nglazovaná, 2x vypálená",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/09/musla_01-1.jpg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/09/musla_08.jpg"
+      ]
+    },
+    {
+      "id": 2713,
+      "nazov": "Sada lámp",
+      "slug": "sada-dizajnovych-lamp",
+      "url": "https://www.keramikahelienka.sk/produkt/sada-dizajnovych-lamp/",
+      "typ": "simple",
+      "cena_eur": 329.0,
+      "na_sklade": true,
+      "pocet_kusov": 1,
+      "kategorie": [
+        "Lampy / Lamps"
+      ],
+      "tagy": [
+        "design",
+        "dizajn",
+        "handmade",
+        "kamenina",
+        "lampy",
+        "rucne robene",
+        "sada",
+        "seria"
+      ],
+      "kratky_popis": "",
+      "popis": "Ručne modelované lampy z kameniny\n\nVhodné na žiarovku E27 / 220V.\n\nVypínač na prívodnom kábli.\n\nMožné používať v 2 polohách.",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/09/Lampy_02.jpg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/09/IMG_0641-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/09/IMG_2284-scaled.jpg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/09/IMG_2289-scaled.jpg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/09/Lampy_05.jpg"
+      ]
+    },
+    {
+      "id": 2708,
+      "nazov": "Misa morská veľká",
+      "slug": "misa-morska-velka",
+      "url": "https://www.keramikahelienka.sk/produkt/misa-morska-velka/",
+      "typ": "simple",
+      "cena_eur": 129.0,
+      "na_sklade": true,
+      "pocet_kusov": null,
+      "kategorie": [
+        "Misy / Bowls"
+      ],
+      "tagy": [
+        "handmade",
+        "misa"
+      ],
+      "kratky_popis": "",
+      "popis": "ručne modelovaná misa s morskými vlnami",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/09/IMG_6159-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/09/IMG_6167-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/09/IMG_6185-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/09/IMG_6187-scaled.jpeg"
+      ]
+    },
+    {
+      "id": 2704,
+      "nazov": "Váza prírodná",
+      "slug": "vaza-prirodna",
+      "url": "https://www.keramikahelienka.sk/produkt/vaza-prirodna/",
+      "typ": "simple",
+      "cena_eur": 79.0,
+      "na_sklade": true,
+      "pocet_kusov": 1,
+      "kategorie": [
+        "Vázy / Vases"
+      ],
+      "tagy": [
+        "handmade",
+        "kamenina",
+        "prirodna",
+        "váza"
+      ],
+      "kratky_popis": "",
+      "popis": "Ručne modelovaná váza z bledej kameniny.\n\nReliéf tvorený ručne aplikovaním vrstiev krémovej hliny.\n\nVáza je zvnútra glazovaná transparentnou glazúrou, aby sa ľahšie udržiavala, najmä pri použití živých kvetov,\n\nVypaľované pri 1240 stupňoch Celzia.\n\nVhodné na suché aj čerstvé kviety, konáre.\n\nVeľkosť: Výška: cca 18,5 cm\n\nPriemer: 14,5 cm\n\nMateriál: kamenina, glazúra\n\nSpôsob výroby: keramika, glazovanie",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/09/vaza-bezova-omietkova-1.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/09/vaza-bezova-omietkova-2.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/09/vaza-bezova-omietkova-3.jpeg"
+      ]
+    },
+    {
+      "id": 2543,
+      "nazov": "Variabilná misa",
+      "slug": "variabilna-misa",
+      "url": "https://www.keramikahelienka.sk/produkt/variabilna-misa/",
+      "typ": "simple",
+      "cena_eur": 189.0,
+      "na_sklade": true,
+      "pocet_kusov": 1,
+      "kategorie": [
+        "Misy / Bowls",
+        "Vázy / Vases"
+      ],
+      "tagy": [],
+      "kratky_popis": "MILUJEM KRÁSU UMENIA ✨\n\nEšte radšej mám umenie, ktoré je nielen krásne, ale zároveň si nájde miesto v každodennom živote.\n\nPráve s týmto zámerom vznikla táto misa.\n\nA vlastne aj váza v jednom.\n\nMôže poslúžiť ako miesto pre ovocie. Môže sa stať vázou pre umelé aj živé kvety. A pokojne môže zostať sama sebou a len byť súčasťou vášho priestoru.\n\nTeší ma, keď moje diela nachádzajú svoje miesto vo vašich bežných dňoch, rodinných stretnutiach, ranných rituáloch alebo tichých chvíľach. 🤍\n\nPre mňa je umenie plnohodnotné vtedy, keď nie je len krásne, ale aj funkčné.",
+      "popis": "",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/07/Variabilna_02.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/07/Variabilna_06.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/07/Variabilna_05.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/07/Variabilna_04.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/07/page0.jpeg"
+      ]
+    },
+    {
+      "id": 2540,
+      "nazov": "Vyrezávaná misa",
+      "slug": "vyrezavana-misa",
+      "url": "https://www.keramikahelienka.sk/produkt/vyrezavana-misa/",
+      "typ": "simple",
+      "cena_eur": 185.0,
+      "na_sklade": true,
+      "pocet_kusov": 1,
+      "kategorie": [
+        "Misy / Bowls"
+      ],
+      "tagy": [],
+      "kratky_popis": "Vyrezávaná\n\nBol to kus zrecyklovanej hliny.\n\nPrišla inšpirácia a moje ruky začali pretvárať kus hliny na misu. S okrajmi jemne zahnutými dovnútra, s organickým tvarom.\n\nZobrala som do rúk nástroj na vyrezávanie. Bez nejakého plánu som začala vytvárať reliéfny povrch. Intuitívne som začala aj skončila. Sušila som ju pomaly, aby sa nepokrútila. Potom išla do pece prvýkrát. Vydržala. Postupne som nanášala niekoľko vrstiev rôznych glazúr.\n\nVýsledok vidíte. Na dvoch miestach sa spracovaná hlina trochu vzbúrila.\n\nMisa sa dá využiť aj ako podnos alebo aj ako solitér vášho domova. Priemer má 37cm a výšku 5cm.\n\nKoho chytila za srdce?",
+      "popis": "",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/07/fed1d8af-9849-44a5-933f-0d64d5e6bc13-1.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/07/28ee1052-3a48-466c-a5c7-4248ddb44662-1.jpeg"
+      ]
+    },
+    {
+      "id": 2523,
+      "nazov": "Kolekcia Blue River – náramok 1",
+      "slug": "kolekcia-blue-river-naramok-2",
+      "url": "https://www.keramikahelienka.sk/produkt/kolekcia-blue-river-naramok-2/",
+      "typ": "simple",
+      "cena_eur": 35.0,
+      "na_sklade": true,
+      "pocet_kusov": 1,
+      "kategorie": [
+        "Blue river",
+        "Šperky / Jewelry"
+      ],
+      "tagy": [
+        "modry porcelan",
+        "naramok",
+        "riecne perly"
+      ],
+      "kratky_popis": "",
+      "popis": "Kombinácia riečnych perál a ručne vyrábaných perál z modrého porcelánu.\n\nJe možné zakúpiť aj náhrdelník.",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/06/IMG_0848-1-scaled.jpg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/06/IMG_0848-scaled.jpg"
+      ]
+    },
+    {
+      "id": 2519,
+      "nazov": "Kolekcia Blue River – náramok 2",
+      "slug": "kolekcia-blue-river-naramok-1",
+      "url": "https://www.keramikahelienka.sk/produkt/kolekcia-blue-river-naramok-1/",
+      "typ": "simple",
+      "cena_eur": 35.0,
+      "na_sklade": true,
+      "pocet_kusov": 1,
+      "kategorie": [
+        "Blue river",
+        "Šperky / Jewelry"
+      ],
+      "tagy": [
+        "naramok",
+        "perla",
+        "perly",
+        "riecne perly"
+      ],
+      "kratky_popis": "Ručne vyrábané zrniečka kombinované s riečnymi perlami",
+      "popis": "Kombinácia riečnych perál a ručne vyrábaných modrých perál.\n\nMožné dokúpiť aj náhrdelník v rovnakej kombinácii.",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/06/IMG_0858-scaled.jpg"
+      ]
+    },
+    {
+      "id": 2517,
+      "nazov": "Kolekcia Blue River – náhrdelník 3",
+      "slug": "kolekcia-blue-river-nahrdelnik-3",
+      "url": "https://www.keramikahelienka.sk/produkt/kolekcia-blue-river-nahrdelnik-3/",
+      "typ": "simple",
+      "cena_eur": 59.0,
+      "na_sklade": false,
+      "pocet_kusov": null,
+      "kategorie": [
+        "Blue river",
+        "Šperky / Jewelry"
+      ],
+      "tagy": [],
+      "kratky_popis": "",
+      "popis": "Ručne robené modré zrniečka v kombinácii s modrými riečnymi perlami.",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/06/IMG_0914-2-scaled.jpg"
+      ]
+    },
+    {
+      "id": 2515,
+      "nazov": "Kolekcia Blue River – náhrdelník 2",
+      "slug": "kolekcia-blue-river-nahrdelnik-2",
+      "url": "https://www.keramikahelienka.sk/produkt/kolekcia-blue-river-nahrdelnik-2/",
+      "typ": "simple",
+      "cena_eur": 59.0,
+      "na_sklade": false,
+      "pocet_kusov": null,
+      "kategorie": [
+        "Blue river",
+        "Šperky / Jewelry"
+      ],
+      "tagy": [
+        "modry porcelan",
+        "nahrdelnik",
+        "riecne perly"
+      ],
+      "kratky_popis": "",
+      "popis": "Ručne vyrábaný náhrdelník – kombinácia modrých riečných perál a ručne vyrobených zrniečok z modrého porcelánu.\n\nJe možné dokúpiť náramok.",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/06/IMG_0790-scaled.jpg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/06/IMG_0871-scaled.jpg"
+      ]
+    },
+    {
+      "id": 2513,
+      "nazov": "Kolekcia Blue River – náhrdelník 1",
+      "slug": "kolekcia-blue-river-nahrdelnik-1",
+      "url": "https://www.keramikahelienka.sk/produkt/kolekcia-blue-river-nahrdelnik-1/",
+      "typ": "simple",
+      "cena_eur": 59.0,
+      "na_sklade": true,
+      "pocet_kusov": 1,
+      "kategorie": [
+        "Blue river",
+        "Šperky / Jewelry"
+      ],
+      "tagy": [],
+      "kratky_popis": "",
+      "popis": "Ručne robený náhrdelník – kombinácia bielych riešnych perál a ručne robených zrniečok z modrého porcelánu.",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/06/IMG_0843-scaled.jpg"
+      ]
+    },
+    {
+      "id": 2468,
+      "nazov": "Váza – korálová kolekcia",
+      "slug": "vaza-koralova-kolekcia",
+      "url": "https://www.keramikahelienka.sk/produkt/vaza-koralova-kolekcia/",
+      "typ": "simple",
+      "cena_eur": 149.0,
+      "na_sklade": true,
+      "pocet_kusov": 1,
+      "kategorie": [
+        "Vázy / Vases"
+      ],
+      "tagy": [
+        "keramika",
+        "koral",
+        "rucna keramika",
+        "váza",
+        "vysoka vaza"
+      ],
+      "kratky_popis": "",
+      "popis": "Vysoká váza v koralovom štýle.\n\nTrocha iný kúsok mora vo vašom živote.\n\nJediný kus, neopakovateľný.\n\n24 x 11 cm",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/06/IMG_3902-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/06/IMG_3905-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/06/IMG_3904-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/06/IMG_3896-scaled.jpeg"
+      ]
+    },
+    {
+      "id": 2399,
+      "nazov": "Keramický workshop 3+2 hodiny",
+      "slug": "keramicky-workshop-3-2-hodiny",
+      "url": "https://www.keramikahelienka.sk/produkt/keramicky-workshop-3-2-hodiny/",
+      "typ": "simple",
+      "cena_eur": 85.0,
+      "na_sklade": true,
+      "pocet_kusov": null,
+      "kategorie": [
+        "Kurzy / Courses",
+        "Poukážky / Vouchers"
+      ],
+      "tagy": [
+        "ceramics",
+        "creativity",
+        "keramika",
+        "kurz",
+        "kurz keramiky",
+        "voucher",
+        "workshop"
+      ],
+      "kratky_popis": "",
+      "popis": "Na workshope sa naučíte základy modelovania z hliny. Lektorka vás bude sprevádzať celým procesom. Vytvoríte si jedinečné kúsky, ktoré budú tešiť vás alebo vašich blízkych ako originálny darček. Pracujeme v malej skupine 3 – 6 ľudí.\n\nNa kruhu netočíme.\n\nWorkshop môžete darovať prostredníctvom Darčekovej poukážky, ktorú Vám zašleme fyzicky poštou alebo elektronicky mailon.\n\nHarmonogram workshopu:\n\n1.stretnutie: 3 hodiny – modelovanie\n\n2.stretnutie: 2 hodiny – glazovanie\n\nMiesto: Ateliér, Na vrátkach 1K, Bratislava\n\nV cene je zahrnuté: všetok materiál, pracovné pomôcky, uskladnenie výrobkov počas sušenia, 2x výpal v keramickej peci, malé občerstvenie.\n\nPríď a objav v sebe ukryté dary a talenty!\n\nPočet účastníkov je obmedzený.",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/05/c-R17145745_200094_20241214_58347.jpg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/05/c-R17145747_200094_20241214_69923.jpg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/05/c-R17145748_200094_20241214_20435.jpg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/05/IMG_2183-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/05/IMG_2186-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/05/IMG_2487-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/05/IMG_2517-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/05/IMG_2571-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/05/Co-ak_05.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/05/Co-ak_07.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/05/IMG_2757-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/05/IMG_2771-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/05/IMG_2774-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/05/IMG_2948-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/05/IMG_2946-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/05/ce6f3299-74bb-4c68-8717-faf922d32d33.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/05/IMG_2969-scaled.jpg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/05/IMG_2937-scaled.jpg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/05/IMG_2562-1-scaled.jpg"
+      ]
+    },
+    {
+      "id": 2330,
+      "nazov": "Earings white gold medium",
+      "slug": "earings-white-gold-medium",
+      "url": "https://www.keramikahelienka.sk/produkt/earings-white-gold-medium/",
+      "typ": "simple",
+      "cena_eur": 55.0,
+      "na_sklade": true,
+      "pocet_kusov": 1,
+      "kategorie": [
+        "Šperky / Jewelry"
+      ],
+      "tagy": [],
+      "kratky_popis": "",
+      "popis": "",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/IMG_1238-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/20260424_185209043_iOS-scaled.jpg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/IMG_1312-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/20260424_185147464_iOS-scaled.jpg"
+      ]
+    },
+    {
+      "id": 2311,
+      "nazov": "Cup with lava glaze",
+      "slug": "cup-with-lava-glaze",
+      "url": "https://www.keramikahelienka.sk/produkt/cup-with-lava-glaze/",
+      "typ": "variable",
+      "cena_eur": 39.0,
+      "na_sklade": true,
+      "pocet_kusov": 1,
+      "kategorie": [
+        "Šálky / Cups"
+      ],
+      "tagy": [],
+      "kratky_popis": "",
+      "popis": "",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/20260424_135408708_iOS-scaled.jpg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/20260424_135418921_iOS-scaled.jpg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/20260424_135723484_iOS-scaled.jpg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/20260424_135743180_iOS-scaled.jpg"
+      ],
+      "cena_rozsah_eur": [
+        39.0,
+        45.0
+      ],
+      "varianty": [
+        "Bez vrchnáka",
+        "S keramickým vrchnákom"
+      ]
+    },
+    {
+      "id": 2310,
+      "nazov": "Cup with cat",
+      "slug": "cup-with-cat",
+      "url": "https://www.keramikahelienka.sk/produkt/cup-with-cat/",
+      "typ": "variable",
+      "cena_eur": 35.0,
+      "na_sklade": true,
+      "pocet_kusov": 1,
+      "kategorie": [
+        "Šálky / Cups"
+      ],
+      "tagy": [],
+      "kratky_popis": "",
+      "popis": "Items decorated with gold are not suitable for use in the microwave or dishwasher.",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/20260424_135514702_iOS-scaled.jpg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/20260424_135505693_iOS-1-scaled.jpg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/20260424_135723484_iOS-scaled.jpg"
+      ],
+      "cena_rozsah_eur": [
+        35.0,
+        41.0
+      ],
+      "varianty": [
+        "s To-go vrchnákom",
+        "bez vrchnáku"
+      ]
+    },
+    {
+      "id": 2307,
+      "nazov": "Bowl with high pedestal and gold",
+      "slug": "bowl-with-high-pedestal-and-gold",
+      "url": "https://www.keramikahelienka.sk/produkt/bowl-with-high-pedestal-and-gold/",
+      "typ": "simple",
+      "cena_eur": 75.0,
+      "na_sklade": true,
+      "pocet_kusov": 1,
+      "kategorie": [
+        "Misy / Bowls"
+      ],
+      "tagy": [],
+      "kratky_popis": "",
+      "popis": "",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/high-p.jpg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/high-p-2.jpg"
+      ]
+    },
+    {
+      "id": 2303,
+      "nazov": "Cup with gold pinky",
+      "slug": "cup-with-gold-2",
+      "url": "https://www.keramikahelienka.sk/produkt/cup-with-gold-2/",
+      "typ": "variable",
+      "cena_eur": 43.0,
+      "na_sklade": true,
+      "pocet_kusov": 4,
+      "kategorie": [
+        "Šálky / Cups"
+      ],
+      "tagy": [],
+      "kratky_popis": "",
+      "popis": "Beautiful cup decorated with colorfull and gold line patterns.\n\nIdeal for bigger coffee, tea or matcha.\n\n—————————————————\n\nItems decorated with gold are not suitable for use in the microwave or dishwasher.",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/IMG_2291-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/IMG_2292-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/20260425_132604139_iOS-scaled.jpg"
+      ],
+      "cena_rozsah_eur": [
+        43.0,
+        49.0
+      ],
+      "varianty": [
+        "Bez vrchnáka",
+        "S keramickým vrchnákom"
+      ]
+    },
+    {
+      "id": 2294,
+      "nazov": "Vase high unglazed",
+      "slug": "vase-high-unglazed",
+      "url": "https://www.keramikahelienka.sk/produkt/vase-high-unglazed/",
+      "typ": "simple",
+      "cena_eur": 89.0,
+      "na_sklade": true,
+      "pocet_kusov": 1,
+      "kategorie": [
+        "Vázy / Vases"
+      ],
+      "tagy": [],
+      "kratky_popis": "",
+      "popis": "",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/IMG_2281-scaled.jpeg"
+      ]
+    },
+    {
+      "id": 2290,
+      "nazov": "Vase with gold",
+      "slug": "vase-with-gold",
+      "url": "https://www.keramikahelienka.sk/produkt/vase-with-gold/",
+      "typ": "simple",
+      "cena_eur": 119.0,
+      "na_sklade": true,
+      "pocet_kusov": 1,
+      "kategorie": [
+        "Vázy / Vases"
+      ],
+      "tagy": [],
+      "kratky_popis": "",
+      "popis": "",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/IMG_2277-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/IMG_2279-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/IMG_2278-scaled.jpeg"
+      ]
+    },
+    {
+      "id": 2287,
+      "nazov": "Small vase carved",
+      "slug": "small-vase-carved",
+      "url": "https://www.keramikahelienka.sk/produkt/small-vase-carved/",
+      "typ": "simple",
+      "cena_eur": 85.0,
+      "na_sklade": true,
+      "pocet_kusov": 1,
+      "kategorie": [
+        "Vázy / Vases"
+      ],
+      "tagy": [],
+      "kratky_popis": "",
+      "popis": "",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/WhatsApp-Image-2026-04-23-at-23.11.22.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/WhatsApp-Image-2026-04-23-at-23.11.24-scaled.jpeg"
+      ]
+    },
+    {
+      "id": 2284,
+      "nazov": "Small vase pink",
+      "slug": "small-vase-pink",
+      "url": "https://www.keramikahelienka.sk/produkt/small-vase-pink/",
+      "typ": "simple",
+      "cena_eur": 65.0,
+      "na_sklade": true,
+      "pocet_kusov": 1,
+      "kategorie": [
+        "Vázy / Vases"
+      ],
+      "tagy": [],
+      "kratky_popis": "",
+      "popis": "",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/WhatsApp-Image-2026-04-23-at-23.11.43-1-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/WhatsApp-Image-2026-04-23-at-23.11.43-scaled.jpeg"
+      ]
+    },
+    {
+      "id": 2283,
+      "nazov": "Oval vase mini",
+      "slug": "oval-vase-mini",
+      "url": "https://www.keramikahelienka.sk/produkt/oval-vase-mini/",
+      "typ": "simple",
+      "cena_eur": 59.0,
+      "na_sklade": true,
+      "pocet_kusov": 1,
+      "kategorie": [
+        "Vázy / Vases"
+      ],
+      "tagy": [],
+      "kratky_popis": "",
+      "popis": "",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/modra-nizka.jpg"
+      ]
+    },
+    {
+      "id": 2274,
+      "nazov": "Art object lava glazed",
+      "slug": "art-object-lava-glazed",
+      "url": "https://www.keramikahelienka.sk/produkt/art-object-lava-glazed/",
+      "typ": "simple",
+      "cena_eur": 210.0,
+      "na_sklade": true,
+      "pocet_kusov": 1,
+      "kategorie": [
+        "Vázy / Vases"
+      ],
+      "tagy": [],
+      "kratky_popis": "",
+      "popis": "",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/IMG_3097-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/IMG_3134-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/IMG_3123-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/IMG_3114-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/IMG_3111-scaled.jpeg"
+      ]
+    },
+    {
+      "id": 2270,
+      "nazov": "Shell big glazed vase",
+      "slug": "shell-big-glazed-vase",
+      "url": "https://www.keramikahelienka.sk/produkt/shell-big-glazed-vase/",
+      "typ": "simple",
+      "cena_eur": 299.0,
+      "na_sklade": true,
+      "pocet_kusov": 1,
+      "kategorie": [
+        "Misy / Bowls"
+      ],
+      "tagy": [],
+      "kratky_popis": "",
+      "popis": "Hand-built stoneware vase.\n\nShaped by the hand, the mood, and the present moment.\n\nEvery fold is one of a kind.\n\nThe vase is made from beige clay with small perecntage of schamote. The interior is coated with a opal white glaze with turqoise highlights, while the exterior carries a velvet effect coloured by underglaze colours — raw, organic, as if shaped by nature’s touch.\n\nFired two times. The highest firing temperature was 124)°C, ensuring it is fully waterproof.\n\nIt’s a standalone piece that draws attention.\n\nOnly 1 piece available.\n\nA unique, one-of-a-kind creation that will beautifully complement any interior.",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/IMG_2266-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/IMG_2262-scaled.jpeg"
+      ]
+    },
+    {
+      "id": 2267,
+      "nazov": "Ball vase glazed",
+      "slug": "2267",
+      "url": "https://www.keramikahelienka.sk/produkt/2267/",
+      "typ": "simple",
+      "cena_eur": 75.0,
+      "na_sklade": true,
+      "pocet_kusov": 1,
+      "kategorie": [
+        "Vázy / Vases"
+      ],
+      "tagy": [],
+      "kratky_popis": "",
+      "popis": "This ball vase is hand-shaped from white specled stoneware\n\nI used several glazes to achieve an ocean effect.\n\nThe bottom of the vase is unglazed to highlight the glaze run effect.\n\nAfter firing at 1240 degrees, the vase is water-resistant so you can safely use it for fresh flowers.",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/vaza-gula.png"
+      ]
+    },
+    {
+      "id": 2265,
+      "nazov": "Modrá porcelánová váza „koral“",
+      "slug": "blue-porcelain-art-object",
+      "url": "https://www.keramikahelienka.sk/produkt/blue-porcelain-art-object/",
+      "typ": "simple",
+      "cena_eur": 229.0,
+      "na_sklade": true,
+      "pocet_kusov": 1,
+      "kategorie": [
+        "Vázy / Vases"
+      ],
+      "tagy": [],
+      "kratky_popis": "",
+      "popis": "Ručne vyrobený porcelánový umelecký objekt/váza, ktorého tvar nevznikol podľa šablóny, ale bol vytvorený rukou, náladou a prítomným okamihom.\n\nKaždý kus je jedinečný.\n\nJe vyrobený z modrého porcelánu a ručne pokrytý rôznymi povrchovými úpravami.\n\nVnútro zdobí priehľadná glazúra, ktorá necháva vyniknúť prirodzenú textúru hliny.\n\nJe to samostatný kúsok, ktorý priťahuje pozornosť.\n\nK dispozícii je len 1 kus.\n\nUnikátne, jedinečné dielo, ktoré krásne doplní každý interiér.",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/IMG_2212-scaled.jpg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/IMG_2511-scaled.jpg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/IMG_2509-scaled.jpg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/IMG_2198-scaled.jpg"
+      ]
+    },
+    {
+      "id": 2264,
+      "nazov": "Vase speckled clay glazed",
+      "slug": "vase-speckled-clay-glazed",
+      "url": "https://www.keramikahelienka.sk/produkt/vase-speckled-clay-glazed/",
+      "typ": "simple",
+      "cena_eur": 129.0,
+      "na_sklade": true,
+      "pocet_kusov": 1,
+      "kategorie": [
+        "Vázy / Vases"
+      ],
+      "tagy": [],
+      "kratky_popis": "",
+      "popis": "Hand-sculpted vase, with a structure that makes it an ideal design accessory for any interior.\n\nThe vase is made from the speckled stoneware with a combination of dark and light lava glaze on its surface.\n\nThe interior is coated with a transparent glaze. Water-resistant.\n\nOnly 1 piece available.\n\nA unique, one-of-a-kind artwork that will beautifully complement any interior.",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/IMG_2136-scaled.jpg"
+      ]
+    },
+    {
+      "id": 2263,
+      "nazov": "Bowl/vase grey with lava glaze",
+      "slug": "bowl-vase-grey-with-lava-glaze",
+      "url": "https://www.keramikahelienka.sk/produkt/bowl-vase-grey-with-lava-glaze/",
+      "typ": "simple",
+      "cena_eur": 329.0,
+      "na_sklade": true,
+      "pocet_kusov": 1,
+      "kategorie": [
+        "Vázy / Vases"
+      ],
+      "tagy": [],
+      "kratky_popis": "",
+      "popis": "Hand-built stoneware artpiece whose form wasn’t created from a template, but shaped by the hand, the mood, and the present moment.\n\nEvery fold is one of a kind.\n\nIt is made from beige stoneware with a lava-effect surface — raw, organic, as if shaped by nature itself.\n\nThe interior features a transparent glaze that allows the natural texture of the clay to shine through.\n\nIt’s a standalone piece that draws attention.\n\nOnly 1 piece available.\n\nA unique, one-of-a-kind creation that will beautifully complement any interior.",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/IMG_2218-scaled.jpg"
+      ]
+    },
+    {
+      "id": 2261,
+      "nazov": "Art object dark brown",
+      "slug": "art-object-dark-brown",
+      "url": "https://www.keramikahelienka.sk/produkt/art-object-dark-brown/",
+      "typ": "simple",
+      "cena_eur": 299.0,
+      "na_sklade": true,
+      "pocet_kusov": 1,
+      "kategorie": [
+        "Vázy / Vases"
+      ],
+      "tagy": [],
+      "kratky_popis": "",
+      "popis": "Made from black stoneware, which remains in its raw state on the surface after firing—unglazed to emphasize its natural beauty without additional treatments. The surface is structured.\n\nThe interior is coated with a transparent glaze. Waterproof.\n\nOnly 1 piece available.\n\nA unique, one-of-a-kind creation that will beautifully complement any interior.",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/IMG_2134-scaled.jpg"
+      ]
+    },
+    {
+      "id": 2260,
+      "nazov": "Art object white glazed",
+      "slug": "art-object-white-glazed",
+      "url": "https://www.keramikahelienka.sk/produkt/art-object-white-glazed/",
+      "typ": "simple",
+      "cena_eur": 369.0,
+      "na_sklade": true,
+      "pocet_kusov": 1,
+      "kategorie": [
+        "Vázy / Vases"
+      ],
+      "tagy": [],
+      "kratky_popis": "",
+      "popis": "Hand-sculpted vase/bowl, with a structure that makes it an ideal design accessory for any interior.\n\nThe vase is made from the light stoneware with a combination of various surfaces.\n\nWater-resistant.\n\nOnly 1 piece available.\n\nA unique, one-of-a-kind artwork that will beautifully complement any interior.",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/IMG_3199-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/IMG_3180-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/IMG_3188-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/IMG_3186-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/IMG_3185-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/IMG_3183-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/IMG_3193-scaled.jpeg",
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/IMG_3205-scaled.jpeg"
+      ]
+    },
+    {
+      "id": 2259,
+      "nazov": "Moon vase green glazed",
+      "slug": "moon-vase-green-glazed",
+      "url": "https://www.keramikahelienka.sk/produkt/moon-vase-green-glazed/",
+      "typ": "simple",
+      "cena_eur": 249.0,
+      "na_sklade": true,
+      "pocet_kusov": 1,
+      "kategorie": [
+        "Vázy / Vases"
+      ],
+      "tagy": [],
+      "kratky_popis": "",
+      "popis": "Hand-sculpted vase with a structure that makes it an ideal design accessory for any interior.\n\nThe vase is made from the light stoneware with a combination of various glazes on its surface.\n\nThe interior is coated with a transparent glaze. Water-resistant.\n\nOnly 1 piece available.\n\nA unique, one-of-a-kind artwork that will beautifully complement any interior.",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/Vases_moon_zoom_green_Sochnova-scaled.jpg"
+      ]
+    },
+    {
+      "id": 2248,
+      "nazov": "Moon vase turquoise glazed",
+      "slug": "moon-vase-turquoise-glazed",
+      "url": "https://www.keramikahelienka.sk/produkt/moon-vase-turquoise-glazed/",
+      "typ": "simple",
+      "cena_eur": 235.0,
+      "na_sklade": true,
+      "pocet_kusov": 1,
+      "kategorie": [
+        "Vázy / Vases"
+      ],
+      "tagy": [],
+      "kratky_popis": "",
+      "popis": "Hand-sculpted vase, with a structure that makes it an ideal design accessory for any interior.\n\nThe vase is made from the light stoneware with a combination of various glazes.\n\nThe interior is coated with a transparent glaze. Water-resistant.\n\nOnly 1 piece available.\n\nA unique, one-of-a-kind artwork that will beautifully complement any interior.",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/Vase_moon_teal_front_Sochnova-scaled.jpg"
+      ]
+    },
+    {
+      "id": 2246,
+      "nazov": "Oval vase glazed",
+      "slug": "oval-vase-glazed",
+      "url": "https://www.keramikahelienka.sk/produkt/oval-vase-glazed/",
+      "typ": "simple",
+      "cena_eur": 99.0,
+      "na_sklade": true,
+      "pocet_kusov": 1,
+      "kategorie": [
+        "Vázy / Vases"
+      ],
+      "tagy": [],
+      "kratky_popis": "",
+      "popis": "A hand-shaped vase made of white stoneware.\n\nGlazed with several glazes in shades of blue and gray.\n\nFired at 1250 degrees Celsius.\n\nSuitable for both dried and fresh flowers.\n\nWaterproof.",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/IMG_7097-scaled.jpg"
+      ]
+    },
+    {
+      "id": 2242,
+      "nazov": "Vase bubbles morning fog glazed",
+      "slug": "vase-bubbles-morning-fog-glazed",
+      "url": "https://www.keramikahelienka.sk/produkt/vase-bubbles-morning-fog-glazed/",
+      "typ": "simple",
+      "cena_eur": 99.0,
+      "na_sklade": true,
+      "pocet_kusov": 1,
+      "kategorie": [
+        "Vázy / Vases"
+      ],
+      "tagy": [],
+      "kratky_popis": "",
+      "popis": "Hand-sculpted vase.\n\nMade from black stoneware, which, even after firing, remains in its raw state on the surface, meaning it is unglazed, highlighting its natural beauty without any additional alterations. Upper part is covered by bubbled velvet underglaze in „morning fog“ tone.\n\nThe interior is coated with a transparent glaze. Fired at 1240°C. Water-resistant.\n\nOnly 1 piece available.\n\nA unique, one-of-a-kind creation that will beautifully complement any interior.",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/IMG_2204-scaled.jpg"
+      ]
+    },
+    {
+      "id": 2240,
+      "nazov": "Vase bubbles amethyst glazed",
+      "slug": "vase-bubbles-amethyst-glazed",
+      "url": "https://www.keramikahelienka.sk/produkt/vase-bubbles-amethyst-glazed/",
+      "typ": "simple",
+      "cena_eur": 120.0,
+      "na_sklade": true,
+      "pocet_kusov": 1,
+      "kategorie": [
+        "Vázy / Vases"
+      ],
+      "tagy": [],
+      "kratky_popis": "",
+      "popis": "Hand-built vase.\n\nEvery fold is one of a kind.\n\nIt is made from beige clay with a combination of glimmer white glaze on the lower part and bubbled amethyst glaze on the top.\n\nThe interior features a transparent glaze.\n\nIt’s a standalone piece that draws attention.\n\nOnly 1 piece available.\n\nA unique, one-of-a-kind creation that will beautifully complement any interior.",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/IMG_9957.jpg"
+      ]
+    },
+    {
+      "id": 2237,
+      "nazov": "Shell middle glazed vase",
+      "slug": "shell-small-glazed-vase",
+      "url": "https://www.keramikahelienka.sk/produkt/shell-small-glazed-vase/",
+      "typ": "simple",
+      "cena_eur": 189.0,
+      "na_sklade": true,
+      "pocet_kusov": 1,
+      "kategorie": [
+        "Misy / Bowls"
+      ],
+      "tagy": [],
+      "kratky_popis": "",
+      "popis": "Hand-built stoneware vase.\n\nShaped by the hand, the mood, and the present moment.\n\nEvery fold is one of a kind.\n\nThe vase is made from beige clay with small perecntage of schamote. The interior is coated with a opal white glaze with turqoise highlights, while the exterior carries a velvet effect coloured by underglaze colours — raw, organic, as if shaped by nature’s touch.\n\nFired two times. The highest firing temperature was 124)°C, ensuring it is fully waterproof.\n\nIt’s a standalone piece that draws attention.\n\nOnly 1 piece available.\n\nA unique, one-of-a-kind creation that will beautifully complement any interior.\n\nSize: 11×32 cm (h x w)",
+      "fotky": [
+        "https://www.keramikahelienka.sk/wp-content/uploads/2026/04/IMG_9944.jpg"
+      ]
+    }
+  ]
+}
