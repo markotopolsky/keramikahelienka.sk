@@ -3,18 +3,22 @@ import { Reveal } from "@/components/ui/reveal";
 
 export function Recenzie() {
   return (
-    <section className="bg-sand py-32">
+    <section className="bg-sand py-20 md:py-32">
       <div className="site-container">
-        <div className="mb-16 flex items-end justify-between gap-10">
+        <div className="mb-10 flex flex-col gap-5 md:mb-16 md:flex-row md:items-end md:justify-between md:gap-10">
           <Reveal>
             <h2 className="text-h2 text-deep">Čo hovoria ľudia</h2>
           </Reveal>
-          <Reveal delay={0.1} className="max-w-[22rem] text-right text-[15px] leading-relaxed text-drift">
+          <Reveal delay={0.1} className="max-w-[22rem] text-[15px] leading-relaxed text-drift md:text-right">
             Od tých, ktorí si kúpili kúsok domov, aj od tých, ktorí u mňa tvorili.
           </Reveal>
         </div>
 
-        <ul className="grid grid-cols-3 items-stretch gap-5">
+        {/* Below 1024px the cards become a swipeable row that runs to the screen edges; the next card peeks in */}
+        <ul
+          aria-label="Recenzie"
+          className="-mx-gutter flex snap-x snap-mandatory scroll-px-gutter gap-4 overflow-x-auto px-gutter pb-4 [scrollbar-color:var(--color-sage)_transparent] [scrollbar-width:thin] lg:mx-0 lg:grid lg:grid-cols-3 lg:items-stretch lg:gap-5 lg:overflow-visible lg:px-0 lg:pb-0"
+        >
           {recenzie.map((r, i) => {
             const featured = i === 1;
             return (
@@ -22,7 +26,7 @@ export function Recenzie() {
                 as="li"
                 key={r.meno}
                 delay={i * 0.1}
-                className={`flex flex-col justify-between gap-12 rounded-card p-8 ${
+                className={`flex w-[min(85%,24rem)] shrink-0 snap-start flex-col justify-between gap-10 rounded-card p-6 md:p-8 lg:w-auto lg:gap-12 ${
                   featured ? "bg-deep text-sand" : "border border-sage bg-sand text-ink"
                 }`}
               >
@@ -34,7 +38,9 @@ export function Recenzie() {
                   >
                     {r.tema}
                   </span>
-                  <blockquote className={`mt-6 text-[17px] leading-relaxed ${featured ? "text-sand/90" : "text-ink/85"}`}>
+                  <blockquote
+                    className={`mt-6 text-base leading-relaxed md:text-[17px] ${featured ? "text-sand/90" : "text-ink/85"}`}
+                  >
                     „{r.text}“
                   </blockquote>
                 </div>

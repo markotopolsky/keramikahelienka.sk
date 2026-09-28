@@ -12,7 +12,7 @@ export function NewsletterForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="w-[26rem]">
+    <form onSubmit={handleSubmit} className="w-full max-w-[26rem]">
       <label htmlFor="newsletter-email" className="sr-only">
         E-mail
       </label>

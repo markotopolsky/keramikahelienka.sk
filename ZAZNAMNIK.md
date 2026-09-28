@@ -20,6 +20,7 @@ Súvisiace súbory:
 - Uložené dáta do `docs/povodny-web/`.
 - Nový projekt: Next.js 16.3.6, React 19.2.8, Tailwind 4 (zatiaľ čistá šablóna).
 - Poznámka: web je za firewallom (WAF). Obyčajný `curl` dostane „Access Denied“. Treba poslať hlavičky prehliadača (User-Agent, Accept, Accept-Language, Sec-Fetch-*).
+- Prototyp domovskej stránky je responzívny: telefón od 320 px, tablet, notebook aj desktop. Na telefóne a tablete (do 1024 px) je navigácia v menu cez celú obrazovku. Mobilné rozloženie vychádza zo šablóny SkillClass: karty kurzov sa ukladajú na seba aj na mobile, recenzie sa posúvajú do strany, pätička má veľké logo cez celú šírku.
 
 ---
 

@@ -14,20 +14,23 @@ export function SiteFooter() {
 
   return (
     <footer className="overflow-hidden bg-deep text-sand">
-      <div aria-hidden className="border-b border-sand/15 pb-16 pt-6">
-        <div className="flex w-max animate-marquee gap-6 hover:[animation-play-state:paused]">
+      <div aria-hidden className="border-b border-sand/15 pb-12 pt-6 md:pb-16">
+        <div className="flex w-max animate-marquee gap-4 hover:[animation-play-state:paused] md:gap-6">
           {strip.map((src, i) => (
-            <div key={i} className={`w-56 shrink-0 bg-sand p-2.5 pb-10 shadow-[0_18px_40px_-20px_rgb(0_0_0/0.5)] ${tilt[i % tilt.length]}`}>
+            <div
+              key={i}
+              className={`w-40 shrink-0 bg-sand p-2 pb-8 shadow-[0_18px_40px_-20px_rgb(0_0_0/0.5)] md:w-56 md:p-2.5 md:pb-10 ${tilt[i % tilt.length]}`}
+            >
               <div className="relative aspect-[4/5]">
-                <Image src={src} alt="" fill sizes="224px" className="object-cover" />
+                <Image src={src} alt="" fill sizes="(min-width: 48rem) 224px, 160px" className="object-cover" />
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="site-container pb-10 pt-16">
-        <div className="flex items-start justify-between gap-10">
+      <div className="site-container pb-8 pt-12 md:pb-10 md:pt-16">
+        <div className="flex flex-col gap-12 lg:flex-row lg:items-start lg:justify-between lg:gap-10">
           <div>
             <p className="font-medium">Listy z ateliéru</p>
             <p className="mt-1.5 text-[14px] text-sand/75">Nové kurzy, kolekcie a termíny workshopov do schránky.</p>
@@ -36,7 +39,7 @@ export function SiteFooter() {
             </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-16 text-[15px]">
+          <div className="grid grid-cols-2 gap-x-8 gap-y-10 text-[15px] md:grid-cols-3 md:gap-12 xl:gap-16">
             <FooterColumn title="Stránky">
               {navigacia.map((item) => (
                 <li key={item.href}>
@@ -58,7 +61,8 @@ export function SiteFooter() {
                 </a>
               </li>
             </FooterColumn>
-            <FooterColumn title="Ateliér">
+            {/* The e-mail address is too long for half a phone screen, so this column takes a full row there */}
+            <FooterColumn title="Ateliér" className="max-md:col-span-2">
               <li>{kontakt.ulica}</li>
               <li>{kontakt.mesto}</li>
               <li>
@@ -75,10 +79,13 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-24 flex items-end justify-between gap-10">
-          <p className="font-serif text-[15rem] leading-[0.8] tracking-[-0.04em]">He-lienka</p>
-          <div className="flex flex-col items-end gap-2 pb-4 text-[13px] text-sand/70">
-            <div className="flex gap-5">
+        <div className="mt-16 flex flex-col gap-6 md:mt-24 lg:flex-row lg:items-end lg:justify-between lg:gap-10">
+          {/* Sized to the viewport so the wordmark spans the column on phones and tablets */}
+          <p className="font-serif text-[min(28vw,15rem)] leading-[0.8] tracking-[-0.04em] lg:text-[clamp(10rem,17vw,15rem)]">
+            He-lienka
+          </p>
+          <div className="flex flex-col gap-2 text-[13px] text-sand/70 lg:items-end lg:pb-4">
+            <div className="flex flex-wrap gap-x-5 gap-y-2">
               <Link href="/obchodne-podmienky" className="hover:text-sand">
                 Obchodné podmienky
               </Link>
@@ -94,9 +101,9 @@ export function SiteFooter() {
   );
 }
 
-function FooterColumn({ title, children }: { title: string; children: ReactNode }) {
+function FooterColumn({ title, children, className = "" }: { title: string; children: ReactNode; className?: string }) {
   return (
-    <div>
+    <div className={className}>
       <p className="eyebrow text-[11px] text-aqua">{title}</p>
       <ul className="mt-4 space-y-2 text-sand/90">{children}</ul>
     </div>

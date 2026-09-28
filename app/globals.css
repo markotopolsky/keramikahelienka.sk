@@ -16,20 +16,24 @@
   --color-drift: #7a6547; /* secondary text, numbers (5.3:1 on sand) */
   --color-ink: #1e2b2e; /* body text */
 
-  /* Type scale, modelled on the SkillClass template */
-  --text-hero: 12rem;
+  /*
+   * Type scale, modelled on the SkillClass template. Sizes are fluid: each one
+   * grows with the viewport from its phone size to its desktop size, which all
+   * of them reach by 1340px. The hero keeps "Krása a úžitok" on one line down to 320px.
+   */
+  --text-hero: clamp(3.5rem, 19vw, 12rem);
   --text-hero--line-height: 0.9;
   --text-hero--letter-spacing: -0.035em;
-  --text-display: 5.5rem;
+  --text-display: clamp(2.75rem, 1.5rem + 5.5vw, 5.5rem);
   --text-display--line-height: 0.95;
   --text-display--letter-spacing: -0.03em;
-  --text-h2: 4rem;
+  --text-h2: clamp(2.5rem, 1.75rem + 3.2vw, 4rem);
   --text-h2--line-height: 1;
   --text-h2--letter-spacing: -0.03em;
-  --text-h3: 2.75rem;
+  --text-h3: clamp(2rem, 1.6rem + 1.6vw, 2.75rem);
   --text-h3--line-height: 1;
   --text-h3--letter-spacing: -0.03em;
-  --text-lead: 1.25rem;
+  --text-lead: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
   --text-lead--line-height: 1.5;
   --text-lead--letter-spacing: -0.01em;
   --text-eyebrow: 0.8125rem;
@@ -41,8 +45,8 @@
 
   --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
 
-  /* Content column: 40px gutters inside a 1440px frame */
-  --spacing-gutter: 2.5rem;
+  /* Content column: 20px gutters on phones, growing to 40px inside a 1440px frame */
+  --spacing-gutter: clamp(1.25rem, 4vw, 2.5rem);
   --container-site: 90rem;
 }
 
@@ -80,6 +84,11 @@
   :focus-visible {
     outline: 2px solid var(--color-sea);
     outline-offset: 3px;
+  }
+
+  /* The page behind the open mobile menu must not scroll */
+  html:has(dialog[open]) {
+    overflow: hidden;
   }
 }
 
