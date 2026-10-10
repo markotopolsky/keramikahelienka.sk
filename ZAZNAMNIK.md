@@ -22,6 +22,13 @@ Súvisiace súbory:
 - Poznámka: web je za firewallom (WAF). Obyčajný `curl` dostane „Access Denied“. Treba poslať hlavičky prehliadača (User-Agent, Accept, Accept-Language, Sec-Fetch-*).
 - Prototyp domovskej stránky je responzívny: telefón od 320 px, tablet, notebook aj desktop. Na telefóne a tablete (do 1024 px) je navigácia v menu cez celú obrazovku. Mobilné rozloženie vychádza zo šablóny SkillClass: karty kurzov sa ukladajú na seba aj na mobile, recenzie sa posúvajú do strany, pätička má veľké logo cez celú šírku.
 
+### 2026-10-10
+- Zapísané poznámky zo stretnutia s Helenkou do sekcie 12. Nejasné body sú ako otázky 14 – 20 v sekcii 11.
+- Zistené: prototyp je v rozpore s dvomi požiadavkami. Domovská stránka ukazuje kurzy pred dielami. Nadpisy sú v pätkovom písme Instrument Serif.
+- **Rozhodnutie:** celý web je v Next.js, bez WordPressu a bez Stripe. Platby cez Comgate. Plán je v sekcii 13. (Zvažovaný bol aj WooCommerce na pozadí. Zamietnutý, lebo by ostal WordPress a WooPayments beží na Stripe.)
+- Rozdelenie práce medzi vývojára a Helenku je v sekcii 14. Vývojár robí iba web a napojenie Comgate. Právne texty, zmluvy a účtovníctvo nie sú jeho práca.
+- Plán práce po fázach (všetko okrem platobnej brány) je v sekcii 15.
+
 ---
 
 ## 2. Základné údaje
@@ -503,11 +510,214 @@ Zoradené podľa dôležitosti.
 3. **Kontaktný e-mail.** Ktorý je hlavný: info@keramikahelienka.sk alebo helena.sochnova@gmail.com?
 4. **Kamenné predajne.** Platí ešte Place store (Hurbanovo nám. 1) a Predajňa František (Františkánske nám. 2)?
 5. **Kurzy.** Platia termíny Ut / St / Št? Platí nepravidelný kurz (192 / 170 / 150 €) a jednorazový vstup 51 €? Veková hranica detí: obrázok uvádza „6 – 9,99“, formulár „6 – 10“.
-6. **Anglická verzia.** Chce ju? Ak áno, kto dodá preklad?
+6. ~~**Anglická verzia.** Chce ju? Ak áno, kto dodá preklad?~~ **Odpovedané 10. 10. 2026:** áno, prepínač SK / EN, preklad cez AI (sekcia 12).
 7. **Názvy produktov.** Zjednotiť do slovenčiny (s anglickým prekladom)?
-8. **Newsletter.** Používa ešte Mailchimp? Chce odber „Listy z ateliéru“?
+8. **Newsletter.** Používa ešte Mailchimp? Chce odber „Listy z ateliéru“? *(10. 10. 2026: newsletter chce – oznamy o výstavách. Ostáva otázka nástroja.)*
 9. **Yoga pobyt.** Bude ďalší ročník? Ponechať stránku ako archív?
 10. **Meno.** Presný tvar: „Helena Sochnová“ (s dĺžňom)?
 11. **Recenzie.** Máme súhlas použiť mená? Má ďalšie recenzie?
 12. **Galéria a Workshopy.** Chce tieto sekcie? Dodá fotky?
 13. **Sashe.sk.** Predáva ešte cez Sashe? Máme tam odkazovať?
+
+**Nové otázky z poznámok zo stretnutia (10. 10. 2026):**
+
+14. **Faktúry.** Kto je „on“, ktorý chce faktúru hneď (partner, účtovník)? V akom programe dnes fakturujú?
+15. **Teambuilding.** „1/2 krát“ znamená 1 – 2 × za rok, alebo za mesiac? Chce formulár pre HR, alebo stačí kontakt?
+16. **Písmo.** Čo je „Môj ateliér“ – web, logo, súbor? Pošle odkaz alebo screenshot?
+17. **„MOJKA – GALÉRIA“.** Čo znamená „Mojka“?
+18. **Misa mesiaca.** Vyberá ju ručne každý mesiac? Akú zľavu chce dávať?
+19. **Hodnotenia z Instagramu.** Majú to byť vybrané komentáre, alebo vložený Instagram feed?
+20. **Use cases.** Čo presne myslela „use cases“ pri vázach / kurzoch – fotky váz doma v interiéri, alebo typy kurzov (darček, zážitok, firma)?
+
+---
+
+## 12. Požiadavky od Helenky (poznámky zo stretnutia, zapísané 10. 10. 2026)
+
+Zdroj: surové poznámky zo stretnutia. Nejasné body sú ako otázky 14 – 20 v sekcii 11.
+
+### Priorita obsahu
+- Na prvom mieste je Helenkina vlastná tvorba (diela, obchod). Kurzy sú až na druhom mieste.
+- Dôsledok: na domovskej stránke majú byť diela pred kurzami. Prototyp má teraz opačné poradie (`app/page.tsx`: `KurzyStack` pred `DielaGrid`).
+- **Nové diela** si Helenka pridáva sama – do galérie aj do obchodu. Web teda potrebuje CMS.
+
+### Kurzy
+- **Teambuilding pre firmy (HR).** Robí sa na dohodu, zhruba 1 – 2 ×. Chce ho na webe zvýrazniť, ale nenútene.
+- Možný formulár pre HR. Polia: miesto (ateliér alebo priestory firmy), počet ľudí, spoločné dielo alebo každý vlastné. Či formulár chce, ešte nevie.
+- **Kurz ako zážitok „na zapamätanie“** – vytvoriť si peknú vázu. Ukázať príklady (use cases).
+- Ateliéry (kurzy) idú podľa sezóny: jeseň a jar.
+- **Rezervácie** kurzov priamo na webe.
+
+### Obchod
+- **Misa mesiaca.** Nový alebo vybraný produkt mesiaca. Môže mať zvýhodnenú cenu. Ak kus dlho stojí, zľava má motivovať kupujúcich.
+- **Info lišta** hore na stránke: zľavy, zľavové kódy, oznamy (napr. „najbližšie mám výstavu“) a odkaz na newsletter.
+- **Hodnotenia váz z Instagramu.**
+- **Vypredané kusy** ostávajú na webe ako galéria, jemne zosivené.
+- **Triedenie produktov** – doladíme neskôr.
+
+### Platby a faktúry
+- Dnes WooCommerce. Problém: po platbe príde iba oznámenie. Faktúru chcú mať vystavenú hneď a automaticky, aby sa nič nepomýlilo.
+- Pozrieť **Comgate**. Pri novom obchodníkovi drží peniaze dlhšie, po overení chodia skôr. Faktúra však musí byť hotová hneď po zaplatení, nie až po výplate peňazí.
+
+### Právne stránky (spravované v CMS)
+- GDPR a ochrana osobných údajov, cookies, všeobecné obchodné podmienky.
+- Helenka chce ošetriť, že sa tovar nedá vrátiť, s výnimkami. Treba zistiť, čo dovoľuje zákon.
+- **Zistené 10. 10. 2026 (overiť s právnikom):** platí zákon č. 108/2024 Z. z. o ochrane spotrebiteľa. Pri nákupe cez internet môže spotrebiteľ odstúpiť od zmluvy do 14 dní. Výnimky sú v § 19 ods. 1.
+  - Výnimka platí pre tovar vyrobený podľa požiadaviek spotrebiteľa (zákazka). Hotový unikát zo skladu **nie je** výnimka – zákazník ho môže vrátiť do 14 dní.
+  - Kurz na konkrétny termín je pravdepodobne výnimka (voľnočasová služba s určeným dátumom). Overiť presné znenie § 19 na slov-lex.sk.
+  - Ak predávajúci o práve na odstúpenie nepoučí, lehota sa predĺži až o 12 mesiacov.
+
+### Jazyk
+- Chce anglickú verziu. Prepínač SK / EN, preklad cez AI.
+
+### Písmo
+- Bezpätkové písmo (sans-serif). Spomenuté: Canva Sans, Open Sans. Páči sa jej písmo „Môj ateliér“ (otázka 16).
+- Dôsledok: prototyp má nadpisy v pätkovom Instrument Serif – treba ho vymeniť.
+- Canva Sans je písmo z Canvy. Licenciu na použitie na webe treba overiť. Open Sans je voľne na Google Fonts.
+
+---
+
+## 13. Obchod a platby – plán (Next.js + Comgate)
+
+**Rozhodnutie 10. 10. 2026:** celý web je v Next.js. WordPress sa zruší. Platby idú cez Comgate. Stripe ani WooPayments nepoužívame.
+
+- **Produkty:** CMS priamo v Next.js (návrh: Payload CMS). Helenka v ňom pridáva diela. 48 produktov sa naimportuje z `docs/povodny-web/produkty.json`.
+- **Platba:** Comgate. Stránku s kartou a 3D Secure robí Comgate. Web kartu nikdy nevidí.
+- **Pred zrušením WordPressu:** exportovať objednávky, zákazníkov a faktúry. Potrebuje ich účtovníctvo. Spraviť zálohu celého webu.
+
+### Comgate – zistené 10. 10. 2026
+- REST API: `https://payments.comgate.cz/v2.0/`. Prihlásenie cez HTTP Basic (`merchant:secret` z klientskeho portálu).
+- Vytvorenie platby: `POST /payment.json`. Povinné: `price` (v centoch), `curr`, `label` (1 – 16 znakov), `refId` (naše číslo objednávky), `method`, `fullName` a `email` alebo `phone`. Odpoveď vráti `transId` a `redirect`.
+- Stav platby: `GET /payment/transId/{transId}.json`. Stavy: `PENDING`, `PAID`, `CANCELLED`, `AUTHORIZED`.
+- Výsledok na pozadí: Comgate pošle správu na URL pre výsledok. Správe sa neverí, stav sa vždy overí cez API. Web musí vrátiť HTTP 200, inak Comgate opakuje až 1000-krát.
+- Testovací režim: parameter `test: true`.
+- IP whitelist: API je chránené zoznamom IP adries. Pri hostingu bez pevnej IP (Vercel) sa kontrola dá vypnúť v portáli. Potom treba dobre chrániť heslo (iba v env premenných).
+- Zdroje: https://apidoc.comgate.cz/en/api/rest/ · https://apidoc.comgate.cz/en/faq
+
+### Nastavenie v portáli Comgate
+Integrácia → Nastavenie obchodu → Prepojenie obchodu:
+1. API login a heslo.
+2. Vypnúť IP whitelist (Vercel).
+3. Návratové URL pre `PAID`, `CANCELLED`, `PENDING` a URL pre výsledok na pozadí.
+4. E-mail pre chybové hlásenia (Integrácia → Kontaktné údaje).
+
+### Čo Comgate vyžaduje pred spustením
+Zdroj: https://help.comgate.eu/docs/en/how-to-get-a-payment-gateway
+- Na webe: obchodné meno, sídlo, IČO, e-mail, telefón, popisy a ceny produktov, košík, obchodné podmienky, reklamačný poriadok, ochrana osobných údajov, podmienky dopravy a platby, HTTPS.
+- Na zmluvu (Helenka): údaje firmy, bankový účet, 2 doklady totožnosti, doklad o vlastníctve účtu, overovacia platba 0,10 € (vráti sa), konečný užívateľ výhod, vyhlásenie o krajine pôvodu.
+- Dĺžku schvaľovania Comgate neuvádza.
+
+### Poplatky Comgate (cenník SK 2026)
+- Tarifa Štart: platby kartou zadarmo do 2 000 € mesačne, nad to 1 %. Bez mesačného poplatku. Od 7. mesiaca prechod na inú tarifu (ceny overiť). Vrátenie platby 0,20 €.
+- Tarifa Profi: karty EÚ 0,67 % + 0,04 €.
+- Zdroje: https://www.comgate.cz/files/comgate-seur26pbsk.pdf · https://www.comgate.cz/files/comgate-peur26pbsk.pdf
+
+### Postup platby
+1. Zákazník vyplní pokladňu (údaje, doprava, platba).
+2. Server prepočíta cenu z databázy, nie z prehliadača. Vytvorí objednávku „čaká na platbu“.
+3. Server zarezervuje kusy. Takmer všetko sú unikáty, takže ten istý kus nesmú kúpiť dvaja naraz.
+4. Server zavolá `POST /payment.json` a presmeruje zákazníka na `redirect`.
+5. Comgate pošle výsledok. Server overí stav cez `GET /payment/transId/{transId}.json`.
+6. `PAID`: objednávka je zaplatená, e-mail zákazníkovi aj Helenke. `CANCELLED`: rezervácia kusov sa zruší.
+
+---
+
+## 14. Rozdelenie práce (dohodnuté 10. 10. 2026)
+
+Vývojár nie je právnik ani účtovník. Jeho práca je iba web a jednoduché napojenie Comgate.
+
+### Robí vývojár
+- Dizajn a vývoj webu v Next.js (stránky, obchod, košík, pokladňa).
+- CMS, v ktorom Helenka pridáva diela.
+- Napojenie Comgate podľa sekcie 13.
+- Vloženie právnych textov, ktoré dodá Helenka. Text nepíše ani neupravuje.
+
+### Dodá alebo vybaví Helenka
+- **Právne texty:** obchodné podmienky, reklamačný poriadok, ochrana osobných údajov (GDPR), cookies, poučenie o odstúpení od zmluvy a formulár na odstúpenie. Napíše ich právnik alebo služba so vzormi pre e-shopy. Musia pokryť tovar (unikáty) aj kurzy (služba na termín).
+- **Firemné údaje:** obchodné meno, IČO, DIČ / IČ DPH, sídlo, platiteľ DPH áno / nie.
+- **Zmluva s Comgate** na jej meno. Vývojárovi dá prístup do portálu.
+- **Fakturácia:** program a pravidlá faktúr určí ona a jej účtovník.
+- **Doprava:** spôsoby, ceny, krajiny.
+- **Obsah:** texty, fotky nových diel, súhlas so zverejnením recenzií.
+- **Účty na jej meno:** doména, hosting, Comgate, fakturácia. Vývojár má iba prístup.
+
+### Treba dohodnúť pred začatím
+- Ktoré funkcie z poznámok (sekcia 12) idú do prvej verzie. Ostatné sú ďalšia práca za ďalšiu cenu.
+- Či je automatická faktúra po zaplatení súčasťou zákazky.
+- Údržba po spustení: kto a za koľko opravuje chyby a robí zmeny.
+- Kto zálohuje a ruší starý WordPress (po exporte objednávok a faktúr).
+
+---
+
+## 15. Plán práce – všetko okrem platobnej brány (10. 10. 2026)
+
+Stav 10. 10. 2026: hotová je iba domovská stránka (`app/page.tsx`). Menu a pätička odkazujú na stránky, ktoré ešte neexistujú (`/kurzy`, `/obchod`, `/o-mne`, `/blog`, `/kontakt`, `/obchodne-podmienky`, `/ochrana-osobnych-udajov`). Newsletter je iba atrapa.
+
+Platobná brána Comgate (sekcia 13) sa robí až nakoniec. Pokladňa skončí tlačidlom „Zaplatiť“ a vytvorí objednávku v stave „čaká na platbu“.
+
+Značka **[čaká: X]** znamená, že úloha potrebuje odpoveď od Helenky (otázka X v sekcii 11 alebo bod v správe zo sekcie 14).
+
+Odhad spolu: asi 3 týždne práce.
+
+### Najprv vzhľad (rozhodnutie 10. 10. 2026)
+CMS, databáza, e-maily a hosting (fáza 0 a 3) sú zatiaľ odložené. Najprv robíme to, čo je vidieť: fázu 1, fázu 2 a obchod z fázy 4. Obchod číta produkty zo statického `docs/povodny-web/produkty.json`, CMS ho nahradí neskôr. Formuláre zatiaľ iba ako vzhľad, bez odosielania.
+
+Poradie:
+1. Fáza 1 – diela pred kurzami, bezpätkové písmo.
+2. `/kurzy`
+3. `/o-mne` a `/kontakt`
+4. `/obchod` a `/obchod/[slug]` zo statických dát. Najprv stiahnuť 128 fotiek produktov do `public/images/produkty/` (starý web má firewall, treba hlavičky prehliadača).
+5. `/blog`, stránka 404, prázdne právne stránky s textom „pripravujeme“ (aby odkazy v pätičke nevracali 404).
+6. Info lišta so statickým textom.
+
+### Fáza 0 – Technické rozhodnutia (odložené)
+- [ ] CMS: potvrdiť Payload CMS v Next.js (Next.js 16 podporuje od verzie 3.73 – overiť v release notes).
+- [ ] Databáza pre Payload (Postgres) a úložisko fotiek. Vybrať poskytovateľa.
+- [ ] Služba na odosielanie e-mailov (kontaktný formulár, teambuilding, potvrdenie objednávky).
+- [ ] Hosting: Vercel Pro (komerčný web nesmie byť na bezplatnom pláne) alebo iný.
+
+### Fáza 1 – Opravy prototypu (asi 1 h, dá sa hneď)
+- [ ] Domovská stránka: diela pred kurzami (`app/page.tsx`).
+- [ ] Nadpisy v bezpätkovom písme namiesto Instrument Serif. Dočasne Open Sans alebo Inter. [čaká: 16 – písmo „Môj ateliér“]
+
+### Fáza 2 – Statické stránky (2 – 3 dni, dáta sú v sekciách 5 a 6)
+- [ ] `/kurzy` – cenník ako text (nie obrázok), termíny, podmienky, sezóna jeseň / jar. [čaká: 5 – platné termíny a ceny]
+- [ ] `/kurzy` – sekcia teambuilding pre firmy. [čaká: 15]
+- [ ] `/o-mne`
+- [ ] `/kontakt` – kontakty, mapa. [čaká: 3 – hlavný e-mail]
+- [ ] `/blog` a `/blog/[slug]` – 2 pôvodné články.
+- [ ] Stránka 404.
+
+### Fáza 3 – CMS a produkty (3 – 4 dni)
+- [ ] Payload CMS v projekte, administrácia na `/admin`.
+- [ ] Kolekcie: produkty (názov, slug, cena, akciová cena, kategória, fotky, popis, sklad, misa mesiaca), kategórie, blog, objednávky.
+- [ ] Globálne nastavenia: info lišta, kontakty.
+- [ ] Import 48 produktov z `docs/povodny-web/produkty.json` vrátane fotiek.
+- [ ] Opraviť chyby v produktoch zo sekcie 10 (zlé popisy, kategórie, slugy, preklepy, alt texty). [čaká: 7 – jazyk názvov]
+- [ ] Právne stránky ako stránky v CMS. Helenka do nich vloží texty sama, bez vývojára.
+
+### Fáza 4 – Obchod bez platby (asi 3 dni)
+- [ ] `/obchod` – zoznam, filter podľa kategórie, jednoduché triedenie.
+- [ ] Vypredané kusy ako galéria, jemne zosivené.
+- [ ] `/obchod/[slug]` – detail produktu.
+- [ ] Misa mesiaca na domovskej stránke a v obchode, so zľavnenou cenou. [čaká: 18]
+- [ ] Domovská stránka berie diela z CMS, nie z `content/diela.ts`.
+- [ ] Košík.
+- [ ] Pokladňa: údaje zákazníka, doprava, súhlas s podmienkami. Vytvorí objednávku „čaká na platbu“ a zarezervuje kusy. [čaká: 2 – doprava]
+
+### Fáza 5 – Funkcie z poznámok (3 – 5 dní, podľa výberu Helenky)
+- [ ] Info lišta hore na stránke (text z CMS).
+- [ ] Kontaktný formulár a formulár na teambuilding (odosielanie e-mailom).
+- [ ] Newsletter. [čaká: 8 – nástroj]
+- [ ] Anglická verzia s prepínačom SK / EN, preklad cez AI.
+- [ ] Hodnotenia z Instagramu. [čaká: 19]
+- [ ] Rezervácie kurzov – samostatný veľký projekt, iba ak ho Helenka chce v prvej verzii.
+
+### Fáza 6 – Pred spustením (asi 2 dni)
+- [ ] SEO: title a description pre každú stránku, OG obrázky, `sitemap.xml`, `robots.txt`, štruktúrované dáta produktov.
+- [ ] Presmerovania 301 zo starých URL (sekcia 4) v `next.config.ts`.
+- [ ] Cookie lišta – iba ak bude na webe analytika.
+- [ ] Nasadenie: hosting, doména, databáza, env premenné.
+- [ ] Záloha WordPressu a export objednávok a faktúr. Až potom zrušiť starý web.
+
+### Až nakoniec
+- [ ] Platobná brána Comgate podľa sekcie 13. [čaká: zmluva Helenky s Comgate a právne texty]
