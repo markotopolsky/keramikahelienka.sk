@@ -21,7 +21,7 @@
    * grows with the viewport from its phone size to its desktop size, which all
    * of them reach by 1340px. The hero keeps "Krása a úžitok" on one line down to 320px.
    */
-  --text-hero: clamp(3.5rem, 19vw, 12rem);
+  --text-hero: clamp(2.75rem, 13.5vw, 9.5rem);
   --text-hero--line-height: 0.9;
   --text-hero--letter-spacing: -0.035em;
   --text-display: clamp(2.75rem, 1.5rem + 5.5vw, 5.5rem);
@@ -52,7 +52,7 @@
 
 /* next/font exposes the self-hosted families as CSS variables on <html> */
 @theme inline {
-  --font-serif: var(--font-instrument-serif), "Times New Roman", Georgia, serif;
+  --font-display: var(--font-open-sans), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }
 
@@ -71,9 +71,14 @@
   h2,
   h3,
   h4 {
-    font-family: var(--font-serif);
-    font-weight: 400;
+    font-family: var(--font-display);
+    font-weight: 500;
     text-wrap: balance;
+  }
+
+  /* Anchor targets (/kurzy#cennik) land below the fixed header, not under it */
+  [id] {
+    scroll-margin-top: 6rem;
   }
 
   ::selection {

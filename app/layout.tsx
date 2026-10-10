@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
-import { Instrument_Serif, Inter } from "next/font/google";
+import { Inter, Open_Sans } from "next/font/google";
 import { MotionProvider } from "@/components/motion-provider";
+import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
 import "./globals.css";
 
-const instrumentSerif = Instrument_Serif({
-  variable: "--font-instrument-serif",
-  weight: "400",
+// Headings are sans-serif at Helena's request. Open Sans stands in until we know
+// the font she liked ("Môj ateliér", question 16 in ZAZNAMNIK.md).
+const openSans = Open_Sans({
+  variable: "--font-open-sans",
   subsets: ["latin", "latin-ext"],
 });
 
@@ -15,16 +18,23 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Keramika He-lienka · keramický ateliér a kurzy keramiky v Bratislave",
+  title: {
+    default: "Keramika He-lienka · keramický ateliér a kurzy keramiky v Bratislave",
+    template: "%s · Keramika He-lienka",
+  },
   description:
     "Ručne modelované misy, vázy, lampy a art objekty z ateliéru v Bratislave-Dúbravke. Kurzy keramiky pre dospelých aj deti.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="sk" className={`${instrumentSerif.variable} ${inter.variable} antialiased`}>
+    <html lang="sk" className={`${openSans.variable} ${inter.variable} antialiased`}>
       <body>
-        <MotionProvider>{children}</MotionProvider>
+        <MotionProvider>
+          <SiteHeader />
+          <main>{children}</main>
+          <SiteFooter />
+        </MotionProvider>
       </body>
     </html>
   );

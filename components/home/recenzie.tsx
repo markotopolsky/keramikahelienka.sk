@@ -45,7 +45,7 @@ export function Recenzie() {
                   </blockquote>
                 </div>
                 <div>
-                  <p className="font-serif text-[26px] leading-none">{r.meno}</p>
+                  <p className="font-display text-[26px] leading-none">{r.meno}</p>
                   <p className={`mt-1.5 text-[14px] ${featured ? "text-aqua" : "text-drift"}`}>{r.miesto}</p>
                 </div>
               </Reveal>

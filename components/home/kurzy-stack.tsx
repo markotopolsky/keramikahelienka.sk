@@ -99,7 +99,7 @@ function KurzCard({ kurz, index, total, progress, stacked }: KurzCardProps) {
             <p className="max-w-[26rem] text-[15px] leading-relaxed text-sand/90 md:text-base">{kurz.popis}</p>
             <div className="mt-5 flex items-center gap-4 md:mt-7">
               <span className="rounded-full bg-sand px-3 py-1 text-[13px] text-deep">{kurz.stitok}</span>
-              <span className="font-serif text-[28px] leading-none md:text-[32px]">{kurz.cena}</span>
+              <span className="font-display text-[28px] leading-none md:text-[32px]">{kurz.cena}</span>
             </div>
           </div>
         </div>

@@ -5,6 +5,7 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { ButtonLink } from "@/components/ui/button-link";
 import { Reveal } from "@/components/ui/reveal";
+import { CheckIcon } from "@/components/ui/check-icon";
 
 const fakty = ["Vlastný ateliér od roku 2020", "Kurzy pre dospelých aj deti", "Tvorba bez hrnčiarskeho kruhu"];
 
@@ -63,11 +64,11 @@ export function OMne() {
       <div className="bg-deep pb-24 pt-10 text-sand md:pb-32 md:pt-12">
         <div className="site-container flex flex-col items-center text-center">
           <Reveal>
-            <p className="font-serif text-[36px] leading-none tracking-[-0.03em] md:text-[44px]">Helena Sochnová</p>
+            <p className="font-display text-[36px] leading-none tracking-[-0.03em] md:text-[44px]">Helena Sochnová</p>
             <p className="eyebrow mt-3 text-aqua">Keramikárka a lektorka</p>
           </Reveal>
           <Reveal delay={0.1}>
-            <blockquote className="mx-auto mt-10 max-w-[52rem] font-serif text-[26px] leading-[1.2] tracking-[-0.02em] text-balance md:mt-12 md:text-[34px] md:leading-[1.15] lg:text-[40px]">
+            <blockquote className="mx-auto mt-10 max-w-[52rem] font-display text-[26px] leading-[1.2] tracking-[-0.02em] text-balance md:mt-12 md:text-[34px] md:leading-[1.15] lg:text-[40px]">
               „Je to úžasný pocit, keď pod mojimi rukami hlina dostáva tvar a prostredníctvom vzduchu a ohňa sa mení
               v trvácu podobu.“
             </blockquote>
@@ -88,14 +89,5 @@ export function OMne() {
         </div>
       </div>
     </section>
-  );
-}
-
-function CheckIcon() {
-  return (
-    <svg viewBox="0 0 20 20" aria-hidden className="size-5 shrink-0">
-      <circle cx="10" cy="10" r="10" className="fill-aqua" />
-      <path d="m6 10.2 2.6 2.6L14 7.4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="text-ink" />
-    </svg>
   );
 }

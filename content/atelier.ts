@@ -9,6 +9,16 @@ export const kontakt = {
   email: "info@keramikahelienka.sk",
   instagram: "https://www.instagram.com/keramika_helienka/",
   facebook: "https://www.facebook.com/Keramika.Helienka",
+  youtube: "https://www.youtube.com/@keramikahe-lienka6410",
+  linkedin: "https://www.linkedin.com/in/helena-sochnova-675b85279/",
+};
+
+// The studio on Google Maps. The embed is the one from the original Kontakt page.
+export const mapa = {
+  embed:
+    "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2659.890737842819!2d17.042073076892898!3d48.18945664754739!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x476c8dcba5b721d1%3A0x639fb33182c93094!2sKeramika%20Helienka!5e0!3m2!1sen!2ssk!4v1715363894208!5m2!1sen!2ssk",
+  odkaz: "https://www.google.com/maps/search/?api=1&query=Keramika%20Helienka%2C%20Na%20vr%C3%A1tkach%201K%2C%20Bratislava",
+  trasa: "https://www.google.com/maps/dir/?api=1&destination=48.189457,17.042073",
 };
 
 export const navigacia = [

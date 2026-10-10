@@ -1,26 +1,39 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
 import { kontakt, navigacia } from "@/content/atelier";
 import { ButtonLink } from "@/components/ui/button-link";
 
+/** True once the page's dark top section (marked `data-hero`) has scrolled away, or if the page has none */
+function heroScrolledAway() {
+  const hero = document.querySelector("[data-hero]");
+  const heroBottom = hero ? hero.getBoundingClientRect().bottom : 0;
+  return heroBottom < Math.max(window.innerHeight * 0.25, 96);
+}
+
 /**
- * Transparent over the hero, turns solid sand once the hero scrolls away.
+ * Transparent over the dark top section of a page, turns solid sand once that section scrolls away.
  * Below 1024px the links move into a full-screen menu (a modal <dialog>, so the
  * browser handles Escape, focus and hiding the page from screen readers).
  */
 export function SiteHeader() {
+  const pathname = usePathname();
   const { scrollY } = useScroll();
   const [solid, setSolid] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDialogElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
 
-  useMotionValueEvent(scrollY, "change", (y) => {
-    setSolid(y > window.innerHeight * 0.75);
-  });
+  useMotionValueEvent(scrollY, "change", () => setSolid(heroScrolledAway()));
+
+  // The header lives in the root layout, so measure again once a new page has rendered
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => setSolid(heroScrolledAway()));
+    return () => cancelAnimationFrame(frame);
+  }, [pathname]);
 
   // The menu only exists on phones and tablets: close it when the window grows to the desktop layout
   useEffect(() => {
@@ -57,7 +70,7 @@ export function SiteHeader() {
       }`}
     >
       <div className="site-container flex h-16 items-center justify-between lg:grid lg:h-20 lg:grid-cols-[1fr_auto_1fr]">
-        <Link href="/" className="justify-self-start font-serif text-[26px] leading-none tracking-[-0.02em] lg:text-[30px]">
+        <Link href="/" className="justify-self-start font-display text-[26px] leading-none tracking-[-0.02em] lg:text-[30px]">
           He-lienka
         </Link>
 
@@ -67,7 +80,8 @@ export function SiteHeader() {
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  className="relative py-1 after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-300 hover:after:scale-x-100"
+                  aria-current={pathname === item.href ? "page" : undefined}
+                  className="relative py-1 after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-300 hover:after:scale-x-100 aria-[current=page]:after:scale-x-100"
                 >
                   {item.label}
                 </Link>
@@ -106,7 +120,7 @@ export function SiteHeader() {
       >
         <div className="site-container flex min-h-full flex-col pb-10">
           <div className="flex h-16 shrink-0 items-center justify-between">
-            <Link href="/" className="font-serif text-[26px] leading-none tracking-[-0.02em]">
+            <Link href="/" className="font-display text-[26px] leading-none tracking-[-0.02em]">
               He-lienka
             </Link>
             <button
@@ -132,7 +146,8 @@ export function SiteHeader() {
                 >
                   <Link
                     href={item.href}
-                    className="flex items-baseline justify-between gap-6 py-4 font-serif text-[clamp(2.5rem,11vw,3.5rem)] leading-none tracking-[-0.03em] transition-colors hover:text-aqua"
+                    aria-current={pathname === item.href ? "page" : undefined}
+                    className="flex items-baseline justify-between gap-6 py-4 font-display text-[clamp(2.5rem,11vw,3.5rem)] leading-none tracking-[-0.03em] transition-colors hover:text-aqua aria-[current=page]:text-aqua"
                   >
                     {item.label}
                     <span aria-hidden className="eyebrow font-sans text-[11px] text-aqua">

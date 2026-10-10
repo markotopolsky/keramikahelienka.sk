@@ -28,6 +28,13 @@ Súvisiace súbory:
 - **Rozhodnutie:** celý web je v Next.js, bez WordPressu a bez Stripe. Platby cez Comgate. Plán je v sekcii 13. (Zvažovaný bol aj WooCommerce na pozadí. Zamietnutý, lebo by ostal WordPress a WooPayments beží na Stripe.)
 - Rozdelenie práce medzi vývojára a Helenku je v sekcii 14. Vývojár robí iba web a napojenie Comgate. Právne texty, zmluvy a účtovníctvo nie sú jeho práca.
 - Plán práce po fázach (všetko okrem platobnej brány) je v sekcii 15.
+- Hotové body 1 – 3 z časti „Najprv vzhľad“ (sekcia 15):
+  - Domovská stránka ukazuje diela pred kurzami. Nadpisy sú v bezpätkovom Open Sans (dočasne, kým nevieme odpoveď na otázku 16). Instrument Serif je preč.
+  - Nové stránky `/kurzy`, `/o-mne` a `/kontakt`. Texty a ceny sú zo sekcií 5 a 6.
+  - Hlavička a pätička sú teraz v `app/layout.tsx`, nie na každej stránke zvlášť.
+  - Kontaktný formulár je iba vzhľad, nič neodosiela. Mapa Google sa načíta až po kliknutí na „Zobraziť mapu“.
+  - Prihláška na kurz stále vedie na Google formulár Helenky (sekcia 6).
+  - `public/images/helena-kvety.jpg` je `helena-portret.jpg` bez bielych okrajov.
 
 ---
 
@@ -662,12 +669,15 @@ Odhad spolu: asi 3 týždne práce.
 CMS, databáza, e-maily a hosting (fáza 0 a 3) sú zatiaľ odložené. Najprv robíme to, čo je vidieť: fázu 1, fázu 2 a obchod z fázy 4. Obchod číta produkty zo statického `docs/povodny-web/produkty.json`, CMS ho nahradí neskôr. Formuláre zatiaľ iba ako vzhľad, bez odosielania.
 
 Poradie:
-1. Fáza 1 – diela pred kurzami, bezpätkové písmo.
-2. `/kurzy`
-3. `/o-mne` a `/kontakt`
-4. `/obchod` a `/obchod/[slug]` zo statických dát. Najprv stiahnuť 128 fotiek produktov do `public/images/produkty/` (starý web má firewall, treba hlavičky prehliadača).
-5. `/blog`, stránka 404, prázdne právne stránky s textom „pripravujeme“ (aby odkazy v pätičke nevracali 404).
-6. Info lišta so statickým textom.
+1. ~~Fáza 1 – diela pred kurzami, bezpätkové písmo.~~ Hotové 10. 10. 2026.
+2. ~~`/kurzy`~~ Hotové 10. 10. 2026.
+3. ~~`/o-mne` a `/kontakt`~~ Hotové 10. 10. 2026.
+4. **Anglická verzia (prepínač SK / EN).** Robí sa pred ďalšími stránkami, aby nové stránky vznikali rovno v dvoch jazykoch. Slovenčina ostáva na `/`, angličtina na `/en/...` (rovnako ako na starom webe). Texty preložené raz cez AI a uložené v súboroch. Nie automatický prekladač za behu – ten na starom webe prekladal zle (sekcia 10). Postup podľa návodu na internacionalizáciu v `node_modules/next/dist/docs/`.
+5. `/obchod` a `/obchod/[slug]` zo statických dát. Najprv stiahnuť 128 fotiek produktov do `public/images/produkty/` (starý web má firewall, treba hlavičky prehliadača). Filter podľa kategórie a základné triedenie: najnovšie, cena od najnižšej, cena od najvyššej. Vypredané kusy na konci, jemne zosivené.
+6. Info lišta hore na stránke so statickým textom, dá sa zavrieť. Text v súbore v `content/`. [čaká: aktuálny oznam od Helenky]
+7. Formulár na kontakte s výberom „Otázka“ / „Teambuilding pre firmy“. Pri teambuildingu ďalšie polia: firma, miesto (ateliér / priestory firmy), počet ľudí, spoločné dielo / každý vlastné, predbežný termín. Tlačidlo v sekcii teambuilding na `/kurzy` otvorí formulár s predvoleným teambuildingom. Zatiaľ iba vzhľad, nič neodosiela.
+8. Právne stránky: `/obchodne-podmienky`, `/reklamacny-poriadok`, `/ochrana-osobnych-udajov`, `/cookies`. Zatiaľ **vzorový text** so zástupnými údajmi `[doplniť: IČO]` a pod. Hore viditeľný pruh „Vzorový text – čaká na znenie od právnika“. Nekopírovať podmienky iných e-shopov. Konečné znenie dodá Helenka (sekcia 14).
+9. `/blog` a `/blog/[slug]` (2 pôvodné články, sekcia 5.6), stránka 404.
 
 ### Fáza 0 – Technické rozhodnutia (odložené)
 - [ ] CMS: potvrdiť Payload CMS v Next.js (Next.js 16 podporuje od verzie 3.73 – overiť v release notes).
@@ -676,14 +686,14 @@ Poradie:
 - [ ] Hosting: Vercel Pro (komerčný web nesmie byť na bezplatnom pláne) alebo iný.
 
 ### Fáza 1 – Opravy prototypu (asi 1 h, dá sa hneď)
-- [ ] Domovská stránka: diela pred kurzami (`app/page.tsx`).
-- [ ] Nadpisy v bezpätkovom písme namiesto Instrument Serif. Dočasne Open Sans alebo Inter. [čaká: 16 – písmo „Môj ateliér“]
+- [x] Domovská stránka: diela pred kurzami (`app/page.tsx`).
+- [x] Nadpisy v bezpätkovom písme namiesto Instrument Serif. Dočasne Open Sans. Písmo sa mení na jednom mieste v `app/layout.tsx`. [čaká: 16 – písmo „Môj ateliér“]
 
 ### Fáza 2 – Statické stránky (2 – 3 dni, dáta sú v sekciách 5 a 6)
-- [ ] `/kurzy` – cenník ako text (nie obrázok), termíny, podmienky, sezóna jeseň / jar. [čaká: 5 – platné termíny a ceny]
-- [ ] `/kurzy` – sekcia teambuilding pre firmy. [čaká: 15]
-- [ ] `/o-mne`
-- [ ] `/kontakt` – kontakty, mapa. [čaká: 3 – hlavný e-mail]
+- [x] `/kurzy` – cenník ako text (nie obrázok), termíny, podmienky, sezóna jeseň / jar. Údaje sú zo sekcie 6, po odpovedi na otázku 5 ich overiť. [čaká: 5 – platné termíny a ceny]
+- [x] `/kurzy` – sekcia teambuilding pre firmy. Zatiaľ bez formulára, tlačidlo vedie na `/kontakt`. [čaká: 15 – formulár pre HR áno / nie]
+- [x] `/o-mne`
+- [x] `/kontakt` – kontakty, mapa, formulár (iba vzhľad). Zatiaľ s info@keramikahelienka.sk. [čaká: 3 – hlavný e-mail]
 - [ ] `/blog` a `/blog/[slug]` – 2 pôvodné články.
 - [ ] Stránka 404.
 

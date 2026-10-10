@@ -101,7 +101,7 @@ function DieloCard({ dielo, shape }: { dielo: Dielo; shape: string }) {
       <div className="mt-3 flex flex-col gap-1 px-0.5 md:flex-row md:items-baseline md:justify-between md:gap-4">
         <div>
           <p className="eyebrow text-[11px] text-drift">{dielo.kategoria}</p>
-          <p className="mt-1 font-serif text-[19px] leading-tight text-ink md:text-[22px]">{dielo.nazov}</p>
+          <p className="mt-1 font-display text-[19px] leading-tight text-ink md:text-[22px]">{dielo.nazov}</p>
         </div>
         <p className="shrink-0 text-[15px] text-deep">{dielo.cena}</p>
       </div>

@@ -16,7 +16,7 @@ export function Hero() {
   const titleY = useTransform(scrollYProgress, [0, 1], ["0%", "-30%"]);
 
   return (
-    <section ref={ref} className="bg-deep">
+    <section ref={ref} data-hero className="bg-deep">
       <div className="relative h-svh min-h-[36rem] overflow-hidden rounded-b-frame bg-ink md:min-h-[760px]">
         <motion.div
           className="absolute inset-0"

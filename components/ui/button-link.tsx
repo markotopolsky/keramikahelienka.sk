@@ -16,16 +16,30 @@ type ButtonLinkProps = {
   children: ReactNode;
   variant?: keyof typeof variants;
   className?: string;
+  /** Opens another site (e.g. the Google sign-up form) in a new tab */
+  external?: boolean;
 };
 
-export function ButtonLink({ href, children, variant = "primary", className = "" }: ButtonLinkProps) {
-  return (
-    <Link
-      href={href}
-      className={`group inline-flex items-center gap-2 rounded-full px-5 py-3 text-[15px] font-medium tracking-[-0.01em] transition-colors duration-300 ${variants[variant]} ${className}`}
-    >
+export function ButtonLink({ href, children, variant = "primary", className = "", external = false }: ButtonLinkProps) {
+  const classes = `group inline-flex items-center gap-2 rounded-full px-5 py-3 text-[15px] font-medium tracking-[-0.01em] transition-colors duration-300 ${variants[variant]} ${className}`;
+  const content = (
+    <>
       {children}
       <ArrowIcon className="size-3.5 transition-transform duration-300 ease-soft group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+    </>
+  );
+
+  if (external) {
+    return (
+      <a href={href} target="_blank" rel="noreferrer" className={classes}>
+        {content}
+      </a>
+    );
+  }
+
+  return (
+    <Link href={href} className={classes}>
+      {content}
     </Link>
   );
 }

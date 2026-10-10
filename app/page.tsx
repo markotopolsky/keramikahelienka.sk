@@ -1,5 +1,3 @@
-import { SiteHeader } from "@/components/site-header";
-import { SiteFooter } from "@/components/site-footer";
 import { Hero } from "@/components/home/hero";
 import { Intro } from "@/components/home/intro";
 import { KurzyStack } from "@/components/home/kurzy-stack";
@@ -10,16 +8,13 @@ import { Recenzie } from "@/components/home/recenzie";
 export default function Home() {
   return (
     <>
-      <SiteHeader />
-      <main>
-        <Hero />
-        <Intro />
-        <KurzyStack />
-        <DielaGrid />
-        <OMne />
-        <Recenzie />
-      </main>
-      <SiteFooter />
+      <Hero />
+      <Intro />
+      {/* Helena's own work comes first, courses second (ZAZNAMNIK.md section 12) */}
+      <DielaGrid />
+      <KurzyStack />
+      <OMne />
+      <Recenzie />
     </>
   );
 }
