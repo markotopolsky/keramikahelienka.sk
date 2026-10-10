@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useRef } from "react";
 import { motion, useScroll, useTransform, type MotionValue } from "motion/react";
+import { formular } from "@/content/atelier";
 import { kurzy, type Kurz } from "@/content/kurzy";
 import { ButtonLink } from "@/components/ui/button-link";
 import { Reveal } from "@/components/ui/reveal";
@@ -15,7 +16,18 @@ import { useMediaQuery } from "@/lib/use-media-query";
 const stackVars =
   "[--stack-top:5.5rem] [--stack-step:0.875rem] [--stack-gap:4rem] md:[--stack-top:7rem] md:[--stack-step:1.125rem] md:[--stack-gap:6rem] lg:[--stack-top:8rem] lg:[--stack-step:1.375rem] lg:[--stack-gap:8.75rem]";
 
-export function KurzyStack() {
+type KurzyStackProps = {
+  title?: string;
+  aside?: string;
+  /** The links to the price list under the cards; off on /kurzy, where the price list follows right away */
+  links?: boolean;
+};
+
+export function KurzyStack({
+  title = "Kurzy keramiky",
+  aside = "Pre dospelých aj deti, jednorazovo alebo pravidelne. V ateliéri Na vrátkach 1K v Dúbravke.",
+  links = true,
+}: KurzyStackProps) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
   // A stuck card must fit on screen. On a phone held sideways it would not, so there the cards simply scroll.
@@ -26,10 +38,10 @@ export function KurzyStack() {
       <div className="site-container">
         <div className="mb-12 flex flex-col gap-5 md:mb-20 md:flex-row md:items-end md:justify-between md:gap-10">
           <Reveal>
-            <h2 className="text-h2 text-deep">Kurzy keramiky</h2>
+            <h2 className="text-h2 text-deep">{title}</h2>
           </Reveal>
           <Reveal delay={0.1} className="max-w-[22rem] text-[15px] leading-relaxed text-drift md:text-right">
-            Pre dospelých aj deti, jednorazovo alebo pravidelne. V ateliéri Na vrátkach 1K v Dúbravke.
+            {aside}
           </Reveal>
         </div>
 
@@ -46,17 +58,19 @@ export function KurzyStack() {
           ))}
         </div>
 
-        <Reveal className="mt-12 flex flex-col items-center gap-6 text-center md:mt-16">
-          <p className="text-[15px] text-drift">Teambuilding a firemné workshopy pripravíme na mieru.</p>
-          <div className="flex flex-wrap justify-center gap-3">
-            <ButtonLink href="/kurzy#rezervacia" variant="deep">
-              Rezervovať kurz
-            </ButtonLink>
-            <ButtonLink href="/kurzy#cennik" variant="outline" className="text-deep">
-              Celý cenník
-            </ButtonLink>
-          </div>
-        </Reveal>
+        {links && (
+          <Reveal className="mt-12 flex flex-col items-center gap-6 text-center md:mt-16">
+            <p className="text-[15px] text-drift">Teambuilding a firemné workshopy pripravíme na mieru.</p>
+            <div className="flex flex-wrap justify-center gap-3">
+              <ButtonLink href={formular.kurzy} variant="deep">
+                Rezervovať kurz
+              </ButtonLink>
+              <ButtonLink href="/kurzy#cennik" variant="outline" className="text-deep">
+                Celý cenník
+              </ButtonLink>
+            </div>
+          </Reveal>
+        )}
       </div>
     </section>
   );

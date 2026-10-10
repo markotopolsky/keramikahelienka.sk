@@ -1,88 +1,41 @@
-"use client";
-
 import Image from "next/image";
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
+import { oMneDomov } from "@/content/o-mne";
 import { ButtonLink } from "@/components/ui/button-link";
 import { Reveal } from "@/components/ui/reveal";
-import { CheckIcon } from "@/components/ui/check-icon";
 
-const fakty = ["Vlastný ateliér od roku 2020", "Kurzy pre dospelých aj deti", "Tvorba bez hrnčiarskeho kruhu"];
-
+// Portrait beside a short, centred story with a signature, after muoiatelier.com/en/o-nas
 export function OMne() {
-  const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const leftY = useTransform(scrollYProgress, [0, 1], [120, -120]);
-  const rightY = useTransform(scrollYProgress, [0, 1], [60, -180]);
-  const leftRotate = useTransform(scrollYProgress, [0, 1], [-10, 6]);
-  const rightRotate = useTransform(scrollYProgress, [0, 1], [8, -8]);
-
   return (
-    <section ref={ref} className="overflow-x-clip bg-sand">
-      <div className="site-container pt-20 text-center md:pt-32">
-        <Reveal>
-          <p className="eyebrow text-drift">O mne</p>
-          <h2 className="mx-auto mt-5 max-w-[48rem] text-h2 text-deep">Som Helenka a z hliny tvorím krásu a drobné radosti.</h2>
-        </Reveal>
-      </div>
-
-      <div className="relative mt-12 md:mt-16">
-        {/* Lower half of the portrait sits on the teal band */}
-        <div className="absolute inset-x-0 bottom-0 top-1/2 bg-deep" />
-
-        <motion.div
-          className="relative z-10 mx-auto aspect-[18/25] w-[min(360px,68vw)] overflow-hidden rounded-[50%] border-[6px] border-sand shadow-[0_30px_80px_-40px_rgb(30_43_46/0.6)]"
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true, margin: "0px 0px -15% 0px" }}
-          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-        >
+    <section className="bg-mint py-24 md:py-36">
+      <div className="site-container grid items-center gap-12 md:grid-cols-2 md:gap-14 lg:gap-24">
+        <Reveal className="relative mx-auto aspect-[3/4] w-full max-w-[28rem] overflow-hidden rounded-card bg-sage md:max-w-none lg:aspect-[2/3]">
+          {/* The photo is cropped close above her head, so it stays anchored to the top */}
           <Image
-            src="/images/helena-2.jpg"
-            alt="Helena Sochnová v ateliéri"
+            src="/images/helena-kvety.jpg"
+            alt="Helena Sochnová s vázou plnou kvetov"
             fill
-            sizes="(min-width: 33rem) 360px, 68vw"
-            className="object-cover object-[50%_30%]"
+            sizes="(min-width: 90rem) 620px, (min-width: 48rem) 45vw, (min-width: 28rem) 448px, calc(100vw - 2.5rem)"
+            className="object-cover object-top"
           />
-        </motion.div>
+        </Reveal>
 
-        {/* Two pieces float beside the portrait; on phones they shrink and overlap its edges */}
-        <motion.div
-          style={{ y: leftY, rotate: leftRotate }}
-          className="absolute bottom-6 left-[3%] z-10 size-24 overflow-hidden rounded-full border-4 border-sand/80 sm:left-[8%] sm:size-32 md:bottom-10 lg:left-[12%] lg:size-44"
-        >
-          <Image src="/images/variabilna.jpg" alt="" fill sizes="(min-width: 64rem) 176px, 128px" className="scale-125 object-cover" />
-        </motion.div>
-        <motion.div
-          style={{ y: rightY, rotate: rightRotate }}
-          className="absolute bottom-0 right-[3%] z-10 h-32 w-[5.5rem] overflow-hidden rounded-[45%] border-4 border-sand/80 sm:right-[9%] sm:h-40 sm:w-28 lg:right-[13%] lg:h-52 lg:w-36"
-        >
-          <Image src="/images/diela/raku-nadoba.jpg" alt="" fill sizes="(min-width: 64rem) 144px, 112px" className="object-cover" />
-        </motion.div>
-      </div>
-
-      <div className="bg-deep pb-24 pt-10 text-sand md:pb-32 md:pt-12">
-        <div className="site-container flex flex-col items-center text-center">
+        <div className="flex flex-col items-center text-center">
           <Reveal>
-            <p className="font-display text-[36px] leading-none tracking-[-0.03em] md:text-[44px]">Helena Sochnová</p>
-            <p className="eyebrow mt-3 text-aqua">Keramikárka a lektorka</p>
+            <p className="eyebrow text-drift">O mne</p>
+            <h2 className="mt-5 text-h2 text-deep">Moja cesta s hlinou</h2>
+            <span aria-hidden className="mx-auto mt-7 block h-[3px] w-16 rounded-full bg-sea" />
           </Reveal>
-          <Reveal delay={0.1}>
-            <blockquote className="mx-auto mt-10 max-w-[52rem] font-display text-[26px] leading-[1.2] tracking-[-0.02em] text-balance md:mt-12 md:text-[34px] md:leading-[1.15] lg:text-[40px]">
-              „Je to úžasný pocit, keď pod mojimi rukami hlina dostáva tvar a prostredníctvom vzduchu a ohňa sa mení
-              v trvácu podobu.“
-            </blockquote>
+
+          <Reveal delay={0.1} className="mt-8 max-w-[32rem] space-y-5 text-base leading-[1.75] text-ink/80 md:mt-10 md:text-[17px]">
+            {oMneDomov.map((odsek) => (
+              <p key={odsek}>{odsek}</p>
+            ))}
           </Reveal>
-          <Reveal delay={0.2} className="mt-10 flex flex-col items-center gap-10 md:mt-12">
-            <ul className="flex flex-col gap-3 text-left text-[15px] text-sand/90 md:flex-row md:flex-wrap md:justify-center md:gap-x-8">
-              {fakty.map((fakt) => (
-                <li key={fakt} className="flex items-center gap-2.5 md:whitespace-nowrap">
-                  <CheckIcon />
-                  {fakt}
-                </li>
-              ))}
-            </ul>
-            <ButtonLink href="/o-mne" variant="light">
+
+          <Reveal delay={0.2} className="mt-10 flex flex-col items-center md:mt-12">
+            <p className="font-display text-[26px] leading-none tracking-[-0.02em] text-deep md:text-[30px]">Helena Sochnová</p>
+            <p className="eyebrow mt-3 text-drift">Keramikárka a lektorka</p>
+            <ButtonLink href="/o-mne" variant="deep" className="mt-8">
               Viac o mne
             </ButtonLink>
           </Reveal>

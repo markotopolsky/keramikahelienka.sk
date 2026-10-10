@@ -1,121 +1,102 @@
-import { cennikDeti, cennikDospeli, cennikOstatne, terminy, vCene } from "@/content/kurzy";
-import { CheckIcon } from "@/components/ui/check-icon";
+import Link from "next/link";
+import { formular } from "@/content/atelier";
+import { cennikDeti, cennikDospeli, terminy } from "@/content/kurzy";
+import { ButtonLink } from "@/components/ui/button-link";
 import { Reveal } from "@/components/ui/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
 
 // The price list used to be only an image. As text it can be read aloud and found by search engines.
+// Sign-up goes to the form on /kontakt (it only looks real for now); paid booking on the site is phase 5.
 export function Cennik() {
   return (
-    <section id="cennik" className="bg-sand py-24 md:py-36">
+    <section id="cennik" className="bg-mint py-24 md:py-36">
       <div className="site-container">
         <SectionHeading
           eyebrow="Cenník 2026"
-          title="Koľko kurz stojí"
-          aside="V cene je všetok materiál, pomôcky, dva výpaly v peci aj malé občerstvenie."
+          title="Cenník a prihláška"
+          aside="V cene je materiál, pomôcky, dva výpaly v peci aj malé občerstvenie."
         />
 
-        <Reveal className="rounded-card bg-deep p-5 text-sand sm:p-8 lg:grid lg:grid-cols-[1fr_20rem] lg:gap-16 lg:p-12 xl:grid-cols-[1fr_24rem]">
-          <div>
-            <h3 className="text-h3">Mesačný kurz pre dospelých</h3>
-            <p className="mt-3 text-[15px] text-sand/75 md:text-base">4 lekcie za mesiac</p>
-
-            <table className="mt-8 w-full text-left md:mt-10">
-              <thead>
-                <tr className="eyebrow text-[10px] tracking-[0.04em] text-aqua sm:text-[11px] sm:tracking-[0.08em]">
-                  <th scope="col" className="pb-3 pr-3 font-medium">
-                    Rozsah
-                  </th>
-                  <th scope="col" className="pb-3 pr-3 text-right font-medium">
-                    Pravidelný čas
-                  </th>
-                  <th scope="col" className="pb-3 text-right font-medium">
-                    Nepravidelný čas
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {cennikDospeli.map((riadok) => (
-                  <tr key={riadok.rozsah} className="border-t border-sand/15">
-                    <th scope="row" className="whitespace-nowrap py-4 pr-3 text-[15px] font-normal md:py-5 md:text-[17px]">
-                      {riadok.rozsah}
+        <Reveal className="rounded-card bg-deep p-5 text-sand sm:p-8 lg:p-12">
+          <div className="grid gap-10 lg:grid-cols-[1fr_15rem_15rem] lg:gap-12">
+            <div>
+              <h3 className="text-[26px] leading-none tracking-[-0.02em] md:text-[30px]">Mesačný kurz, 4 lekcie</h3>
+              <table className="mt-6 w-full text-left">
+                <thead>
+                  <tr className="eyebrow text-[10px] tracking-[0.04em] text-aqua sm:text-[11px] sm:tracking-[0.08em]">
+                    <th scope="col" className="pb-3 pr-3 font-medium">
+                      Rozsah
                     </th>
-                    <td className="py-4 pr-3 text-right font-display text-[22px] leading-none tracking-[-0.02em] sm:text-[24px] md:py-5 md:text-[32px]">
-                      {riadok.pravidelne}
-                    </td>
-                    <td className="py-4 text-right font-display text-[22px] leading-none tracking-[-0.02em] sm:text-[24px] text-sand/80 md:py-5 md:text-[32px]">
-                      {riadok.nepravidelne}
-                    </td>
+                    <th scope="col" className="pb-3 pr-3 text-right font-medium">
+                      Pravidelný čas
+                    </th>
+                    <th scope="col" className="pb-3 text-right font-medium">
+                      Nepravidelný čas
+                    </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {cennikDospeli.map((riadok) => (
+                    <tr key={riadok.rozsah} className="border-t border-sand/15">
+                      <th scope="row" className="whitespace-nowrap py-3.5 pr-3 text-[15px] font-normal md:text-base">
+                        {riadok.rozsah}
+                      </th>
+                      <td className="py-3.5 pr-3 text-right font-display text-[22px] leading-none tracking-[-0.02em] sm:text-[26px]">
+                        {riadok.pravidelne}
+                      </td>
+                      <td className="py-3.5 text-right font-display text-[22px] leading-none tracking-[-0.02em] text-sand/75 sm:text-[26px]">
+                        {riadok.nepravidelne}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <PriceList
+              title="Deti"
+              rows={cennikDeti.map((r) => [r.vek, `${r.cena} / hod.`])}
+              note="Do 10 rokov v sprievode platiaceho rodiča."
+            />
+            <PriceList
+              title="Termíny"
+              rows={terminy.map((t) => [t.den, t.cas])}
+              note="Skupinové workshopy podľa dohody, aj cez víkend."
+            />
           </div>
 
-          <div className="mt-10 border-t border-sand/15 pt-8 lg:mt-0 lg:border-l lg:border-t-0 lg:pl-12 lg:pt-1">
-            <h4 className="eyebrow text-[11px] text-aqua">Termíny v ateliéri</h4>
-            <ul className="mt-5 space-y-3">
-              {terminy.map((termin) => (
-                <li key={termin.den} className="flex items-baseline justify-between gap-4 text-[15px] md:text-base">
-                  <span>{termin.den}</span>
-                  <span className="text-sand/80 tabular-nums">{termin.cas}</span>
-                </li>
-              ))}
-            </ul>
-            <p className="mt-5 text-[14px] leading-relaxed text-sand/70">
-              Skupinové workshopy robíme v termíne podľa dohody, aj cez víkend.
+          <div className="mt-10 flex flex-col items-start gap-6 border-t border-sand/15 pt-8 md:mt-12 md:flex-row md:items-center md:justify-between">
+            <ButtonLink href={formular.kurzy}>
+              Vyplniť prihlášku
+            </ButtonLink>
+            <p className="max-w-[28rem] text-[15px] leading-relaxed text-sand/80 md:text-right">
+              Kurz zaplaťte najneskôr 7 dní vopred. Teambuilding pre firmy pripravíme na mieru,{" "}
+              <Link href={formular.firmy} className="text-sand underline decoration-aqua underline-offset-4 hover:text-aqua">
+                napíšte nám
+              </Link>
+              .
             </p>
-
-            <h4 className="eyebrow mt-10 text-[11px] text-aqua">V cene kurzu</h4>
-            <ul className="mt-5 space-y-2.5 text-[15px]">
-              {vCene.map((polozka) => (
-                <li key={polozka} className="flex items-center gap-2.5">
-                  <CheckIcon className="size-4" />
-                  {polozka}
-                </li>
-              ))}
-            </ul>
           </div>
         </Reveal>
-
-        <div className="mt-5 grid gap-5 lg:grid-cols-[22rem_1fr] xl:grid-cols-[26rem_1fr]">
-          <Reveal className="rounded-card border border-sage p-5 sm:p-8">
-            <h3 className="text-[28px] leading-none tracking-[-0.02em] text-deep md:text-[32px]">Deti</h3>
-            <p className="mt-3 text-[15px] text-drift">Cena za hodinu podľa veku</p>
-            <ul className="mt-6">
-              {cennikDeti.map((riadok) => (
-                <li key={riadok.vek} className="flex items-baseline justify-between gap-4 border-t border-sage py-3.5">
-                  <span className="text-[15px] md:text-base">{riadok.vek}</span>
-                  <span className="font-display text-[22px] leading-none tracking-[-0.02em] text-deep">
-                    {riadok.cena}
-                    <span className="text-[14px] tracking-normal text-drift"> / hod.</span>
-                  </span>
-                </li>
-              ))}
-            </ul>
-            <p className="mt-4 text-[14px] leading-relaxed text-drift">Deti do 10 rokov len v sprievode platiaceho rodiča.</p>
-          </Reveal>
-
-          <Reveal delay={0.1} className="rounded-card border border-sage p-5 sm:p-8">
-            <h3 className="text-[28px] leading-none tracking-[-0.02em] text-deep md:text-[32px]">Workshopy a jednorazovo</h3>
-            <ul className="mt-6">
-              {cennikOstatne.map((polozka) => (
-                <li
-                  key={polozka.nazov}
-                  className="flex items-start justify-between gap-6 border-t border-sage py-4 first:border-t-0 first:pt-0 md:py-5"
-                >
-                  <div>
-                    <p className="text-base font-medium text-ink md:text-[17px]">{polozka.nazov}</p>
-                    <p className="mt-1 max-w-[30rem] text-[14px] leading-relaxed text-drift md:text-[15px]">{polozka.rozsah}</p>
-                  </div>
-                  <p className="shrink-0 font-display text-[22px] leading-none tracking-[-0.02em] text-deep md:text-[26px]">
-                    {polozka.cena}
-                  </p>
-                </li>
-              ))}
-            </ul>
-          </Reveal>
-        </div>
       </div>
     </section>
+  );
+}
+
+function PriceList({ title, rows, note }: { title: string; rows: [string, string][]; note: string }) {
+  return (
+    <div>
+      <h3 className="text-[26px] leading-none tracking-[-0.02em] md:text-[30px]">{title}</h3>
+      {/* From 1024px the first row lines up with the first row of the table beside it */}
+      <ul className="mt-6 border-b border-sand/15 lg:mt-[2.375rem]">
+        {rows.map(([label, value]) => (
+          <li key={label} className="flex items-baseline justify-between gap-4 border-t border-sand/15 py-3.5 text-[15px]">
+            <span>{label}</span>
+            <span className="tabular-nums text-sand/80">{value}</span>
+          </li>
+        ))}
+      </ul>
+      <p className="mt-3 text-[13px] leading-relaxed text-sand/70">{note}</p>
+    </div>
   );
 }

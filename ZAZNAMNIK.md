@@ -35,6 +35,10 @@ Súvisiace súbory:
   - Kontaktný formulár je iba vzhľad, nič neodosiela. Mapa Google sa načíta až po kliknutí na „Zobraziť mapu“.
   - Prihláška na kurz stále vedie na Google formulár Helenky (sekcia 6).
   - `public/images/helena-kvety.jpg` je `helena-portret.jpg` bez bielych okrajov.
+- `/kurzy` zjednodušené na 3 sekcie: úvod, karty kurzov (tie isté ako na domovskej stránke) a cenník s prihláškou. Postup výroby, dlhý popis kurzu a samostatný blok o teambuildingu sú preč.
+- Rýchlosť: úvod stránky a hlavička sa animujú cez CSS, nečakajú na JavaScript. Hlavička je celá viditeľná za ~0,8 s namiesto ~1,2 s (merané lokálne). Pri zapnutom „obmedziť pohyb“ sa obsah ukáže hneď. Vývojový režim (`next dev`) je pomalší ako ostrý web: posiela ~950 KB JavaScriptu, ostrý build ~195 KB.
+- Domovská stránka, sekcia „O mne“: nové rozloženie podľa muoiatelier.com/en/o-nas. Fotka vľavo, vpravo nadpis „Moja cesta s hlinou“, krátky príbeh (vety z „O nás“) a podpis. Plávajúce fotky a citát sú preč.
+- Domovská stránka: galéria diel má vždy 3 stĺpce na každej obrazovke, ukazuje všetky diela (teraz 12, teda 4 rady). Sekcia „Z hliny, rukami, bez kruhu.“ má namiesto dvoch odsekov 3 hodnoty s ikonkami (inšpirácia: muoiatelier.com). Texty hodnôt sú poskladané z Helenkiných viet v sekciách 5.1 a 5.3, mierne skrátené – dať Helenke na schválenie.
 
 ---
 

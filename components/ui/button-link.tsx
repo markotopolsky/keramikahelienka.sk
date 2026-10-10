@@ -16,7 +16,7 @@ type ButtonLinkProps = {
   children: ReactNode;
   variant?: keyof typeof variants;
   className?: string;
-  /** Opens another site (e.g. the Google sign-up form) in a new tab */
+  /** Opens another site (e.g. Google Maps) in a new tab */
   external?: boolean;
 };
 

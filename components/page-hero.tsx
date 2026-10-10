@@ -1,6 +1,5 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
-import { Reveal } from "@/components/ui/reveal";
 import { TornEdge } from "@/components/ui/torn-edge";
 
 type PageHeroProps = {
@@ -16,6 +15,7 @@ type PageHeroProps = {
 /**
  * Dark teal opening of a subpage. The header stays transparent over it (`data-hero`),
  * and a torn-paper edge leads into the sand page below.
+ * It animates in with CSS, not <Reveal>, so it shows before the page's JavaScript has loaded.
  */
 export function PageHero({ eyebrow, title, lead, actions, aside }: PageHeroProps) {
   return (
@@ -26,22 +26,26 @@ export function PageHero({ eyebrow, title, lead, actions, aside }: PageHeroProps
         }`}
       >
         <div>
-          <Reveal>
+          <div className="motion-safe:animate-rise">
             <p className="eyebrow text-aqua">{eyebrow}</p>
             <h1 className="mt-5 max-w-[52rem] text-display md:mt-6">{title}</h1>
-          </Reveal>
+          </div>
           {lead && (
-            <Reveal delay={0.1} className="mt-7 max-w-[36rem] text-lead text-sand/90 md:mt-9">
+            <div className="mt-7 max-w-[36rem] text-lead text-sand/90 motion-safe:animate-rise md:mt-9" style={{ animationDelay: "0.1s" }}>
               {lead}
-            </Reveal>
+            </div>
           )}
           {actions && (
-            <Reveal delay={0.2} className="mt-8 flex flex-wrap gap-3 md:mt-10">
+            <div className="mt-8 flex flex-wrap gap-3 motion-safe:animate-rise md:mt-10" style={{ animationDelay: "0.2s" }}>
               {actions}
-            </Reveal>
+            </div>
           )}
         </div>
-        {aside && <Reveal delay={0.15}>{aside}</Reveal>}
+        {aside && (
+          <div className="motion-safe:animate-rise" style={{ animationDelay: "0.15s" }}>
+            {aside}
+          </div>
+        )}
       </div>
       <TornEdge className="-mb-px text-sand" />
     </section>
