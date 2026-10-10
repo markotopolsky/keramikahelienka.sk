@@ -93,6 +93,7 @@ Súvisiace súbory:
   - Odkazy „Opýtať sa na kúsok“ v obchode vedú na záložku Otázka.
   - Ikona košíka v hlavičke vedie na `/kosik`. Tá stránka ešte neexistuje (fáza 4), zatiaľ ukáže 404.
 - Domovská stránka, sekcia „Každý kus existuje len raz“: namiesto galérie v 3 stĺpcoch sú rovnaké karty ako v obchode, najviac v 3 stĺpcoch (2 na telefóne, 3 od tabletu), s cenou a odkazom na produkt. Výber 12 kúskov je v `content/diela.ts` (`dielaNaDomov`), vypredané sa preskočia. Pod mriežkou je tlačidlo „Pozrieť všetky kúsky“ do obchodu. Mení to záznam o 3 stĺpcoch vyššie.
+- Chýbajúce údaje sa na webe ukazujú iba ako žlté „doplniť“, bez popisu (predtým „[doplniť: IČO]“). Čo presne chýba, je v zdrojovom kóde a v atribúte `data-doplnit` (`components/ui/doplnit.tsx`).
 
 ---
 

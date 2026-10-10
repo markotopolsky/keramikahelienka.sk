@@ -5,7 +5,7 @@
 // website itself does (which form fields it has, what it stores in the browser, which services it loads).
 // Nothing is copied from other shops' terms.
 //
-// Text format: [[gap]] renders as a visible "[doplniť: gap]".
+// Text format: [[gap]] renders as a visible "doplniť"; the gap text stays as a note in the source.
 import type { Localized } from "@/lib/i18n";
 import { kontakt } from "@/content/atelier";
 

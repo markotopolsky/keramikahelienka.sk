@@ -31,7 +31,7 @@ export async function pravnaMetadata(slug: string): Promise<Metadata> {
   };
 }
 
-/** Renders "[[IČO]]" in a text as a visible "[doplniť: IČO]" gap */
+/** Renders "[[IČO]]" in a text as a visible "doplniť" gap */
 function Text({ children }: { children: string }) {
   return children.split(/\[\[(.+?)\]\]/).map((cast, i) => (i % 2 === 1 ? <Doplnit key={i}>{cast}</Doplnit> : cast));
 }

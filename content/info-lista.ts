@@ -7,7 +7,7 @@ export type InfoLista = {
   zobrazit: boolean;
   /** Visitors who closed the bar see it again once this changes, so change it with every new text */
   id: string;
-  /** null shows a visible [doplniť: …] gap */
+  /** null shows a visible "doplniť" gap */
   text: Localized | null;
   odkaz: { href: string; text: Localized } | null;
 };
