@@ -38,6 +38,9 @@ export function generateStaticParams() {
   return produkty.map((p) => ({ slug: p.slug }));
 }
 
+// Any other value is a 404 (app/global-not-found.tsx)
+export const dynamicParams = false;
+
 export async function generateMetadata({ params }: PageProps<"/[lang]/obchod/[slug]">): Promise<Metadata> {
   const { slug } = await params;
   const produkt = najdiProdukt(slug);

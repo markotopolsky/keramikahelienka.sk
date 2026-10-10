@@ -36,6 +36,9 @@ export function generateStaticParams() {
   return locales.map((lang) => ({ lang }));
 }
 
+// Any other value is a 404 (app/global-not-found.tsx)
+export const dynamicParams = false;
+
 export async function generateMetadata(): Promise<Metadata> {
   const lang = await getLang();
   return {

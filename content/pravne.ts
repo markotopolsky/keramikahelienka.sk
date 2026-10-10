@@ -249,7 +249,7 @@ export const pravneStranky: PravnaStranka[] = [
           bloky: [
             {
               zoznam: [
-                "Google (Mapy Google, iba po kliknutí na „Zobraziť mapu“; Google formulár prihlášky na kurz)",
+                "Google (Mapy Google a video YouTube, iba po kliknutí; Google formulár prihlášky na kurz)",
                 "Comgate (platby kartou, keď bude e-shop spustený)",
                 "[[hosting webu]]",
                 "[[služba na odosielanie e-mailov]]",
@@ -284,7 +284,7 @@ export const pravneStranky: PravnaStranka[] = [
           bloky: [
             {
               zoznam: [
-                "Google (Google Maps, only after clicking “Show map”; the Google sign-up form for classes)",
+                "Google (Google Maps and the YouTube video, only after a click; the Google sign-up form for classes)",
                 "Comgate (card payments, once the shop is live)",
                 "[[hosting webu]]",
                 "[[služba na odosielanie e-mailov]]",
@@ -314,6 +314,7 @@ export const pravneStranky: PravnaStranka[] = [
               zoznam: [
                 "„info-lista-zavreta“ (úložisko prehliadača, nie cookie): pamätá si, že ste zavreli informačnú lištu hore na stránke. Ostáva, kým ju nevymažete v prehliadači.",
                 "Mapy Google na stránke Kontakt sa načítajú až po kliknutí na „Zobraziť mapu“. Až potom môže Google uložiť svoje cookies. [[zoznam cookies Google Máp]]",
+                "Video YouTube v blogu sa načíta až po kliknutí na „Prehrať video“, cez youtube-nocookie.com. [[zoznam cookies YouTube]]",
               ],
             },
             "Web zatiaľ nepoužíva analytiku ani reklamné cookies.",
@@ -330,6 +331,7 @@ export const pravneStranky: PravnaStranka[] = [
               zoznam: [
                 "“info-lista-zavreta” (browser storage, not a cookie): remembers that you closed the information bar at the top of the page. It stays until you clear it in your browser.",
                 "Google Maps on the Contact page loads only after you click “Show map”. Only then can Google set its cookies. [[zoznam cookies Google Máp]]",
+                "The YouTube video on the blog loads only after you click “Play video”, through youtube-nocookie.com. [[zoznam cookies YouTube]]",
               ],
             },
             "The website does not use analytics or advertising cookies yet.",

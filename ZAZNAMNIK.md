@@ -74,6 +74,16 @@ Súvisiace súbory:
   - Doplnené sú iba fakty zo záznamníka a z webu: kontakty, osobný odber v ateliéri zadarmo, podmienky kurzov zo súčasného Google formulára (skrátené, sekcia 6), aké polia má kontaktný formulár, čo web ukladá v prehliadači (zatvorená info lišta), že Mapy Google sa načítajú až po kliknutí a že web zatiaľ nemá analytiku.
   - Stránky majú `noindex`, aby sa vzorový text nedostal do Googlu. Pri vložení konečného znenia ho treba zrušiť v `components/pravna-stranka.tsx`.
   - Obsah je v `content/pravne.ts`. Medzera sa píše ako `[[IČO]]` a na stránke sa ukáže ako `[doplniť: IČO]`.
+- Hotový bod 9 – blog a stránka 404:
+  - `/blog` a dva pôvodné články zo sekcie 5.6, doslovne (aj s pôvodnými drobnými preklepmi „prepacovaná“, „možem“). Anglický preklad cez AI. Texty sú v `content/blog.ts`.
+  - Slugy sú pôvodné (`proces-vyroby-keramiky`, `uprava-salky-po-odliati`), aby sa dali presmerovať staré adresy `/2023/11/…` (fáza 6).
+  - Video YouTube sa načíta až po kliknutí na „Prehrať video“, cez youtube-nocookie.com. Doplnené aj na stránku Cookies a Ochrana osobných údajov.
+  - Fotky článkov sú z webu (hnedá misa pred výpalom, šálka so zlatom). OG obrázok s logom Sashe (sekcia 10) sa neprenáša.
+  - Stránka 404: `app/global-not-found.tsx`, slovensky aj anglicky, s odkazmi na obe verzie. Zapnutá je cez `experimental.globalNotFound` v `next.config.ts`.
+  - Prečo nie 404 v bežnom layoute: pri koreňovom layoute `app/[lang]` Next.js 16 nevykreslí 404 v layoute na serveri (posiela prázdnu stránku a dokreslí ju až JavaScript). Dokumentácia pre tento prípad odporúča `global-not-found`. Preto 404 nemá hlavičku a pätičku webu.
+  - Neznáme slugy produktov a článkov aj neznámy jazyk (`/de`) vracajú 404 (`dynamicParams = false`).
+- Overené pre body 4 – 9: `tsc`, `eslint` a `next build` bez chýb, všetkých 123 stránok sa vygeneruje staticky. Každá nová stránka je skontrolovaná v prehliadači na desktope; domov, detail produktu a info lišta aj na mobile (375 px). Filter a triedenie obchodu, zatvorenie info lišty a 404 sú otestované automaticky v prehliadači.
+- Vetva `feat/body-4-9` ešte nie je zlúčená do `main`. V `main` medzitým iná session menila `/kurzy` (necommitnuté). Pri zlúčení treba ich zmeny preniesť do `app/[lang]/kurzy` a komponentov s textami `{ sk, en }`.
 
 ---
 
@@ -720,7 +730,7 @@ Poradie:
 6. ~~Info lišta hore na stránke so statickým textom, dá sa zavrieť. Text v súbore v `content/`.~~ Hotové 10. 10. 2026. [čaká: aktuálny oznam od Helenky]
 7. ~~Formulár na kontakte s výberom „Otázka“ / „Teambuilding pre firmy“. Pri teambuildingu ďalšie polia: firma, miesto (ateliér / priestory firmy), počet ľudí, spoločné dielo / každý vlastné, predbežný termín. Tlačidlo v sekcii teambuilding na `/kurzy` otvorí formulár s predvoleným teambuildingom. Zatiaľ iba vzhľad, nič neodosiela.~~ Hotové 10. 10. 2026. [čaká: 15 – formulár pre HR áno / nie]
 8. ~~Právne stránky: `/obchodne-podmienky`, `/reklamacny-poriadok`, `/ochrana-osobnych-udajov`, `/cookies`. Zatiaľ **vzorový text** so zástupnými údajmi `[doplniť: IČO]` a pod. Hore viditeľný pruh „Vzorový text – čaká na znenie od právnika“. Nekopírovať podmienky iných e-shopov. Konečné znenie dodá Helenka (sekcia 14).~~ Hotové 10. 10. 2026. [čaká: 1 – právne údaje e-shopu, právne texty od Helenky]
-9. `/blog` a `/blog/[slug]` (2 pôvodné články, sekcia 5.6), stránka 404.
+9. ~~`/blog` a `/blog/[slug]` (2 pôvodné články, sekcia 5.6), stránka 404.~~ Hotové 10. 10. 2026.
 
 ### Fáza 0 – Technické rozhodnutia (odložené)
 - [ ] CMS: potvrdiť Payload CMS v Next.js (Next.js 16 podporuje od verzie 3.73 – overiť v release notes).
@@ -737,8 +747,8 @@ Poradie:
 - [x] `/kurzy` – sekcia teambuilding pre firmy. Tlačidlo otvorí formulár na `/kontakt` s predvoleným teambuildingom (bod 7). [čaká: 15 – formulár pre HR áno / nie]
 - [x] `/o-mne`
 - [x] `/kontakt` – kontakty, mapa, formulár (iba vzhľad). Zatiaľ s info@keramikahelienka.sk. [čaká: 3 – hlavný e-mail]
-- [ ] `/blog` a `/blog/[slug]` – 2 pôvodné články.
-- [ ] Stránka 404.
+- [x] `/blog` a `/blog/[slug]` – 2 pôvodné články.
+- [x] Stránka 404 (`app/global-not-found.tsx`, po slovensky aj anglicky).
 
 ### Fáza 3 – CMS a produkty (3 – 4 dni)
 - [ ] Payload CMS v projekte, administrácia na `/admin`.
