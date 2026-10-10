@@ -45,6 +45,16 @@ Súvisiace súbory:
   - Recenzie sú v angličtine preložené, s poznámkou „Translated from Slovak“.
   - Google formulár prihlášky na kurz je iba po slovensky. Anglický text to spomína.
   - Slogan „Krása a úžitok“ je v angličtine „Beauty and purpose“. Anglické texty treba dať prečítať Helenke (otázka 21).
+- Hotový bod 5 – obchod:
+  - Stiahnutých všetkých 128 fotiek produktov do `public/images/produkty/` (`<slug>-<poradie>.jpg`). Zmenšené na najviac 1400 px na dlhšej strane, spolu 30 MB.
+  - `/obchod` číta produkty z `docs/povodny-web/produkty.json` cez `lib/produkty.ts`. Ceny, sklad a fotky sú z neho. Pôvodný súbor sa nemení.
+  - Názvy a popisy v oboch jazykoch sú v `content/produkty.ts` (otázka 7). Preklepy a chyby zo sekcie 10 sa neprenášajú: popis Misy Mušľa hovorí „misa“, nie „lampa“; „124)°C“ je 1240 °C; vázy Shell big / middle sú vo Vázach, nie v Misách.
+  - Slugy ostávajú pôvodné (aj chybné `2267` a prehodené náramky), aby fungovali staré adresy. Opraví ich fáza 3 spolu s presmerovaniami.
+  - Filter podľa kategórie (s počtom kusov) a triedenie: najnovšie, cena od najnižšej, cena od najvyššej. Výber sa uloží do adresy (`/obchod?kategoria=vazy&zoradenie=cena-vzostupne`), dá sa poslať ďalej.
+  - Vypredané kusy sú na konci v časti „Vypredané“, zosivené.
+  - Detail `/obchod/[slug]`: galéria fotiek, cena, sklad, varianty šálok (s vrchnákom / bez), popis, osobný odber zadarmo, ďalšie kúsky. „Pridať do košíka“ je iba vzhľad.
+  - Na detaile svieti `[doplniť: cena s DPH alebo bez DPH – otázka 1]` a `[doplniť: spôsoby a ceny dopravy – otázka 2]`.
+  - Diela na domovskej stránke vedú na svoj detail v obchode.
 
 ---
 
@@ -528,7 +538,7 @@ Zoradené podľa dôležitosti.
 4. **Kamenné predajne.** Platí ešte Place store (Hurbanovo nám. 1) a Predajňa František (Františkánske nám. 2)?
 5. **Kurzy.** Platia termíny Ut / St / Št? Platí nepravidelný kurz (192 / 170 / 150 €) a jednorazový vstup 51 €? Veková hranica detí: obrázok uvádza „6 – 9,99“, formulár „6 – 10“.
 6. ~~**Anglická verzia.** Chce ju? Ak áno, kto dodá preklad?~~ **Odpovedané 10. 10. 2026:** áno, prepínač SK / EN, preklad cez AI (sekcia 12).
-7. **Názvy produktov.** Zjednotiť do slovenčiny (s anglickým prekladom)?
+7. **Názvy produktov.** Zjednotiť do slovenčiny (s anglickým prekladom)? *(10. 10. 2026: na webe je zatiaľ návrh – slovenská verzia má slovenské názvy a popisy, anglická anglické. Chýbajúci jazyk preložila AI, je v `content/produkty.ts`. Treba potvrdiť.)*
 8. **Newsletter.** Používa ešte Mailchimp? Chce odber „Listy z ateliéru“? *(10. 10. 2026: newsletter chce – oznamy o výstavách. Ostáva otázka nástroja.)*
 9. **Yoga pobyt.** Bude ďalší ročník? Ponechať stránku ako archív?
 10. **Meno.** Presný tvar: „Helena Sochnová“ (s dĺžňom)?
@@ -687,7 +697,7 @@ Poradie:
 2. ~~`/kurzy`~~ Hotové 10. 10. 2026.
 3. ~~`/o-mne` a `/kontakt`~~ Hotové 10. 10. 2026.
 4. ~~**Anglická verzia (prepínač SK / EN).** Robí sa pred ďalšími stránkami, aby nové stránky vznikali rovno v dvoch jazykoch. Slovenčina ostáva na `/`, angličtina na `/en/...` (rovnako ako na starom webe). Texty preložené raz cez AI a uložené v súboroch. Nie automatický prekladač za behu – ten na starom webe prekladal zle (sekcia 10). Postup podľa návodu na internacionalizáciu v `node_modules/next/dist/docs/`.~~ Hotové 10. 10. 2026. [čaká: 21 – kontrola anglických textov]
-5. `/obchod` a `/obchod/[slug]` zo statických dát. Najprv stiahnuť 128 fotiek produktov do `public/images/produkty/` (starý web má firewall, treba hlavičky prehliadača). Filter podľa kategórie a základné triedenie: najnovšie, cena od najnižšej, cena od najvyššej. Vypredané kusy na konci, jemne zosivené.
+5. ~~`/obchod` a `/obchod/[slug]` zo statických dát. Najprv stiahnuť 128 fotiek produktov do `public/images/produkty/` (starý web má firewall, treba hlavičky prehliadača). Filter podľa kategórie a základné triedenie: najnovšie, cena od najnižšej, cena od najvyššej. Vypredané kusy na konci, jemne zosivené.~~ Hotové 10. 10. 2026. [čaká: 1 – DPH, 2 – doprava, 7 – názvy produktov]
 6. Info lišta hore na stránke so statickým textom, dá sa zavrieť. Text v súbore v `content/`. [čaká: aktuálny oznam od Helenky]
 7. Formulár na kontakte s výberom „Otázka“ / „Teambuilding pre firmy“. Pri teambuildingu ďalšie polia: firma, miesto (ateliér / priestory firmy), počet ľudí, spoločné dielo / každý vlastné, predbežný termín. Tlačidlo v sekcii teambuilding na `/kurzy` otvorí formulár s predvoleným teambuildingom. Zatiaľ iba vzhľad, nič neodosiela.
 8. Právne stránky: `/obchodne-podmienky`, `/reklamacny-poriadok`, `/ochrana-osobnych-udajov`, `/cookies`. Zatiaľ **vzorový text** so zástupnými údajmi `[doplniť: IČO]` a pod. Hore viditeľný pruh „Vzorový text – čaká na znenie od právnika“. Nekopírovať podmienky iných e-shopov. Konečné znenie dodá Helenka (sekcia 14).
@@ -720,9 +730,9 @@ Poradie:
 - [ ] Právne stránky ako stránky v CMS. Helenka do nich vloží texty sama, bez vývojára.
 
 ### Fáza 4 – Obchod bez platby (asi 3 dni)
-- [ ] `/obchod` – zoznam, filter podľa kategórie, jednoduché triedenie.
-- [ ] Vypredané kusy ako galéria, jemne zosivené.
-- [ ] `/obchod/[slug]` – detail produktu.
+- [x] `/obchod` – zoznam, filter podľa kategórie, jednoduché triedenie. Zatiaľ zo statického `produkty.json`.
+- [x] Vypredané kusy ako galéria, jemne zosivené.
+- [x] `/obchod/[slug]` – detail produktu. Tlačidlo „Pridať do košíka“ je zatiaľ iba vzhľad.
 - [ ] Misa mesiaca na domovskej stránke a v obchode, so zľavnenou cenou. [čaká: 18]
 - [ ] Domovská stránka berie diela z CMS, nie z `content/diela.ts`.
 - [ ] Košík.

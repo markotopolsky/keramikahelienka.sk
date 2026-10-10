@@ -96,7 +96,7 @@ export function DielaGrid() {
 function DieloCard({ dielo, shape }: { dielo: Dielo; shape: string }) {
   const lang = useLang();
   return (
-    <LocaleLink href="/obchod" className="group block">
+    <LocaleLink href={`/obchod/${dielo.slug}`} className="group block">
       <div className={`relative overflow-hidden rounded-card bg-sage ${shape}`}>
         <Image
           src={dielo.foto}

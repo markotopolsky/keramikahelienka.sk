@@ -46,6 +46,12 @@ export function formatPrice(eur: number, lang: Locale) {
   }).format(eur);
 }
 
+/** Slovak has three plural forms (1 kúsok, 2 – 4 kúsky, 5 kúskov), English two */
+export function plural(n: number, lang: Locale, forms: { sk: [string, string, string]; en: [string, string] }) {
+  if (lang === "en") return `${n} ${n === 1 ? forms.en[0] : forms.en[1]}`;
+  return `${n} ${n === 1 ? forms.sk[0] : n >= 2 && n <= 4 ? forms.sk[1] : forms.sk[2]}`;
+}
+
 /** "10. novembra 2023" / "10 November 2023" */
 export function formatDate(isoDate: string, lang: Locale) {
   return new Intl.DateTimeFormat(lang === "sk" ? "sk-SK" : "en-GB", { day: "numeric", month: "long", year: "numeric" }).format(
