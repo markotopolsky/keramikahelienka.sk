@@ -5,8 +5,8 @@ import { ButtonLink } from "@/components/ui/button-link";
 import { Reveal } from "@/components/ui/reveal";
 
 // Helena wants corporate teambuilding visible, but low-key (ZAZNAMNIK.md section 12).
-// TODO: question 15. If she wants a form for HR, its fields are place, number of people
-// and shared piece vs. one piece each.
+// The button opens the contact form with team building preselected (step 7, looks only).
+// TODO: question 15. Does she want that form for HR, or is contact enough?
 const moznosti: { nazov: Localized; text: Localized }[] = [
   {
     nazov: { sk: "Miesto", en: "Place" },
@@ -61,7 +61,7 @@ export async function Teambuilding() {
                 </div>
               ))}
             </dl>
-            <ButtonLink href="/kontakt#sprava" variant="deep" className="mt-10">
+            <ButtonLink href="/kontakt?typ=teambuilding#sprava" variant="deep" className="mt-10">
               {texty.napisat[lang]}
             </ButtonLink>
           </div>

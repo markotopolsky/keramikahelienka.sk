@@ -1,9 +1,10 @@
+import { Suspense } from "react";
 import type { Localized } from "@/lib/i18n";
 import { getLang } from "@/lib/i18n-server";
 import { pageMetadata } from "@/lib/metadata";
 import { kontakt, mapa } from "@/content/atelier";
 import { PageHero } from "@/components/page-hero";
-import { KontaktForm } from "@/components/kontakt/kontakt-form";
+import { KontaktForm, KontaktFormZUrl } from "@/components/kontakt/kontakt-form";
 import { Mapa } from "@/components/kontakt/mapa";
 import { ButtonLink } from "@/components/ui/button-link";
 import { Reveal } from "@/components/ui/reveal";
@@ -111,7 +112,9 @@ export default async function KontaktPage() {
           </div>
 
           <Reveal delay={0.1} className="rounded-card bg-mint p-5 sm:p-8 lg:p-10">
-            <KontaktForm />
+            <Suspense fallback={<KontaktForm />}>
+              <KontaktFormZUrl />
+            </Suspense>
           </Reveal>
         </div>
       </section>
