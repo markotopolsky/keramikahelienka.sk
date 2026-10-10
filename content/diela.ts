@@ -1,6 +1,6 @@
 // Pieces shown on the homepage, in this order (slugs from the shop, /obchod/<slug>).
 // Sold-out pieces are skipped, so the grid only offers what can be bought.
-// 12 fills full rows at 2, 3 and 4 columns.
+// 12 fills full rows at 2 and 3 columns.
 export const dielaNaDomov = [
   "moon-vase-turquoise-glazed",
   "misa-musla-1",

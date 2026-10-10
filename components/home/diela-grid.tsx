@@ -17,7 +17,7 @@ const texty = {
   vsetky: { sk: "Pozrieť všetky kúsky", en: "See all pieces" },
 } satisfies Record<string, Localized>;
 
-/** A selection from the shop, in the same cards and grid as /obchod */
+/** A selection from the shop, in the same cards as /obchod but at most three columns */
 export async function DielaGrid() {
   const lang = await getLang();
   const polozky = dielaNaDomov
@@ -41,10 +41,10 @@ export async function DielaGrid() {
           </Reveal>
         </div>
 
-        <ul className="grid grid-cols-2 gap-x-3 gap-y-10 sm:gap-x-5 md:grid-cols-3 md:gap-y-14 lg:grid-cols-4">
+        <ul className="grid grid-cols-2 gap-x-3 gap-y-10 sm:gap-x-5 md:grid-cols-3 md:gap-x-6 md:gap-y-14">
           {polozky.map((p, i) => (
-            <Reveal as="li" key={p.slug} delay={(i % 4) * 0.06}>
-              <ProduktKarta produkt={p} />
+            <Reveal as="li" key={p.slug} delay={(i % 3) * 0.06}>
+              <ProduktKarta produkt={p} sizes="(min-width: 90rem) 440px, (min-width: 48rem) 31vw, 47vw" />
             </Reveal>
           ))}
         </ul>

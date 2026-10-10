@@ -13,7 +13,16 @@ export type KartaProduktu = {
 };
 
 /** One piece in the shop grid. Sold-out pieces stay as a gallery, softly greyed (ZAZNAMNIK.md section 12). */
-export function ProduktKarta({ produkt, preload = false }: { produkt: KartaProduktu; preload?: boolean }) {
+export function ProduktKarta({
+  produkt,
+  preload = false,
+  sizes = "(min-width: 90rem) 330px, (min-width: 64rem) 23vw, (min-width: 48rem) 31vw, 47vw",
+}: {
+  produkt: KartaProduktu;
+  preload?: boolean;
+  /** Image widths; the default fits the shop grid of 2, 3 or 4 columns */
+  sizes?: string;
+}) {
   return (
     <LocaleLink href={`/obchod/${produkt.slug}`} className="group block">
       <div className="relative aspect-[4/5] overflow-hidden rounded-card bg-sage">
@@ -22,7 +31,7 @@ export function ProduktKarta({ produkt, preload = false }: { produkt: KartaProdu
           alt={produkt.nazov}
           fill
           preload={preload}
-          sizes="(min-width: 90rem) 330px, (min-width: 64rem) 23vw, (min-width: 48rem) 31vw, 47vw"
+          sizes={sizes}
           className={`object-cover transition duration-700 ease-soft group-hover:scale-[1.05] ${
             produkt.vypredane ? "opacity-70 grayscale" : ""
           }`}
