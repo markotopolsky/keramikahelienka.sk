@@ -1,12 +1,21 @@
 "use client";
 
 import { useState } from "react";
+import type { Localized } from "@/lib/i18n";
 import { mapa } from "@/content/atelier";
+import { useLang } from "@/components/locale-provider";
+
+const texty = {
+  titulok: { sk: "Mapa: Keramika He-lienka, Na vrátkach 1K, Bratislava", en: "Map: Keramika He-lienka, Na vrátkach 1K, Bratislava" },
+  zobrazit: { sk: "Zobraziť mapu", en: "Show map" },
+  google: { sk: "Mapa sa načíta zo služby Google Maps.", en: "The map loads from Google Maps." },
+} satisfies Record<string, Localized>;
 
 /**
  * Google Maps loads only after a click. Until then the visitor's browser sends nothing to Google.
  */
 export function Mapa() {
+  const lang = useLang();
   const [loaded, setLoaded] = useState(false);
 
   return (
@@ -14,7 +23,7 @@ export function Mapa() {
       {loaded ? (
         <iframe
           src={mapa.embed}
-          title="Mapa: Keramika He-lienka, Na vrátkach 1K, Bratislava"
+          title={texty.titulok[lang]}
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
           className="absolute inset-0 size-full border-0"
@@ -27,9 +36,9 @@ export function Mapa() {
             onClick={() => setLoaded(true)}
             className="rounded-full bg-deep px-5 py-3 text-[15px] font-medium tracking-[-0.01em] text-sand transition-colors duration-300 hover:bg-ink"
           >
-            Zobraziť mapu
+            {texty.zobrazit[lang]}
           </button>
-          <p className="max-w-[18rem] text-[13px] leading-relaxed text-ink/75">Mapa sa načíta zo služby Google Maps.</p>
+          <p className="max-w-[18rem] text-[13px] leading-relaxed text-ink/75">{texty.google[lang]}</p>
         </div>
       )}
     </div>

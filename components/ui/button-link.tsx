@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { LocaleLink } from "@/components/ui/locale-link";
 import type { ReactNode } from "react";
 
 const variants = {
@@ -16,7 +16,7 @@ type ButtonLinkProps = {
   children: ReactNode;
   variant?: keyof typeof variants;
   className?: string;
-  /** Opens another site (e.g. the Google sign-up form) in a new tab */
+  /** Opens another site (e.g. the Google sign-up form) in a new tab. Site paths get /en on English pages. */
   external?: boolean;
 };
 
@@ -38,9 +38,9 @@ export function ButtonLink({ href, children, variant = "primary", className = ""
   }
 
   return (
-    <Link href={href} className={classes}>
+    <LocaleLink href={href} className={classes}>
       {content}
-    </Link>
+    </LocaleLink>
   );
 }
 

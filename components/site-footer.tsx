@@ -1,14 +1,30 @@
 import Image from "next/image";
-import Link from "next/link";
 import type { ReactNode } from "react";
+import type { Localized } from "@/lib/i18n";
+import { getLang } from "@/lib/i18n-server";
 import { kontakt, navigacia } from "@/content/atelier";
 import { pasFotiek } from "@/content/diela";
+import { pravneStranky } from "@/content/pravne";
+import { LanguageSwitcher } from "@/components/language-switcher";
 import { NewsletterForm } from "@/components/newsletter-form";
+import { LocaleLink } from "@/components/ui/locale-link";
+
+const texty = {
+  newsletter: { sk: "Listy z ateliéru", en: "Letters from the studio" },
+  newsletterText: {
+    sk: "Nové kurzy, kolekcie a termíny workshopov do schránky.",
+    en: "New classes, collections and workshop dates in your inbox.",
+  },
+  stranky: { sk: "Stránky", en: "Pages" },
+  sledujte: { sk: "Sledujte", en: "Follow" },
+  atelier: { sk: "Ateliér", en: "Studio" },
+} satisfies Record<string, Localized>;
 
 // Alternating tilt and offset for the photo strip, like prints dropped on a table
 const tilt = ["-rotate-3 translate-y-4", "rotate-2", "-rotate-1 translate-y-6", "rotate-3 translate-y-2"];
 
-export function SiteFooter() {
+export async function SiteFooter() {
+  const lang = await getLang();
   // The strip is rendered twice so the marquee can loop without a seam
   const strip = [...pasFotiek, ...pasFotiek];
 
@@ -32,24 +48,24 @@ export function SiteFooter() {
       <div className="site-container pb-8 pt-12 md:pb-10 md:pt-16">
         <div className="flex flex-col gap-12 lg:flex-row lg:items-start lg:justify-between lg:gap-10">
           <div>
-            <p className="font-medium">Listy z ateliéru</p>
-            <p className="mt-1.5 text-[14px] text-sand/75">Nové kurzy, kolekcie a termíny workshopov do schránky.</p>
+            <p className="font-medium">{texty.newsletter[lang]}</p>
+            <p className="mt-1.5 text-[14px] text-sand/75">{texty.newsletterText[lang]}</p>
             <div className="mt-6">
               <NewsletterForm />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-x-8 gap-y-10 text-[15px] md:grid-cols-3 md:gap-12 xl:gap-16">
-            <FooterColumn title="Stránky">
+            <FooterColumn title={texty.stranky[lang]}>
               {navigacia.map((item) => (
                 <li key={item.href}>
-                  <Link href={item.href} className="hover:text-aqua">
-                    {item.label}
-                  </Link>
+                  <LocaleLink href={item.href} className="hover:text-aqua">
+                    {item.label[lang]}
+                  </LocaleLink>
                 </li>
               ))}
             </FooterColumn>
-            <FooterColumn title="Sledujte">
+            <FooterColumn title={texty.sledujte[lang]}>
               <li>
                 <a href={kontakt.instagram} className="hover:text-aqua">
                   Instagram
@@ -62,7 +78,7 @@ export function SiteFooter() {
               </li>
             </FooterColumn>
             {/* The e-mail address is too long for half a phone screen, so this column takes a full row there */}
-            <FooterColumn title="Ateliér" className="max-md:col-span-2">
+            <FooterColumn title={texty.atelier[lang]} className="max-md:col-span-2">
               <li>{kontakt.ulica}</li>
               <li>{kontakt.mesto}</li>
               <li>
@@ -85,15 +101,17 @@ export function SiteFooter() {
             He-lienka
           </p>
           <div className="flex flex-col gap-2 text-[13px] text-sand/70 lg:items-end lg:pb-4">
-            <div className="flex flex-wrap gap-x-5 gap-y-2">
-              <Link href="/obchodne-podmienky" className="hover:text-sand">
-                Obchodné podmienky
-              </Link>
-              <Link href="/ochrana-osobnych-udajov" className="hover:text-sand">
-                Ochrana osobných údajov
-              </Link>
+            <div className="flex flex-wrap gap-x-5 gap-y-2 lg:justify-end">
+              {pravneStranky.map((stranka) => (
+                <LocaleLink key={stranka.slug} href={`/${stranka.slug}`} className="hover:text-sand">
+                  {stranka.nazov[lang]}
+                </LocaleLink>
+              ))}
             </div>
-            <p>© 2026 {kontakt.nazov}</p>
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 lg:justify-end">
+              <p>© 2026 {kontakt.nazov}</p>
+              <LanguageSwitcher className="text-sand" />
+            </div>
           </div>
         </div>
       </div>

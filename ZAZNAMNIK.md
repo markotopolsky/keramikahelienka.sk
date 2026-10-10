@@ -35,6 +35,16 @@ Súvisiace súbory:
   - Kontaktný formulár je iba vzhľad, nič neodosiela. Mapa Google sa načíta až po kliknutí na „Zobraziť mapu“.
   - Prihláška na kurz stále vedie na Google formulár Helenky (sekcia 6).
   - `public/images/helena-kvety.jpg` je `helena-portret.jpg` bez bielych okrajov.
+- Body 4 – 9 sa robia vo vetve `feat/body-4-9` (oddelený git worktree), lebo v hlavnom priečinku súčasne pracovala iná session na `/kurzy`.
+- Hotový bod 4 – anglická verzia:
+  - Slovenčina je na `/kurzy`, angličtina na `/en/kurzy`. Adresy stránok ostávajú slovenské aj v angličtine (ako na starom webe).
+  - Všetky stránky sú v `app/[lang]/`. Súbor `proxy.ts` slovenské adresy vnútorne presmeruje na `/sk/...`. Kto napíše `/sk/kurzy`, presmeruje ho na `/kurzy`.
+  - Každý text je v kóde ako dvojica `{ sk, en }`. Bez anglického textu sa stránka neskompiluje. Preklad spravila AI raz a je uložený v súboroch (`content/*.ts` a texty priamo v komponentoch).
+  - Prepínač SK / EN je v hlavičke (na mobile v menu) a v pätičke. Prepne na tú istú stránku v druhom jazyku.
+  - Každá stránka má `hreflang` odkazy na druhú jazykovú verziu a `canonical`.
+  - Recenzie sú v angličtine preložené, s poznámkou „Translated from Slovak“.
+  - Google formulár prihlášky na kurz je iba po slovensky. Anglický text to spomína.
+  - Slogan „Krása a úžitok“ je v angličtine „Beauty and purpose“. Anglické texty treba dať prečítať Helenke (otázka 21).
 
 ---
 
@@ -536,6 +546,10 @@ Zoradené podľa dôležitosti.
 19. **Hodnotenia z Instagramu.** Majú to byť vybrané komentáre, alebo vložený Instagram feed?
 20. **Use cases.** Čo presne myslela „use cases“ pri vázach / kurzoch – fotky váz doma v interiéri, alebo typy kurzov (darček, zážitok, firma)?
 
+**Nové otázky z práce na webe (10. 10. 2026):**
+
+21. **Anglické texty.** Preklad spravila AI. Prečíta ich Helenka alebo niekto s dobrou angličtinou? Sedí slogan „Beauty and purpose“ (Krása a úžitok)?
+
 ---
 
 ## 12. Požiadavky od Helenky (poznámky zo stretnutia, zapísané 10. 10. 2026)
@@ -672,7 +686,7 @@ Poradie:
 1. ~~Fáza 1 – diela pred kurzami, bezpätkové písmo.~~ Hotové 10. 10. 2026.
 2. ~~`/kurzy`~~ Hotové 10. 10. 2026.
 3. ~~`/o-mne` a `/kontakt`~~ Hotové 10. 10. 2026.
-4. **Anglická verzia (prepínač SK / EN).** Robí sa pred ďalšími stránkami, aby nové stránky vznikali rovno v dvoch jazykoch. Slovenčina ostáva na `/`, angličtina na `/en/...` (rovnako ako na starom webe). Texty preložené raz cez AI a uložené v súboroch. Nie automatický prekladač za behu – ten na starom webe prekladal zle (sekcia 10). Postup podľa návodu na internacionalizáciu v `node_modules/next/dist/docs/`.
+4. ~~**Anglická verzia (prepínač SK / EN).** Robí sa pred ďalšími stránkami, aby nové stránky vznikali rovno v dvoch jazykoch. Slovenčina ostáva na `/`, angličtina na `/en/...` (rovnako ako na starom webe). Texty preložené raz cez AI a uložené v súboroch. Nie automatický prekladač za behu – ten na starom webe prekladal zle (sekcia 10). Postup podľa návodu na internacionalizáciu v `node_modules/next/dist/docs/`.~~ Hotové 10. 10. 2026. [čaká: 21 – kontrola anglických textov]
 5. `/obchod` a `/obchod/[slug]` zo statických dát. Najprv stiahnuť 128 fotiek produktov do `public/images/produkty/` (starý web má firewall, treba hlavičky prehliadača). Filter podľa kategórie a základné triedenie: najnovšie, cena od najnižšej, cena od najvyššej. Vypredané kusy na konci, jemne zosivené.
 6. Info lišta hore na stránke so statickým textom, dá sa zavrieť. Text v súbore v `content/`. [čaká: aktuálny oznam od Helenky]
 7. Formulár na kontakte s výberom „Otázka“ / „Teambuilding pre firmy“. Pri teambuildingu ďalšie polia: firma, miesto (ateliér / priestory firmy), počet ľudí, spoločné dielo / každý vlastné, predbežný termín. Tlačidlo v sekcii teambuilding na `/kurzy` otvorí formulár s predvoleným teambuildingom. Zatiaľ iba vzhľad, nič neodosiela.
@@ -718,7 +732,7 @@ Poradie:
 - [ ] Info lišta hore na stránke (text z CMS).
 - [ ] Kontaktný formulár a formulár na teambuilding (odosielanie e-mailom).
 - [ ] Newsletter. [čaká: 8 – nástroj]
-- [ ] Anglická verzia s prepínačom SK / EN, preklad cez AI.
+- [x] Anglická verzia s prepínačom SK / EN, preklad cez AI. [čaká: 21 – kontrola anglických textov]
 - [ ] Hodnotenia z Instagramu. [čaká: 19]
 - [ ] Rezervácie kurzov – samostatný veľký projekt, iba ak ho Helenka chce v prvej verzii.
 

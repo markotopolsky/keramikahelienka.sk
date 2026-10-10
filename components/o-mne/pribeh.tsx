@@ -1,9 +1,18 @@
 import Image from "next/image";
-import { pribeh } from "@/content/o-mne";
+import type { Localized } from "@/lib/i18n";
+import { getLang } from "@/lib/i18n-server";
+import { krasa, pribeh } from "@/content/o-mne";
 import { Reveal } from "@/components/ui/reveal";
 
-export function Pribeh() {
-  const [prvy, ...dalsie] = pribeh;
+const texty = {
+  alt: { sk: "Helena Sochnová sedí na skalách", en: "Helena Sochnová sitting on rocks" },
+  eyebrow: { sk: "Môj príbeh", en: "My story" },
+  rola: { sk: "Keramikárka a lektorka", en: "Ceramicist and teacher" },
+} satisfies Record<string, Localized>;
+
+export async function Pribeh() {
+  const lang = await getLang();
+  const [prvy, ...dalsie] = pribeh[lang];
 
   return (
     <section className="bg-sand pb-24 pt-16 md:pb-36 md:pt-24">
@@ -11,7 +20,7 @@ export function Pribeh() {
         <Reveal className="relative aspect-[8/9] overflow-hidden rounded-card bg-sage max-md:max-w-[28rem]">
           <Image
             src="/images/helena-more.jpg"
-            alt="Helena Sochnová sedí na skalách"
+            alt={texty.alt[lang]}
             fill
             sizes="(min-width: 90rem) 580px, (min-width: 48rem) 42vw, (min-width: 28rem) 448px, calc(100vw - 2.5rem)"
             className="object-cover"
@@ -20,8 +29,8 @@ export function Pribeh() {
 
         <div>
           <Reveal>
-            <p className="eyebrow text-drift">Môj príbeh</p>
-            <h2 className="mt-5 text-display text-deep">Krása.</h2>
+            <p className="eyebrow text-drift">{texty.eyebrow[lang]}</p>
+            <h2 className="mt-5 text-display text-deep">{krasa[lang]}</h2>
           </Reveal>
           <Reveal delay={0.1} className="mt-8 max-w-[36rem] space-y-5 md:mt-10">
             <p className="font-display text-[24px] leading-[1.3] tracking-[-0.02em] text-deep md:text-[28px]">{prvy}</p>
@@ -33,7 +42,7 @@ export function Pribeh() {
           </Reveal>
           <Reveal delay={0.2} className="mt-10 border-t border-sage pt-6">
             <p className="font-display text-[26px] leading-none tracking-[-0.02em] text-deep">Helena Sochnová</p>
-            <p className="eyebrow mt-2 text-drift">Keramikárka a lektorka</p>
+            <p className="eyebrow mt-2 text-drift">{texty.rola[lang]}</p>
           </Reveal>
         </div>
       </div>

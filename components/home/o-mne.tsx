@@ -3,13 +3,31 @@
 import Image from "next/image";
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
+import { quote, type Localized } from "@/lib/i18n";
+import { useLang } from "@/components/locale-provider";
 import { ButtonLink } from "@/components/ui/button-link";
 import { Reveal } from "@/components/ui/reveal";
 import { CheckIcon } from "@/components/ui/check-icon";
 
-const fakty = ["Vlastný ateliér od roku 2020", "Kurzy pre dospelých aj deti", "Tvorba bez hrnčiarskeho kruhu"];
+const texty = {
+  eyebrow: { sk: "O mne", en: "About me" },
+  nadpis: { sk: "Som Helenka a z hliny tvorím krásu a drobné radosti.", en: "I am Helenka, and I make beauty and small joys out of clay." },
+  alt: { sk: "Helena Sochnová v ateliéri", en: "Helena Sochnová in her studio" },
+  rola: { sk: "Keramikárka a lektorka", en: "Ceramicist and teacher" },
+  citat: {
+    sk: "Je to úžasný pocit, keď pod mojimi rukami hlina dostáva tvar a prostredníctvom vzduchu a ohňa sa mení v trvácu podobu.",
+    en: "It is a wonderful feeling when clay takes shape under my hands and, through air and fire, turns into something lasting.",
+  },
+  viac: { sk: "Viac o mne", en: "More about me" },
+} satisfies Record<string, Localized>;
+
+const fakty: Localized<string[]> = {
+  sk: ["Vlastný ateliér od roku 2020", "Kurzy pre dospelých aj deti", "Tvorba bez hrnčiarskeho kruhu"],
+  en: ["Own studio since 2020", "Classes for adults and children", "Made without a potter’s wheel"],
+};
 
 export function OMne() {
+  const lang = useLang();
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const leftY = useTransform(scrollYProgress, [0, 1], [120, -120]);
@@ -21,8 +39,8 @@ export function OMne() {
     <section ref={ref} className="overflow-x-clip bg-sand">
       <div className="site-container pt-20 text-center md:pt-32">
         <Reveal>
-          <p className="eyebrow text-drift">O mne</p>
-          <h2 className="mx-auto mt-5 max-w-[48rem] text-h2 text-deep">Som Helenka a z hliny tvorím krásu a drobné radosti.</h2>
+          <p className="eyebrow text-drift">{texty.eyebrow[lang]}</p>
+          <h2 className="mx-auto mt-5 max-w-[48rem] text-h2 text-deep">{texty.nadpis[lang]}</h2>
         </Reveal>
       </div>
 
@@ -39,7 +57,7 @@ export function OMne() {
         >
           <Image
             src="/images/helena-2.jpg"
-            alt="Helena Sochnová v ateliéri"
+            alt={texty.alt[lang]}
             fill
             sizes="(min-width: 33rem) 360px, 68vw"
             className="object-cover object-[50%_30%]"
@@ -65,17 +83,16 @@ export function OMne() {
         <div className="site-container flex flex-col items-center text-center">
           <Reveal>
             <p className="font-display text-[36px] leading-none tracking-[-0.03em] md:text-[44px]">Helena Sochnová</p>
-            <p className="eyebrow mt-3 text-aqua">Keramikárka a lektorka</p>
+            <p className="eyebrow mt-3 text-aqua">{texty.rola[lang]}</p>
           </Reveal>
           <Reveal delay={0.1}>
             <blockquote className="mx-auto mt-10 max-w-[52rem] font-display text-[26px] leading-[1.2] tracking-[-0.02em] text-balance md:mt-12 md:text-[34px] md:leading-[1.15] lg:text-[40px]">
-              „Je to úžasný pocit, keď pod mojimi rukami hlina dostáva tvar a prostredníctvom vzduchu a ohňa sa mení
-              v trvácu podobu.“
+              {quote(texty.citat[lang], lang)}
             </blockquote>
           </Reveal>
           <Reveal delay={0.2} className="mt-10 flex flex-col items-center gap-10 md:mt-12">
             <ul className="flex flex-col gap-3 text-left text-[15px] text-sand/90 md:flex-row md:flex-wrap md:justify-center md:gap-x-8">
-              {fakty.map((fakt) => (
+              {fakty[lang].map((fakt) => (
                 <li key={fakt} className="flex items-center gap-2.5 md:whitespace-nowrap">
                   <CheckIcon />
                   {fakt}
@@ -83,7 +100,7 @@ export function OMne() {
               ))}
             </ul>
             <ButtonLink href="/o-mne" variant="light">
-              Viac o mne
+              {texty.viac[lang]}
             </ButtonLink>
           </Reveal>
         </div>

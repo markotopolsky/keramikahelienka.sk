@@ -1,4 +1,5 @@
 // Contact details and reviews from keramikahelienka.sk.
+import type { Localized } from "@/lib/i18n";
 
 export const kontakt = {
   nazov: "Keramika He-lienka",
@@ -21,38 +22,54 @@ export const mapa = {
   trasa: "https://www.google.com/maps/dir/?api=1&destination=48.189457,17.042073",
 };
 
-export const navigacia = [
-  { label: "Kurzy", href: "/kurzy" },
-  { label: "Obchod", href: "/obchod" },
-  { label: "O mne", href: "/o-mne" },
-  { label: "Blog", href: "/blog" },
-  { label: "Kontakt", href: "/kontakt" },
+/** Slovak paths; LocaleLink adds /en on English pages */
+export const navigacia: { label: Localized; href: string }[] = [
+  { label: { sk: "Kurzy", en: "Classes" }, href: "/kurzy" },
+  { label: { sk: "Obchod", en: "Shop" }, href: "/obchod" },
+  { label: { sk: "O mne", en: "About me" }, href: "/o-mne" },
+  { label: { sk: "Blog", en: "Blog" }, href: "/blog" },
+  { label: { sk: "Kontakt", en: "Contact" }, href: "/kontakt" },
 ];
 
+export const temaRecenzie = {
+  kurz: { sk: "Kurz", en: "Class" },
+  nakup: { sk: "Nákup", en: "Purchase" },
+} satisfies Record<string, Localized>;
+
 export type Recenzia = {
-  text: string;
+  /** The English text is a translation of the Slovak original */
+  text: Localized;
   meno: string;
-  miesto: string;
-  tema: "Kurz" | "Nákup";
+  miesto: Localized;
+  tema: keyof typeof temaRecenzie;
 };
 
 export const recenzie: Recenzia[] = [
   {
-    text: "Som veľmi spokojná, výrobok je prekrásny, perfektne zabalený. Komunikácia s pani Helenkou, ktorá sväteničku vyrobila, bola výborná. Len tak ďalej. Zaslúži si najvyššie hodnotenie.",
+    text: {
+      sk: "Som veľmi spokojná, výrobok je prekrásny, perfektne zabalený. Komunikácia s pani Helenkou, ktorá sväteničku vyrobila, bola výborná. Len tak ďalej. Zaslúži si najvyššie hodnotenie.",
+      en: "I am very happy, the piece is beautiful and perfectly packed. Communication with Helenka, who made the holy water font, was excellent. Keep it up. She deserves the highest rating.",
+    },
     meno: "Jana",
-    miesto: "Sološnica",
-    tema: "Nákup",
+    miesto: { sk: "Sološnica", en: "Sološnica" },
+    tema: "nakup",
   },
   {
-    text: "Kurz keramiky v Ateliéri He-lienka bol pre mňa vždy relaxom a zdrojom inšpirácie aj mnohých nových možností. Helenka ako lektorka je veľmi ústretová a nápomocná. Počas viac ako roka to bol náš spoločný tvorivý čas s dcérou (7 r.). Individuálny prístup a priateľská atmosféra ateliéru mi veľmi vyhovuje.",
+    text: {
+      sk: "Kurz keramiky v Ateliéri He-lienka bol pre mňa vždy relaxom a zdrojom inšpirácie aj mnohých nových možností. Helenka ako lektorka je veľmi ústretová a nápomocná. Počas viac ako roka to bol náš spoločný tvorivý čas s dcérou (7 r.). Individuálny prístup a priateľská atmosféra ateliéru mi veľmi vyhovuje.",
+      en: "The pottery class at Ateliér He-lienka has always been a way to relax for me, and a source of inspiration and many new possibilities. As a teacher, Helenka is very accommodating and helpful. For more than a year it was our shared creative time with my daughter (7). The individual approach and the friendly atmosphere of the studio suit me very well.",
+    },
     meno: "Radka",
-    miesto: "výtvarníčka",
-    tema: "Kurz",
+    miesto: { sk: "výtvarníčka", en: "artist" },
+    tema: "kurz",
   },
   {
-    text: "Pani Helenka, ďakujem veľmi pekne. Svietniky sú nádherné. Vaše dielka sú zosúladené, harmonické vzorom a aj farebne. Perfektné balenie. Budú sa v exteriéri nenápadne vynímať. Ešte raz Vám ďakujem a prajem veľa nadšenia, radosti a tvorivých nápadov.",
+    text: {
+      sk: "Pani Helenka, ďakujem veľmi pekne. Svietniky sú nádherné. Vaše dielka sú zosúladené, harmonické vzorom a aj farebne. Perfektné balenie. Budú sa v exteriéri nenápadne vynímať. Ešte raz Vám ďakujem a prajem veľa nadšenia, radosti a tvorivých nápadov.",
+      en: "Helenka, thank you very much. The candle holders are wonderful. Your pieces go well together, harmonious in pattern and in colour. Perfect packaging. They will stand out quietly outdoors. Thank you once again, and I wish you lots of enthusiasm, joy and creative ideas.",
+    },
     meno: "Vlastina",
-    miesto: "Belá-Dulice",
-    tema: "Nákup",
+    miesto: { sk: "Belá-Dulice", en: "Belá-Dulice" },
+    tema: "nakup",
   },
 ];

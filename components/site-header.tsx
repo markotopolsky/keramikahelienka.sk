@@ -1,11 +1,21 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSelectedLayoutSegments } from "next/navigation";
 import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
 import { kontakt, navigacia } from "@/content/atelier";
+import type { Localized } from "@/lib/i18n";
+import { useLang } from "@/components/locale-provider";
+import { LanguageSwitcher } from "@/components/language-switcher";
 import { ButtonLink } from "@/components/ui/button-link";
+import { LocaleLink } from "@/components/ui/locale-link";
+
+const texty = {
+  rezervovat: { sk: "Rezervovať kurz", en: "Book a class" },
+  navigacia: { sk: "Hlavná navigácia", en: "Main navigation" },
+  menu: { sk: "Menu", en: "Menu" },
+  zavriet: { sk: "Zavrieť", en: "Close" },
+} satisfies Record<string, Localized>;
 
 /** True once the page's dark top section (marked `data-hero`) has scrolled away, or if the page has none */
 function heroScrolledAway() {
@@ -20,7 +30,11 @@ function heroScrolledAway() {
  * browser handles Escape, focus and hiding the page from screen readers).
  */
 export function SiteHeader() {
+  const lang = useLang();
+  // Effects only: with proxy.ts rewrites the pathname differs between server and browser
   const pathname = usePathname();
+  // The section the page belongs to ("/kurzy"), the same on server and client
+  const section = `/${useSelectedLayoutSegments()[0] ?? ""}`;
   const { scrollY } = useScroll();
   const [solid, setSolid] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -70,29 +84,30 @@ export function SiteHeader() {
       }`}
     >
       <div className="site-container flex h-16 items-center justify-between lg:grid lg:h-20 lg:grid-cols-[1fr_auto_1fr]">
-        <Link href="/" className="justify-self-start font-display text-[26px] leading-none tracking-[-0.02em] lg:text-[30px]">
+        <LocaleLink href="/" className="justify-self-start font-display text-[26px] leading-none tracking-[-0.02em] lg:text-[30px]">
           He-lienka
-        </Link>
+        </LocaleLink>
 
-        <nav aria-label="Hlavná navigácia" className="max-lg:hidden">
+        <nav aria-label={texty.navigacia[lang]} className="max-lg:hidden">
           <ul className="flex items-center gap-9 text-[15px]">
             {navigacia.map((item) => (
               <li key={item.href}>
-                <Link
+                <LocaleLink
                   href={item.href}
-                  aria-current={pathname === item.href ? "page" : undefined}
+                  aria-current={section === item.href ? "page" : undefined}
                   className="relative py-1 after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-300 hover:after:scale-x-100 aria-[current=page]:after:scale-x-100"
                 >
-                  {item.label}
-                </Link>
+                  {item.label[lang]}
+                </LocaleLink>
               </li>
             ))}
           </ul>
         </nav>
 
         <div className="flex items-center gap-2 justify-self-end">
+          <LanguageSwitcher className="mr-3 max-lg:hidden" />
           <ButtonLink href="/kurzy#rezervacia" variant={solid ? "deep" : "primary"} className="max-sm:hidden">
-            Rezervovať kurz
+            {texty.rezervovat[lang]}
           </ButtonLink>
           <button
             type="button"
@@ -102,7 +117,7 @@ export function SiteHeader() {
             aria-controls="mobilne-menu"
             className="inline-flex items-center gap-2.5 rounded-full border border-current/40 px-4 py-3 text-[15px] font-medium leading-[1.5] transition-colors hover:border-current lg:hidden"
           >
-            Menu
+            {texty.menu[lang]}
             <svg viewBox="0 0 16 10" aria-hidden className="h-2.5 w-4">
               <path d="M0 1h16M0 9h16" stroke="currentColor" strokeWidth="1.5" />
             </svg>
@@ -113,30 +128,30 @@ export function SiteHeader() {
       <dialog
         id="mobilne-menu"
         ref={menuRef}
-        aria-label="Menu"
+        aria-label={texty.menu[lang]}
         onClose={() => setMenuOpen(false)}
         onClick={closeOnLink}
         className="m-0 h-dvh max-h-none w-full max-w-none overflow-y-auto bg-deep text-sand opacity-0 transition-[opacity,display,overlay] duration-400 ease-soft transition-discrete backdrop:bg-transparent open:opacity-100 starting:open:opacity-0 motion-reduce:transition-none lg:hidden"
       >
         <div className="site-container flex min-h-full flex-col pb-10">
           <div className="flex h-16 shrink-0 items-center justify-between">
-            <Link href="/" className="font-display text-[26px] leading-none tracking-[-0.02em]">
+            <LocaleLink href="/" className="font-display text-[26px] leading-none tracking-[-0.02em]">
               He-lienka
-            </Link>
+            </LocaleLink>
             <button
               ref={closeRef}
               type="button"
               onClick={closeMenu}
               className="inline-flex items-center gap-2.5 rounded-full border border-sand/40 px-4 py-3 text-[15px] font-medium leading-[1.5] transition-colors hover:border-sand"
             >
-              Zavrieť
+              {texty.zavriet[lang]}
               <svg viewBox="0 0 12 12" aria-hidden className="size-3">
                 <path d="m1 1 10 10M11 1 1 11" stroke="currentColor" strokeWidth="1.5" />
               </svg>
             </button>
           </div>
 
-          <nav aria-label="Hlavná navigácia" className="mt-8">
+          <nav aria-label={texty.navigacia[lang]} className="mt-8">
             <ul className="border-t border-sand/15">
               {navigacia.map((item, i) => (
                 <li
@@ -144,23 +159,26 @@ export function SiteHeader() {
                   style={{ transitionDelay: `${120 + i * 60}ms` }}
                   className="border-b border-sand/15 transition-[opacity,translate] duration-700 ease-soft starting:translate-y-5 starting:opacity-0 motion-reduce:transition-none"
                 >
-                  <Link
+                  <LocaleLink
                     href={item.href}
-                    aria-current={pathname === item.href ? "page" : undefined}
+                    aria-current={section === item.href ? "page" : undefined}
                     className="flex items-baseline justify-between gap-6 py-4 font-display text-[clamp(2.5rem,11vw,3.5rem)] leading-none tracking-[-0.03em] transition-colors hover:text-aqua aria-[current=page]:text-aqua"
                   >
-                    {item.label}
+                    {item.label[lang]}
                     <span aria-hidden className="eyebrow font-sans text-[11px] text-aqua">
                       {String(i + 1).padStart(2, "0")}
                     </span>
-                  </Link>
+                  </LocaleLink>
                 </li>
               ))}
             </ul>
           </nav>
 
           <div className="mt-auto pt-12">
-            <ButtonLink href="/kurzy#rezervacia">Rezervovať kurz</ButtonLink>
+            <div className="flex flex-wrap items-center justify-between gap-6">
+              <ButtonLink href="/kurzy#rezervacia">{texty.rezervovat[lang]}</ButtonLink>
+              <LanguageSwitcher className="text-[15px]" />
+            </div>
             <ul className="mt-8 space-y-1.5 text-[15px] text-sand/80">
               <li>
                 {kontakt.ulica}, {kontakt.mesto}
