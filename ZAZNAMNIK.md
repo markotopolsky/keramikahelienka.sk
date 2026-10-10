@@ -55,6 +55,11 @@ Súvisiace súbory:
   - Detail `/obchod/[slug]`: galéria fotiek, cena, sklad, varianty šálok (s vrchnákom / bez), popis, osobný odber zadarmo, ďalšie kúsky. „Pridať do košíka“ je iba vzhľad.
   - Na detaile svieti `[doplniť: cena s DPH alebo bez DPH – otázka 1]` a `[doplniť: spôsoby a ceny dopravy – otázka 2]`.
   - Diela na domovskej stránke vedú na svoj detail v obchode.
+- Hotový bod 6 – info lišta:
+  - Tyrkysová lišta nad menu na každej stránke. Text a odkaz sú v `content/info-lista.ts`. Kým Helenka nedodá oznam, svieti `[doplniť: aktuálny oznam od Helenky – zľava, zľavový kód alebo výstava]`.
+  - Odkaz „Prihláste sa na Listy z ateliéru“ vedie na odber v pätičke (newsletter je zatiaľ atrapa, otázka 8).
+  - Lištu sa dá zavrieť krížikom. Prehliadač si to zapamätá. Pri novom ozname treba zmeniť `id` v súbore, potom sa lišta ukáže znova aj tým, čo ju zavreli.
+  - Zobrazuje sa iba navrchu stránky, pri skrolovaní sa zbalí. Zatvorená lišta pri načítaní nebliká (malý skript v `<head>` ju skryje ešte pred vykreslením).
 
 ---
 
@@ -698,7 +703,7 @@ Poradie:
 3. ~~`/o-mne` a `/kontakt`~~ Hotové 10. 10. 2026.
 4. ~~**Anglická verzia (prepínač SK / EN).** Robí sa pred ďalšími stránkami, aby nové stránky vznikali rovno v dvoch jazykoch. Slovenčina ostáva na `/`, angličtina na `/en/...` (rovnako ako na starom webe). Texty preložené raz cez AI a uložené v súboroch. Nie automatický prekladač za behu – ten na starom webe prekladal zle (sekcia 10). Postup podľa návodu na internacionalizáciu v `node_modules/next/dist/docs/`.~~ Hotové 10. 10. 2026. [čaká: 21 – kontrola anglických textov]
 5. ~~`/obchod` a `/obchod/[slug]` zo statických dát. Najprv stiahnuť 128 fotiek produktov do `public/images/produkty/` (starý web má firewall, treba hlavičky prehliadača). Filter podľa kategórie a základné triedenie: najnovšie, cena od najnižšej, cena od najvyššej. Vypredané kusy na konci, jemne zosivené.~~ Hotové 10. 10. 2026. [čaká: 1 – DPH, 2 – doprava, 7 – názvy produktov]
-6. Info lišta hore na stránke so statickým textom, dá sa zavrieť. Text v súbore v `content/`. [čaká: aktuálny oznam od Helenky]
+6. ~~Info lišta hore na stránke so statickým textom, dá sa zavrieť. Text v súbore v `content/`.~~ Hotové 10. 10. 2026. [čaká: aktuálny oznam od Helenky]
 7. Formulár na kontakte s výberom „Otázka“ / „Teambuilding pre firmy“. Pri teambuildingu ďalšie polia: firma, miesto (ateliér / priestory firmy), počet ľudí, spoločné dielo / každý vlastné, predbežný termín. Tlačidlo v sekcii teambuilding na `/kurzy` otvorí formulár s predvoleným teambuildingom. Zatiaľ iba vzhľad, nič neodosiela.
 8. Právne stránky: `/obchodne-podmienky`, `/reklamacny-poriadok`, `/ochrana-osobnych-udajov`, `/cookies`. Zatiaľ **vzorový text** so zástupnými údajmi `[doplniť: IČO]` a pod. Hore viditeľný pruh „Vzorový text – čaká na znenie od právnika“. Nekopírovať podmienky iných e-shopov. Konečné znenie dodá Helenka (sekcia 14).
 9. `/blog` a `/blog/[slug]` (2 pôvodné články, sekcia 5.6), stránka 404.

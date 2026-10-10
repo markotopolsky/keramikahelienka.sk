@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Open_Sans } from "next/font/google";
 import { locales, type Localized } from "@/lib/i18n";
+import { infoLista, infoListaKluc } from "@/content/info-lista";
 import { getLang } from "@/lib/i18n-server";
 import { LocaleProvider } from "@/components/locale-provider";
 import { MotionProvider } from "@/components/motion-provider";
@@ -51,7 +52,16 @@ export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
   const lang = await getLang();
 
   return (
-    <html lang={lang} className={`${openSans.variable} ${inter.variable} antialiased`}>
+    // suppressHydrationWarning: the script below may add data-info-zavreta before React hydrates
+    <html lang={lang} className={`${openSans.variable} ${inter.variable} antialiased`} suppressHydrationWarning>
+      <head>
+        {/* Hides the info bar before the first paint if the visitor closed this version of it */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{if(localStorage.getItem(${JSON.stringify(infoListaKluc)})===${JSON.stringify(infoLista.id)})document.documentElement.setAttribute("data-info-zavreta","")}catch(e){}`,
+          }}
+        />
+      </head>
       <body>
         <LocaleProvider lang={lang}>
           <MotionProvider>

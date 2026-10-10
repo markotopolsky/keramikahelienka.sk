@@ -6,6 +6,7 @@ import { motion, useMotionValueEvent, useScroll } from "motion/react";
 import { kontakt, navigacia } from "@/content/atelier";
 import type { Localized } from "@/lib/i18n";
 import { useLang } from "@/components/locale-provider";
+import { InfoLista } from "@/components/info-lista";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { ButtonLink } from "@/components/ui/button-link";
 import { LocaleLink } from "@/components/ui/locale-link";
@@ -37,11 +38,16 @@ export function SiteHeader() {
   const section = `/${useSelectedLayoutSegments()[0] ?? ""}`;
   const { scrollY } = useScroll();
   const [solid, setSolid] = useState(false);
+  // The info bar shows only at the very top of the page
+  const [naVrchu, setNaVrchu] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDialogElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
 
-  useMotionValueEvent(scrollY, "change", () => setSolid(heroScrolledAway()));
+  useMotionValueEvent(scrollY, "change", (y) => {
+    setSolid(heroScrolledAway());
+    setNaVrchu(y < 24);
+  });
 
   // The header lives in the root layout, so measure again once a new page has rendered
   useEffect(() => {
@@ -83,6 +89,7 @@ export function SiteHeader() {
         solid ? "bg-sand text-ink shadow-[0_1px_0_rgb(47_111_122/0.12)]" : "text-sand"
       }`}
     >
+      <InfoLista skryta={!naVrchu} />
       <div className="site-container flex h-16 items-center justify-between lg:grid lg:h-20 lg:grid-cols-[1fr_auto_1fr]">
         <LocaleLink href="/" className="justify-self-start font-display text-[26px] leading-none tracking-[-0.02em] lg:text-[30px]">
           He-lienka

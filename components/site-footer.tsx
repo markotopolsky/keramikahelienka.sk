@@ -47,7 +47,7 @@ export async function SiteFooter() {
 
       <div className="site-container pb-8 pt-12 md:pb-10 md:pt-16">
         <div className="flex flex-col gap-12 lg:flex-row lg:items-start lg:justify-between lg:gap-10">
-          <div>
+          <div id="newsletter">
             <p className="font-medium">{texty.newsletter[lang]}</p>
             <p className="mt-1.5 text-[14px] text-sand/75">{texty.newsletterText[lang]}</p>
             <div className="mt-6">

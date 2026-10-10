@@ -98,6 +98,24 @@
   }
 }
 
+/*
+ * Info bar (components/info-lista.tsx). It sits in the fixed header, so the page starts
+ * below it: --info-lista is its measured height, 2.5rem (one line) until the script measures it.
+ * data-info-zavreta is set before the first paint when the visitor has closed it.
+ * Outside @layer base on purpose: the bar's own `grid` utility would win over a base-layer rule.
+ */
+html:has([data-info-lista]) main {
+  padding-top: var(--info-lista, 2.5rem);
+}
+
+html[data-info-zavreta] [data-info-lista] {
+  display: none;
+}
+
+html[data-info-zavreta] main {
+  padding-top: 0;
+}
+
 @utility site-container {
   width: 100%;
   max-width: var(--container-site);
