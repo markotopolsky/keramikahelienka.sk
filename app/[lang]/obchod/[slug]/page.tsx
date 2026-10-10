@@ -4,7 +4,7 @@ import { plural, type Localized } from "@/lib/i18n";
 import { getLang } from "@/lib/i18n-server";
 import { pageMetadata } from "@/lib/metadata";
 import { cenaProduktu, najdiProdukt, podobneProdukty, polozkaObchodu, produkty } from "@/lib/produkty";
-import { kontakt } from "@/content/atelier";
+import { formular, kontakt } from "@/content/atelier";
 import { kategorie } from "@/content/produkty";
 import { Galeria } from "@/components/obchod/galeria";
 import { DoKosika } from "@/components/obchod/do-kosika";
@@ -118,7 +118,7 @@ export default async function ProduktPage({ params }: PageProps<"/[lang]/obchod/
                 {produkt.vypredane ? (
                   <div className="flex flex-col items-start gap-5">
                     <p className="max-w-[30rem] text-[15px] leading-relaxed text-ink/80">{texty.vypredaneText[lang]}</p>
-                    <ButtonLink href="/kontakt#sprava" variant="deep">
+                    <ButtonLink href={formular.otazka} variant="deep">
                       {texty.opytatPodobny[lang]}
                     </ButtonLink>
                   </div>
@@ -126,7 +126,7 @@ export default async function ProduktPage({ params }: PageProps<"/[lang]/obchod/
                   <>
                     <DoKosika varianty={produkt.varianty} />
                     <LocaleLink
-                      href="/kontakt#sprava"
+                      href={formular.otazka}
                       className="mt-2 inline-block text-[15px] text-deep underline decoration-sage underline-offset-4 hover:decoration-deep"
                     >
                       {texty.opytat[lang]}

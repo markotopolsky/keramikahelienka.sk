@@ -31,6 +31,21 @@ export const navigacia: { label: Localized; href: string }[] = [
   { label: { sk: "Kontakt", en: "Contact" }, href: "/kontakt" },
 ];
 
+/** Cart page of the shop (phase 4 in ZAZNAMNIK.md section 15) */
+export const kosik = "/kosik";
+
+/**
+ * Links to the one form on the site (`KontaktForm` on /kontakt), each opening it on the right tab.
+ * Course sign-ups used to go to Helena's Google form; they now land here too.
+ */
+export const formular = {
+  firmy: "/kontakt?typ=firmy#formular",
+  kurzy: "/kontakt?typ=kurzy#formular",
+  otazka: "/kontakt?typ=otazka#formular",
+};
+
+export type TypDopytu = keyof typeof formular;
+
 export const temaRecenzie = {
   kurz: { sk: "Kurz", en: "Class" },
   nakup: { sk: "Nákup", en: "Purchase" },

@@ -2,8 +2,8 @@
 
 import { usePathname, useSelectedLayoutSegments } from "next/navigation";
 import { useEffect, useRef, useState, type MouseEvent } from "react";
-import { motion, useMotionValueEvent, useScroll } from "motion/react";
-import { kontakt, navigacia } from "@/content/atelier";
+import { useMotionValueEvent, useScroll } from "motion/react";
+import { formular, kontakt, kosik, navigacia } from "@/content/atelier";
 import type { Localized } from "@/lib/i18n";
 import { useLang } from "@/components/locale-provider";
 import { InfoLista } from "@/components/info-lista";
@@ -16,6 +16,7 @@ const texty = {
   navigacia: { sk: "Hlavná navigácia", en: "Main navigation" },
   menu: { sk: "Menu", en: "Menu" },
   zavriet: { sk: "Zavrieť", en: "Close" },
+  kosik: { sk: "Košík", en: "Cart" },
 } satisfies Record<string, Localized>;
 
 /** True once the page's dark top section (marked `data-hero`) has scrolled away, or if the page has none */
@@ -81,13 +82,11 @@ export function SiteHeader() {
   }
 
   return (
-    <motion.header
-      initial={{ y: -24, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.8, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-500 ${
+    <header
+      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-500 motion-safe:animate-fade-in ${
         solid ? "bg-sand text-ink shadow-[0_1px_0_rgb(47_111_122/0.12)]" : "text-sand"
       }`}
+      style={{ animationDelay: "0.2s", animationDuration: "0.6s" }}
     >
       <InfoLista skryta={!naVrchu} />
       <div className="site-container flex h-16 items-center justify-between lg:grid lg:h-20 lg:grid-cols-[1fr_auto_1fr]">
@@ -113,9 +112,20 @@ export function SiteHeader() {
 
         <div className="flex items-center gap-2 justify-self-end">
           <LanguageSwitcher className="mr-3 max-lg:hidden" />
-          <ButtonLink href="/kurzy#rezervacia" variant={solid ? "deep" : "primary"} className="max-sm:hidden">
+          <ButtonLink href={formular.kurzy} variant={solid ? "deep" : "primary"} className="max-sm:hidden">
             {texty.rezervovat[lang]}
           </ButtonLink>
+          {/* TODO: phase 4 adds the cart and a badge with the number of pieces in it.
+              Until /kosik exists, prefetching it would request a 404 on every page. */}
+          <LocaleLink
+            href={kosik}
+            prefetch={false}
+            aria-label={texty.kosik[lang]}
+            aria-current={section === kosik ? "page" : undefined}
+            className="inline-flex size-[2.875rem] items-center justify-center rounded-full border border-current/40 transition-colors hover:border-current aria-[current=page]:border-current"
+          >
+            <BasketIcon className="size-5" />
+          </LocaleLink>
           <button
             type="button"
             onClick={openMenu}
@@ -183,7 +193,7 @@ export function SiteHeader() {
 
           <div className="mt-auto pt-12">
             <div className="flex flex-wrap items-center justify-between gap-6">
-              <ButtonLink href="/kurzy#rezervacia">{texty.rezervovat[lang]}</ButtonLink>
+              <ButtonLink href={formular.kurzy}>{texty.rezervovat[lang]}</ButtonLink>
               <LanguageSwitcher className="text-[15px]" />
             </div>
             <ul className="mt-8 space-y-1.5 text-[15px] text-sand/80">
@@ -212,6 +222,19 @@ export function SiteHeader() {
           </div>
         </div>
       </dialog>
-    </motion.header>
+    </header>
+  );
+}
+
+/** Line drawing of a woven shopping basket with a handle */
+function BasketIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 20 20" fill="none" aria-hidden className={className}>
+      <g stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M6 8.5 9 3.5M14 8.5l-3-5" />
+        <path d="M2.5 8.5h15l-1.6 7.3a1.5 1.5 0 0 1-1.5 1.2H5.6a1.5 1.5 0 0 1-1.5-1.2Z" />
+        <path d="M7.5 11.5v2.5M10 11.5v2.5M12.5 11.5v2.5" />
+      </g>
+    </svg>
   );
 }

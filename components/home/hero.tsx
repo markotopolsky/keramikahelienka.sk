@@ -7,8 +7,6 @@ import type { Localized } from "@/lib/i18n";
 import { useLang } from "@/components/locale-provider";
 import { ButtonLink } from "@/components/ui/button-link";
 
-const ease = [0.22, 1, 0.36, 1] as const;
-
 const texty = {
   headline: { sk: ["Krása", "a", "úžitok"], en: ["Beauty", "and", "purpose"] } satisfies Localized<string[]>,
   alt: {
@@ -37,13 +35,7 @@ export function Hero() {
   return (
     <section ref={ref} data-hero className="bg-deep">
       <div className="relative h-svh min-h-[36rem] overflow-hidden rounded-b-frame bg-ink md:min-h-[760px]">
-        <motion.div
-          className="absolute inset-0"
-          style={{ y: photoY }}
-          initial={{ scale: 1.12 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 2.2, ease }}
-        >
+        <motion.div className="absolute inset-0 motion-safe:animate-settle" style={{ y: photoY }}>
           <Image
             src="/images/hero-musla.jpg"
             alt={texty.alt[lang]}
@@ -58,36 +50,28 @@ export function Hero() {
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgb(30_43_46/0.62)_0%,rgb(30_43_46/0.18)_38%,rgb(30_43_46/0.05)_55%,rgb(30_43_46/0.6)_100%)]" />
 
         <motion.div style={{ y: titleY }} className="site-container relative flex flex-col items-center pt-28 text-center text-sand md:pt-36">
+          {/* Wraps on narrow phones: the English headline is longer */}
           <h1 className="flex flex-wrap justify-center gap-x-[0.22em] text-hero">
             {texty.headline[lang].map((word, i) => (
               <span key={word} className="-mb-[0.12em] inline-block overflow-hidden pb-[0.12em]">
-                <motion.span
-                  className="inline-block"
-                  initial={{ y: "105%" }}
-                  animate={{ y: 0 }}
-                  transition={{ duration: 1.1, delay: 0.15 + i * 0.12, ease }}
+                <span
+                  className="inline-block motion-safe:animate-word-up"
+                  style={{ animationDelay: `${0.15 + i * 0.12}s` }}
                 >
                   {word}
-                </motion.span>
+                </span>
               </span>
             ))}
           </h1>
-          <motion.p
-            className="eyebrow mt-6 text-balance text-sand/90 md:mt-8"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.8 }}
-          >
+          <p className="eyebrow mt-6 text-balance text-sand/90 motion-safe:animate-fade-in md:mt-8" style={{ animationDelay: "0.8s" }}>
             {/* Lines may only break after a dot, never inside "Bratislava-Dúbravka" */}
             {texty.atelier[lang]}&nbsp;· <span className="whitespace-nowrap">Bratislava-Dúbravka</span>&nbsp;· {texty.odRoku[lang]}
-          </motion.p>
+          </p>
         </motion.div>
 
-        <motion.div
-          className="site-container absolute inset-x-0 bottom-8 flex items-end justify-between gap-10 text-sand md:bottom-12"
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.9, ease }}
+        <div
+          className="site-container absolute inset-x-0 bottom-8 flex items-end justify-between gap-10 text-sand motion-safe:animate-rise md:bottom-12"
+          style={{ animationDelay: "0.9s" }}
         >
           <div className="max-w-[34rem]">
             <p className="text-lead">{texty.lead[lang]}</p>
@@ -98,10 +82,8 @@ export function Hero() {
               </ButtonLink>
             </div>
           </div>
-          <p className="eyebrow max-w-[16rem] text-right text-sand/80 max-md:hidden">
-            {texty.original[lang]}
-          </p>
-        </motion.div>
+          <p className="eyebrow max-w-[16rem] text-right text-sand/80 max-md:hidden">{texty.original[lang]}</p>
+        </div>
       </div>
     </section>
   );

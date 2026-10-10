@@ -1,10 +1,9 @@
-import { Suspense } from "react";
 import type { Localized } from "@/lib/i18n";
 import { getLang } from "@/lib/i18n-server";
 import { pageMetadata } from "@/lib/metadata";
 import { kontakt, mapa } from "@/content/atelier";
 import { PageHero } from "@/components/page-hero";
-import { KontaktForm, KontaktFormZUrl } from "@/components/kontakt/kontakt-form";
+import { KontaktSekcia } from "@/components/kontakt/kontakt-sekcia";
 import { Mapa } from "@/components/kontakt/mapa";
 import { ButtonLink } from "@/components/ui/button-link";
 import { Reveal } from "@/components/ui/reveal";
@@ -19,13 +18,6 @@ const texty = {
   telefon: { sk: "Telefón", en: "Phone" },
   email: { sk: "E-mail", en: "Email" },
   atelier: { sk: "Ateliér", en: "Studio" },
-  napiste: { sk: "Napíšte nám", en: "Write to us" },
-  otazky: { sk: "Máte otázky?", en: "Any questions?" },
-  otazkyText: {
-    sk: "Ozvite sa telefonicky, e-mailom alebo cez formulár. Radi poradíme s kurzom, darčekom aj dielom na mieru.",
-    en: "Get in touch by phone, email or the form. We are glad to help with a class, a gift or a custom piece.",
-  },
-  sledujte: { sk: "Sledujte nás", en: "Follow us" },
   kde: { sk: "Kde nás nájdete", en: "Where to find us" },
   atelierNadpis: { sk: "Ateliér v Dúbravke", en: "Studio in Dúbravka" },
   trasa: { sk: "Naplánovať trasu", en: "Get directions" },
@@ -41,13 +33,6 @@ export function generateMetadata() {
     },
   });
 }
-
-const siete = [
-  { nazov: "Instagram", href: kontakt.instagram },
-  { nazov: "Facebook", href: kontakt.facebook },
-  { nazov: "YouTube", href: kontakt.youtube },
-  { nazov: "LinkedIn", href: kontakt.linkedin },
-];
 
 export default async function KontaktPage() {
   const lang = await getLang();
@@ -84,40 +69,7 @@ export default async function KontaktPage() {
         }
       />
 
-      <section id="sprava" className="bg-sand py-24 md:py-36">
-        <div className="site-container grid gap-14 lg:grid-cols-[1fr_36rem] lg:gap-20 xl:grid-cols-[1fr_40rem]">
-          <div>
-            <Reveal>
-              <p className="eyebrow text-drift">{texty.napiste[lang]}</p>
-              <h2 className="mt-5 text-h2 text-deep">{texty.otazky[lang]}</h2>
-              <p className="mt-6 max-w-[28rem] text-lead text-ink/80">{texty.otazkyText[lang]}</p>
-            </Reveal>
-            <Reveal delay={0.1} className="mt-12">
-              <p className="eyebrow text-drift">{texty.sledujte[lang]}</p>
-              <ul className="mt-5 flex flex-wrap gap-2">
-                {siete.map((siet) => (
-                  <li key={siet.nazov}>
-                    <a
-                      href={siet.href}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex rounded-full border border-sage px-4 py-2 text-[15px] text-deep transition-colors hover:border-deep hover:bg-deep hover:text-sand"
-                    >
-                      {siet.nazov}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </Reveal>
-          </div>
-
-          <Reveal delay={0.1} className="rounded-card bg-mint p-5 sm:p-8 lg:p-10">
-            <Suspense fallback={<KontaktForm />}>
-              <KontaktFormZUrl />
-            </Suspense>
-          </Reveal>
-        </div>
-      </section>
+      <KontaktSekcia />
 
       <section id="mapa" className="bg-mint py-24 md:py-36">
         <div className="site-container grid gap-12 lg:grid-cols-[1fr_2fr] lg:items-end lg:gap-16">

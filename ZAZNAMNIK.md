@@ -35,6 +35,10 @@ Súvisiace súbory:
   - Kontaktný formulár je iba vzhľad, nič neodosiela. Mapa Google sa načíta až po kliknutí na „Zobraziť mapu“.
   - Prihláška na kurz stále vedie na Google formulár Helenky (sekcia 6).
   - `public/images/helena-kvety.jpg` je `helena-portret.jpg` bez bielych okrajov.
+- `/kurzy` zjednodušené na 3 sekcie: úvod, karty kurzov (tie isté ako na domovskej stránke) a cenník s prihláškou. Postup výroby, dlhý popis kurzu a samostatný blok o teambuildingu sú preč.
+- Rýchlosť: úvod stránky a hlavička sa animujú cez CSS, nečakajú na JavaScript. Hlavička je celá viditeľná za ~0,8 s namiesto ~1,2 s (merané lokálne). Pri zapnutom „obmedziť pohyb“ sa obsah ukáže hneď. Vývojový režim (`next dev`) je pomalší ako ostrý web: posiela ~950 KB JavaScriptu, ostrý build ~195 KB.
+- Domovská stránka, sekcia „O mne“: nové rozloženie podľa muoiatelier.com/en/o-nas. Fotka vľavo, vpravo nadpis „Moja cesta s hlinou“, krátky príbeh (vety z „O nás“) a podpis. Plávajúce fotky a citát sú preč.
+- Domovská stránka: galéria diel má vždy 3 stĺpce na každej obrazovke, ukazuje všetky diela (teraz 12, teda 4 rady). Sekcia „Z hliny, rukami, bez kruhu.“ má namiesto dvoch odsekov 3 hodnoty s ikonkami (inšpirácia: muoiatelier.com). Texty hodnôt sú poskladané z Helenkiných viet v sekciách 5.1 a 5.3, mierne skrátené – dať Helenke na schválenie.
 - Body 4 – 9 sa robia vo vetve `feat/body-4-9` (oddelený git worktree), lebo v hlavnom priečinku súčasne pracovala iná session na `/kurzy`.
 - Hotový bod 4 – anglická verzia:
   - Slovenčina je na `/kurzy`, angličtina na `/en/kurzy`. Adresy stránok ostávajú slovenské aj v angličtine (ako na starom webe).
@@ -83,7 +87,11 @@ Súvisiace súbory:
   - Prečo nie 404 v bežnom layoute: pri koreňovom layoute `app/[lang]` Next.js 16 nevykreslí 404 v layoute na serveri (posiela prázdnu stránku a dokreslí ju až JavaScript). Dokumentácia pre tento prípad odporúča `global-not-found`. Preto 404 nemá hlavičku a pätičku webu.
   - Neznáme slugy produktov a článkov aj neznámy jazyk (`/de`) vracajú 404 (`dynamicParams = false`).
 - Overené pre body 4 – 9: `tsc`, `eslint` a `next build` bez chýb, všetkých 123 stránok sa vygeneruje staticky. Každá nová stránka je skontrolovaná v prehliadači na desktope; domov, detail produktu a info lišta aj na mobile (375 px). Filter a triedenie obchodu, zatvorenie info lišty a 404 sú otestované automaticky v prehliadači.
-- Vetva `feat/body-4-9` ešte nie je zlúčená do `main`. V `main` medzitým iná session menila `/kurzy` (necommitnuté). Pri zlúčení treba ich zmeny preniesť do `app/[lang]/kurzy` a komponentov s textami `{ sk, en }`.
+- Vetva `feat/body-4-9` je zlúčená s `main` (commit `wip` z druhej session, záznamy vyššie). Jej zmeny sú prenesené do `app/[lang]/` a všetky nové texty majú aj anglickú verziu (preklad AI, patrí k otázke 21):
+  - Formulár na kontakte má 3 záložky z `main`: Firmy, Kurzy, Otázka (`/kontakt?typ=kurzy#formular`). Nahrádzajú prepínač Otázka / Teambuilding z bodu 7. Poučenie `[doplniť: …]` a odkaz na ochranu osobných údajov pod formulárom ostali.
+  - Prihláška na kurz už nevedie na Google formulár, ale na záložku Kurzy. Poznámka z bodu 4, že Google formulár je iba po slovensky, už neplatí. Tlačidlo „Napísať o ponuku“ z bodu 7 je preč spolu s blokom o teambuildingu.
+  - Odkazy „Opýtať sa na kúsok“ v obchode vedú na záložku Otázka.
+  - Ikona košíka v hlavičke vedie na `/kosik`. Tá stránka ešte neexistuje (fáza 4), zatiaľ ukáže 404.
 
 ---
 

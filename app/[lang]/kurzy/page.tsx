@@ -1,24 +1,27 @@
 import type { Localized } from "@/lib/i18n";
 import { getLang } from "@/lib/i18n-server";
 import { pageMetadata } from "@/lib/metadata";
+import { formular } from "@/content/atelier";
 import { PageHero, PageHeroImage } from "@/components/page-hero";
 import { ButtonLink } from "@/components/ui/button-link";
-import { OKurze } from "@/components/kurzy/o-kurze";
-import { Postup } from "@/components/kurzy/postup";
+import { KurzyStack } from "@/components/home/kurzy-stack";
 import { Cennik } from "@/components/kurzy/cennik";
-import { Rezervacia } from "@/components/kurzy/rezervacia";
-import { Teambuilding } from "@/components/kurzy/teambuilding";
 
 const texty = {
   eyebrow: { sk: "Kurzy keramiky", en: "Pottery classes" },
   nadpis: { sk: "Príďte sa dotýkať hliny a tvorivo relaxovať", en: "Come and touch clay and relax creatively" },
   lead: {
-    sk: "Pre dospelých aj deti, v malej skupine v ateliéri v Dúbravke. Modelujeme ručne, na hrnčiarskom kruhu netočíme. Kurzy bežia na jeseň a na jar.",
-    en: "For adults and children, in a small group in the studio in Dúbravka. We build by hand and do not use the potter’s wheel. Classes run in autumn and spring.",
+    sk: "Pre dospelých aj deti, v ateliéri v Dúbravke. Modelujeme ručne, bez hrnčiarskeho kruhu.",
+    en: "For adults and children, in the studio in Dúbravka. We build by hand, without a potter’s wheel.",
   },
   prihlasit: { sk: "Prihlásiť sa", en: "Sign up" },
   cennik: { sk: "Cenník", en: "Prices" },
-  alt: { sk: "Ruky držia vlnitú misu s reliéfom", en: "Hands holding a wavy bowl with a relief" },
+  alt: { sk: "Modrá váza s reliéfom v rukách", en: "Blue vase with a relief held in hands" },
+  vyberte: { sk: "Vyberte si kurz", en: "Choose a class" },
+  sezona: {
+    sk: "Kurzy bežia na jeseň a na jar, v malej skupine najviac 8 ľudí.",
+    en: "Classes run in autumn and spring, in a small group of at most 8 people.",
+  },
 } satisfies Record<string, Localized>;
 
 export function generateMetadata() {
@@ -43,19 +46,16 @@ export default async function KurzyPage() {
         lead={texty.lead[lang]}
         actions={
           <>
-            <ButtonLink href="#rezervacia">{texty.prihlasit[lang]}</ButtonLink>
+            <ButtonLink href={formular.kurzy}>{texty.prihlasit[lang]}</ButtonLink>
             <ButtonLink href="#cennik" variant="outline">
               {texty.cennik[lang]}
             </ButtonLink>
           </>
         }
-        aside={<PageHeroImage src="/images/diela/strip-img_3193.jpg" alt={texty.alt[lang]} />}
+        aside={<PageHeroImage src="/images/diela/strip-img_2212.jpg" alt={texty.alt[lang]} />}
       />
-      <OKurze />
-      <Postup />
+      <KurzyStack title={texty.vyberte} aside={texty.sezona} links={false} />
       <Cennik />
-      <Rezervacia />
-      <Teambuilding />
     </>
   );
 }

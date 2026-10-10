@@ -54,3 +54,20 @@ export const zaujalo: Localized = {
   sk: "Ak si chcete kúpiť výnimočný výrobok či už pre seba alebo ako darček, prípadne sa chcete prihlásiť na kurz, ozvite sa.",
   en: "If you would like to buy a special piece, for yourself or as a gift, or sign up for a class, get in touch.",
 };
+
+/**
+ * The "O mne" section on the homepage. Sentences from "O nás" and the homepage block, verbatim.
+ * It leaves out "Je to úžasný pocit…", which the values row in the intro already quotes.
+ */
+export const oMneDomov: Localized<string[]> = {
+  sk: [
+    "Krása. Vždy ma fascinovala a prinášala radosť, približovala ma k jej Pôvodcovi. Keramiku som si kupovala a obdivovala. Až prišiel deň, kedy som ju začala aj ja tvoriť.",
+    "Od roku 2020 mám vlastný ateliér. Z hliny tvorím krásu a drobné radosti a vediem kurzy keramiky vo svojom ateliéri v Dúbravke.",
+    "Snažím sa, aby dielka boli nielen oku lahodiace, ale aj praktické a užitočné. Verím, že prinesú radosť aj vám.",
+  ],
+  en: [
+    "Beauty. It has always fascinated me and brought me joy, drawing me closer to its Creator. I used to buy ceramics and admire them. Then the day came when I started making them myself.",
+    "I have had my own studio since 2020. I make beauty and small joys out of clay, and I teach pottery classes in my studio in Dúbravka.",
+    "I try to make pieces that are not only pleasing to the eye but also practical and useful. I believe they will bring you joy too.",
+  ],
+};

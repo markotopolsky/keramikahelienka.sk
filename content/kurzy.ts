@@ -64,87 +64,10 @@ export const kurzy: Kurz[] = [
   },
 ];
 
-// Everything below is for the /kurzy page and comes from ZAZNAMNIK.md section 6:
-// the 2026 price list images, the course sign-up form and the workshop product in the shop.
+// Everything below is for the price list on /kurzy and comes from ZAZNAMNIK.md section 6:
+// the 2026 price list images and Helena's Google sign-up form, which the site no longer links to.
 // TODO: question 5 for Helena. The irregular-course prices appear only in the form,
 // the one-off visit only on the price list image.
-
-/** The sign-up form Helena uses today ("Záväzná prihláška na 1-mesačný kurz keramiky"). It is in Slovak only. */
-export const prihlaska =
-  "https://docs.google.com/forms/d/e/1FAIpQLSeoLK3W8N3NL6rVFy88hWFnaBPmp4bJ6C7nZFkggQzglOEwtg/viewform";
-
-/** Course description from the sign-up form, verbatim */
-export const popisKurzu: Localized<string[]> = {
-  sk: [
-    "Počas kurzu sa oboznámite s hlinou ako modelovacím materiálom. Vymodelujete si postupne reliéf, misku, hrnček, vázu. Pripravíme aj rôzne materiály na odtláčanie a vykrajovačky, tiež si môžete doniesť vlastný materiál na dekorovanie, ak preferujete určitý druh, vzor.",
-    "Hlina a nástroje na jej opracovanie budú pripravené v ateliéri. Či sa budete s hlinou iba hrať, alebo budete vážne tvoriť je na vás, lektorka vám bude nápomocná svojimi radami a skúsenosťami.",
-    "Tí, ktorí už do ateliéru chodili, samozrejme podľa svojej pokročilosti objavujú ďalšie keramické techniky a možnosti ako odlievanie do sádrových foriem, modelovanie väčších kúskov, ako aj prácu s porcelánom a pod.",
-  ],
-  en: [
-    "During the course you get to know clay as a modelling material. Step by step you make a relief, a small bowl, a mug and a vase. We prepare various materials for pressing patterns and cutters, and you can also bring your own decorating material if you prefer a particular kind or pattern.",
-    "Clay and tools for working it are ready in the studio. Whether you just play with the clay or work seriously is up to you; the teacher will help with advice and experience.",
-    "Those who have come to the studio before discover further techniques according to their level, such as slip casting in plaster moulds, building larger pieces, working with porcelain and more.",
-  ],
-};
-
-export const zakladneInfo: { nazov: Localized; text: Localized }[] = [
-  { nazov: { sk: "Skupina", en: "Group" }, text: { sk: "4 – 8 dospelých", en: "4–8 adults" } },
-  {
-    nazov: { sk: "Technika", en: "Technique" },
-    text: { sk: "Ručné modelovanie. Na hrnčiarskom kruhu netočíme.", en: "Hand-building. We do not use the potter’s wheel." },
-  },
-  { nazov: { sk: "Sezóna", en: "Season" }, text: { sk: "Kurzy bežia na jeseň a na jar.", en: "Classes run in autumn and spring." } },
-  {
-    nazov: { sk: "Deti", en: "Children" },
-    text: { sk: "Do 10 rokov len v sprievode platiaceho rodiča.", en: "Under 10 only with a paying parent." },
-  },
-];
-
-/** From clay to a finished piece. Kiln temperatures and times come from the blog post "Proces výroby keramiky". */
-export const postup: { nazov: Localized; text: Localized }[] = [
-  {
-    nazov: { sk: "Modelovanie", en: "Modelling" },
-    text: {
-      sk: "Z hliny vymodelujete reliéf, misku, hrnček alebo vázu. Hlina a nástroje sú pripravené v ateliéri.",
-      en: "You model a relief, a small bowl, a mug or a vase. Clay and tools are ready in the studio.",
-    },
-  },
-  {
-    nazov: { sk: "Sušenie", en: "Drying" },
-    text: {
-      sk: "Výrobky necháme v ateliéri vysušiť. Šálka schne zhruba týždeň, väčšie kusy aj dlhšie.",
-      en: "Your pieces dry in the studio. A cup takes about a week, larger pieces longer.",
-    },
-  },
-  {
-    nazov: { sk: "Prvý výpal", en: "First firing" },
-    text: {
-      sk: "Vysušené výrobky vypálime v keramickej peci, zvyčajne pri 950 °C.",
-      en: "The dry pieces are fired in the kiln, usually at 950 °C.",
-    },
-  },
-  {
-    nazov: { sk: "Glazovanie", en: "Glazing" },
-    text: {
-      sk: "Vyskúšate si rôzne techniky nanášania glazúry. K dispozícii sú aj engoby (podglazúrne farby) a patina.",
-      en: "You try different ways of applying glaze. Engobes (underglaze colours) and patina are available too.",
-    },
-  },
-  {
-    nazov: { sk: "Druhý výpal", en: "Second firing" },
-    text: {
-      sk: "Naglazovanú keramiku vypálime druhýkrát, zvyčajne pri 1050 °C.",
-      en: "The glazed pieces are fired a second time, usually at 1050 °C.",
-    },
-  },
-  {
-    nazov: { sk: "Vyzdvihnutie", en: "Collection" },
-    text: {
-      sk: "Až teraz sú výrobky hotové. Prídete si ich zobrať do ateliéru.",
-      en: "Only now are the pieces finished. You collect them from the studio.",
-    },
-  },
-];
 
 export const cennikDospeli: { rozsah: Localized; pravidelne: number; nepravidelne: number }[] = [
   { rozsah: { sk: "4 × 3 hod.", en: "4 × 3 h" }, pravidelne: 156, nepravidelne: 192 },
@@ -160,48 +83,8 @@ export const cennikDeti: { vek: Localized; cena: number }[] = [
   { vek: { sk: "14 – 18 rokov", en: "14–18 years" }, cena: 11 },
 ];
 
-export const cennikOstatne: { nazov: Localized; rozsah: Localized; cena: Localized }[] = [
-  {
-    nazov: { sk: "Workshop", en: "Workshop" },
-    rozsah: {
-      sk: "3 + 2 hodiny, skupina 3 – 6 ľudí. Dá sa darovať ako darčeková poukážka.",
-      en: "3 + 2 hours, group of 3–6 people. Can be given as a gift voucher.",
-    },
-    cena: { sk: "85 €", en: "€85" },
-  },
-  {
-    nazov: { sk: "Jednorazový vstup do ateliéru", en: "Single studio visit" },
-    rozsah: { sk: "3 hodiny", en: "3 hours" },
-    cena: { sk: "51 €", en: "€51" },
-  },
-  {
-    nazov: { sk: "Skupinový alebo rodinný workshop", en: "Group or family workshop" },
-    rozsah: {
-      sk: "3 – 5 osôb, 3 + 2 hodiny. Cena podľa počtu a veku.",
-      en: "3–5 people, 3 + 2 hours. Price depends on group size and age.",
-    },
-    cena: { sk: "od 190 €", en: "from €190" },
-  },
-  {
-    nazov: { sk: "Teambuilding", en: "Team building" },
-    rozsah: { sk: "Pre firmy, na dohodu.", en: "For companies, by arrangement." },
-    cena: { sk: "na mieru", en: "custom quote" },
-  },
-];
-
 export const terminy: { den: Localized; cas: string }[] = [
   { den: { sk: "Utorok", en: "Tuesday" }, cas: "17:00 – 20:00" },
   { den: { sk: "Streda", en: "Wednesday" }, cas: "9:30 – 12:30" },
   { den: { sk: "Štvrtok", en: "Thursday" }, cas: "17:30 – 20:30" },
 ];
-
-export const vCene: Localized<string[]> = {
-  sk: [
-    "všetok materiál a pracovné pomôcky",
-    "uskladnenie výrobkov počas sušenia",
-    "2 × výpal v keramickej peci",
-    "malé občerstvenie",
-    "lektorka",
-  ],
-  en: ["all materials and tools", "storage of your pieces while they dry", "2 × kiln firing", "light refreshments", "teacher"],
-};
