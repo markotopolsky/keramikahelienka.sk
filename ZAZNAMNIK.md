@@ -67,6 +67,13 @@ Súvisiace súbory:
   - Formulár nič neodosiela, po kliknutí na „Odoslať“ ukáže poznámku, že ide o prototyp.
   - Pod formulárom svieti `[doplniť: poučenie o spracovaní osobných údajov pri formulári – text dodá Helenka]` a odkaz na ochranu osobných údajov.
   - Oprava z bodu 4: logo v pätičke sa pri šírke okolo 1024 px už nezalomí na „He-“ a „lienka“.
+- Hotový bod 8 – právne stránky:
+  - `/obchodne-podmienky`, `/reklamacny-poriadok`, `/ochrana-osobnych-udajov` a `/cookies`, aj v angličtine. Odkazy sú v pätičke.
+  - Pod nadpisom je žltý pruh „Vzorový text – čaká na znenie od právnika“.
+  - Obsah je iba osnova: nadpisy častí, ktoré takéto dokumenty bežne majú, a v nich `[doplniť: …]`. Právny text vývojár nepísal (sekcia 14).
+  - Doplnené sú iba fakty zo záznamníka a z webu: kontakty, osobný odber v ateliéri zadarmo, podmienky kurzov zo súčasného Google formulára (skrátené, sekcia 6), aké polia má kontaktný formulár, čo web ukladá v prehliadači (zatvorená info lišta), že Mapy Google sa načítajú až po kliknutí a že web zatiaľ nemá analytiku.
+  - Stránky majú `noindex`, aby sa vzorový text nedostal do Googlu. Pri vložení konečného znenia ho treba zrušiť v `components/pravna-stranka.tsx`.
+  - Obsah je v `content/pravne.ts`. Medzera sa píše ako `[[IČO]]` a na stránke sa ukáže ako `[doplniť: IČO]`.
 
 ---
 
@@ -712,7 +719,7 @@ Poradie:
 5. ~~`/obchod` a `/obchod/[slug]` zo statických dát. Najprv stiahnuť 128 fotiek produktov do `public/images/produkty/` (starý web má firewall, treba hlavičky prehliadača). Filter podľa kategórie a základné triedenie: najnovšie, cena od najnižšej, cena od najvyššej. Vypredané kusy na konci, jemne zosivené.~~ Hotové 10. 10. 2026. [čaká: 1 – DPH, 2 – doprava, 7 – názvy produktov]
 6. ~~Info lišta hore na stránke so statickým textom, dá sa zavrieť. Text v súbore v `content/`.~~ Hotové 10. 10. 2026. [čaká: aktuálny oznam od Helenky]
 7. ~~Formulár na kontakte s výberom „Otázka“ / „Teambuilding pre firmy“. Pri teambuildingu ďalšie polia: firma, miesto (ateliér / priestory firmy), počet ľudí, spoločné dielo / každý vlastné, predbežný termín. Tlačidlo v sekcii teambuilding na `/kurzy` otvorí formulár s predvoleným teambuildingom. Zatiaľ iba vzhľad, nič neodosiela.~~ Hotové 10. 10. 2026. [čaká: 15 – formulár pre HR áno / nie]
-8. Právne stránky: `/obchodne-podmienky`, `/reklamacny-poriadok`, `/ochrana-osobnych-udajov`, `/cookies`. Zatiaľ **vzorový text** so zástupnými údajmi `[doplniť: IČO]` a pod. Hore viditeľný pruh „Vzorový text – čaká na znenie od právnika“. Nekopírovať podmienky iných e-shopov. Konečné znenie dodá Helenka (sekcia 14).
+8. ~~Právne stránky: `/obchodne-podmienky`, `/reklamacny-poriadok`, `/ochrana-osobnych-udajov`, `/cookies`. Zatiaľ **vzorový text** so zástupnými údajmi `[doplniť: IČO]` a pod. Hore viditeľný pruh „Vzorový text – čaká na znenie od právnika“. Nekopírovať podmienky iných e-shopov. Konečné znenie dodá Helenka (sekcia 14).~~ Hotové 10. 10. 2026. [čaká: 1 – právne údaje e-shopu, právne texty od Helenky]
 9. `/blog` a `/blog/[slug]` (2 pôvodné články, sekcia 5.6), stránka 404.
 
 ### Fáza 0 – Technické rozhodnutia (odložené)
