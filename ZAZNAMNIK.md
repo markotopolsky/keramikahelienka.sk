@@ -92,6 +92,7 @@ Súvisiace súbory:
   - Prihláška na kurz už nevedie na Google formulár, ale na záložku Kurzy. Poznámka z bodu 4, že Google formulár je iba po slovensky, už neplatí. Tlačidlo „Napísať o ponuku“ z bodu 7 je preč spolu s blokom o teambuildingu.
   - Odkazy „Opýtať sa na kúsok“ v obchode vedú na záložku Otázka.
   - Ikona košíka v hlavičke vedie na `/kosik`. Tá stránka ešte neexistuje (fáza 4), zatiaľ ukáže 404.
+- Domovská stránka, sekcia „Každý kus existuje len raz“: namiesto galérie v 3 stĺpcoch sú rovnaké karty ako v obchode (2 stĺpce na telefóne, 3 na tablete, 4 na desktope), s cenou a odkazom na produkt. Výber 12 kúskov je v `content/diela.ts` (`dielaNaDomov`), vypredané sa preskočia. Pod mriežkou je tlačidlo „Pozrieť všetky kúsky“ do obchodu. Mení to záznam o 3 stĺpcoch vyššie.
 
 ---
 
