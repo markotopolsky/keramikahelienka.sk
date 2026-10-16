@@ -112,7 +112,7 @@ export function SiteHeader() {
 
         <div className="flex items-center gap-2 justify-self-end">
           <LanguageSwitcher className="mr-3 max-lg:hidden" />
-          <ButtonLink href={formular.kurzy} variant={solid ? "deep" : "primary"} className="max-sm:hidden">
+          <ButtonLink href={formular.kurzy} variant="deep" className="max-sm:hidden">
             {texty.rezervovat[lang]}
           </ButtonLink>
           {/* TODO: phase 4 adds the cart and a badge with the number of pieces in it.

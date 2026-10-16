@@ -41,23 +41,23 @@ export async function Intro() {
   const lang = await getLang();
 
   return (
-    <section className="bg-deep text-sand">
+    <section className="bg-aqua text-ink">
       <div className="site-container pb-24 pt-24 md:pb-36 md:pt-36">
         <div className="flex flex-col items-center text-center">
           <Reveal>
             <h2 className="text-display">{texty.nadpis[lang]}</h2>
           </Reveal>
           <Reveal delay={0.1}>
-            <p className="mt-6 max-w-[38rem] text-lead text-sand/90 md:mt-8">{texty.lead[lang]}</p>
+            <p className="mt-6 max-w-[38rem] text-lead text-ink/85 md:mt-8">{texty.lead[lang]}</p>
           </Reveal>
         </div>
 
-        <ul className="mt-16 grid gap-14 md:mt-24 md:grid-cols-3 md:gap-0 md:divide-x md:divide-sand/15">
+        <ul className="mt-16 grid gap-14 md:mt-24 md:grid-cols-3 md:gap-0 md:divide-x md:divide-ink/15">
           {hodnoty.map(({ Icon, nazov, text }, i) => (
             <Reveal as="li" key={nazov.sk} delay={0.1 * i} className="flex flex-col items-center text-center md:px-8 lg:px-12">
-              <Icon className="size-16 text-aqua md:size-20" />
+              <Icon className="size-16 text-deep md:size-20" />
               <h3 className="mt-6 text-[1.625rem] leading-tight tracking-[-0.02em] md:text-[1.75rem]">{nazov[lang]}</h3>
-              <p className="mt-3 max-w-[21rem] text-[15px] leading-relaxed text-sand/90 md:text-base">{text[lang]}</p>
+              <p className="mt-3 max-w-[21rem] text-[15px] leading-relaxed text-ink/85 md:text-base">{text[lang]}</p>
             </Reveal>
           ))}
         </ul>

@@ -33,7 +33,7 @@ export function Hero() {
   const titleY = useTransform(scrollYProgress, [0, 1], ["0%", "-30%"]);
 
   return (
-    <section ref={ref} data-hero className="bg-deep">
+    <section ref={ref} data-hero className="bg-aqua">
       <div className="relative h-svh min-h-[36rem] overflow-hidden rounded-b-frame bg-ink md:min-h-[760px]">
         <motion.div className="absolute inset-0 motion-safe:animate-settle" style={{ y: photoY }}>
           <Image
@@ -76,7 +76,7 @@ export function Hero() {
           <div className="max-w-[34rem]">
             <p className="text-lead">{texty.lead[lang]}</p>
             <div className="mt-6 flex flex-wrap gap-3 md:mt-7">
-              <ButtonLink href="/kurzy">{texty.kurzy[lang]}</ButtonLink>
+              <ButtonLink href="/kurzy" variant="deep">{texty.kurzy[lang]}</ButtonLink>
               <ButtonLink href="/obchod" variant="outline">
                 {texty.obchod[lang]}
               </ButtonLink>
