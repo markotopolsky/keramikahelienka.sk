@@ -20,7 +20,7 @@ export function LanguageSwitcher({ className = "" }: { className?: string }) {
       {locales.map((l, i) => (
         <li key={l} className="flex items-center">
           {i > 0 && (
-            <span aria-hidden className="px-1.5 opacity-40">
+            <span aria-hidden className="px-1.5 opacity-40 touch:px-0">
               /
             </span>
           )}
@@ -30,7 +30,7 @@ export function LanguageSwitcher({ className = "" }: { className?: string }) {
             lang={l}
             aria-label={languageNames[l]}
             aria-current={l === lang ? "true" : undefined}
-            className="rounded-sm px-0.5 py-1 opacity-60 transition-opacity hover:opacity-100 aria-[current=true]:underline aria-[current=true]:underline-offset-4 aria-[current=true]:opacity-100"
+            className="rounded-sm px-0.5 py-1 opacity-60 transition-opacity touch:inline-flex touch:min-h-11 touch:min-w-11 touch:items-center touch:justify-center hover:opacity-100 aria-[current=true]:underline aria-[current=true]:underline-offset-4 aria-[current=true]:opacity-100"
           >
             {l.toUpperCase()}
           </Link>

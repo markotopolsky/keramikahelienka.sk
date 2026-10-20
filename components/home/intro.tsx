@@ -1,4 +1,4 @@
-import type { Localized } from "@/lib/i18n";
+import { bindShortWords, type Localized } from "@/lib/i18n";
 import { getLang } from "@/lib/i18n-server";
 import { Reveal } from "@/components/ui/reveal";
 import { TornEdge } from "@/components/ui/torn-edge";
@@ -45,7 +45,7 @@ export async function Intro() {
       <div className="site-container pb-24 pt-24 md:pb-36 md:pt-36">
         <div className="flex flex-col items-center text-center">
           <Reveal>
-            <h2 className="text-display">{texty.nadpis[lang]}</h2>
+            <h2 className="text-display">{bindShortWords(texty.nadpis[lang])}</h2>
           </Reveal>
           <Reveal delay={0.1}>
             <p className="mt-6 max-w-[38rem] text-lead text-ink/85 md:mt-8">{texty.lead[lang]}</p>

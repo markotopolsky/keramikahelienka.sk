@@ -92,7 +92,7 @@ export function Choice({
         {options.map((option) => (
           <label
             key={option.value}
-            className={`cursor-pointer rounded-full border border-sage bg-(--field) px-4 py-2 text-[15px] text-deep transition-colors duration-300 has-checked:border-deep has-checked:bg-deep has-checked:text-sand has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-sea ${
+            className={`cursor-pointer rounded-full border border-sage bg-(--field) px-4 py-2 text-[15px] text-deep touch:py-2.5 transition-colors duration-300 has-checked:border-deep has-checked:bg-deep has-checked:text-sand has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-sea ${
               option.disabled ? "cursor-not-allowed opacity-50" : "hover:border-sea"
             }`}
           >
@@ -115,9 +115,10 @@ export function Choice({
 /** A single required checkbox, e.g. agreeing to the terms */
 export function Checkbox({ id, name, required, children }: { id: string; name: string; required?: boolean; children: ReactNode }) {
   return (
-    <label htmlFor={id} className="flex cursor-pointer items-start gap-3 text-[14px] leading-relaxed text-ink">
+    <label htmlFor={id} className="flex cursor-pointer items-start gap-3 text-[14px] leading-relaxed text-ink touch:py-2.5">
       <input id={id} name={name} type="checkbox" required={required} className="mt-0.5 size-4 shrink-0 accent-deep" />
-      {children}
+      {/* One flex item, so a link inside the text wraps with it instead of becoming a separate column */}
+      <span>{children}</span>
     </label>
   );
 }

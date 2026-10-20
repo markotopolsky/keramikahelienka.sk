@@ -137,7 +137,8 @@ export function Hero() {
 
   return (
     <section ref={ref} data-hero className="bg-aqua">
-      <div className="relative h-svh min-h-[36rem] overflow-hidden rounded-b-frame bg-ink md:min-h-[760px]">
+      {/* Fills the first screen below the info bar; on a short screen (a phone held sideways) it grows with the text instead of covering it */}
+      <div className="relative flex min-h-[max(calc(100svh_-_var(--info-vyska,0px)),36rem)] flex-col overflow-hidden rounded-b-frame bg-ink md:min-h-[max(calc(100svh_-_var(--info-vyska,0px)),760px)]">
         <motion.div
           // isolate: at scroll 0 the parallax transform is "none", so without it the slides' zIndex would rise above the text
           className="absolute inset-0 isolate touch-pan-y motion-safe:animate-settle"
@@ -214,8 +215,9 @@ export function Hero() {
           </p>
         </motion.div>
 
+        {/* Phones: copy, buttons and then the slider bars across the full width. From 768px: copy left, controls right. */}
         <div
-          className="site-container absolute inset-x-0 bottom-8 flex items-end justify-between gap-10 text-sand motion-safe:animate-rise md:bottom-12"
+          className="site-container relative mt-auto flex flex-col gap-3 pb-5 pt-10 text-sand motion-safe:animate-rise md:flex-row md:items-end md:justify-between md:gap-10 md:pb-12"
           style={{ animationDelay: "0.9s" }}
         >
           <div className="max-w-[34rem]">
@@ -227,7 +229,7 @@ export function Hero() {
               </ButtonLink>
             </div>
           </div>
-          <div className="flex shrink-0 flex-col items-end gap-5">
+          <div className="flex shrink-0 flex-col gap-5 md:items-end">
             <p className="eyebrow max-w-[16rem] text-right text-sand/80 max-md:hidden">{texty.original[lang]}</p>
             <div
               className="flex items-center gap-3"
@@ -237,7 +239,7 @@ export function Hero() {
               onBlur={() => setPauza(false)}
             >
               <SipkaButton smer={-1} label={texty.predosla[lang]} onClick={() => posun(-1)} />
-              <div className="flex gap-1.5">
+              <div className="flex gap-1.5 max-md:flex-1">
                 {slides.map((slide, i) => (
                   <button
                     key={slide.src}
@@ -245,9 +247,10 @@ export function Hero() {
                     onClick={() => ukaz(i)}
                     aria-label={`${texty.fotka[lang]} ${i + 1} ${texty.z[lang]} ${slides.length}`}
                     aria-current={i === aktivna}
-                    className="group py-3"
+                    // A tall invisible hit area around the thin bar; on phones the bars share the full width
+                    className="group py-5 max-md:flex-1"
                   >
-                    <span className="relative block h-0.5 w-8 overflow-hidden rounded-full bg-sand/35 transition-colors group-hover:bg-sand/60 md:w-12">
+                    <span className="relative block h-0.5 overflow-hidden rounded-full bg-sand/35 transition-colors group-hover:bg-sand/60 md:w-8 lg:w-12">
                       {i === aktivna && (
                         <motion.span className="absolute inset-0 origin-left bg-sand" style={{ scaleX: progress }} />
                       )}

@@ -78,7 +78,7 @@ export function KosikZoznam() {
                         type="button"
                         aria-label={texty.znizit[lang]}
                         onClick={() => zmenitMnozstvo(polozka.slug, polozka.variant, polozka.mnozstvo - 1)}
-                        className="flex size-8 items-center justify-center text-deep hover:text-ink"
+                        className="flex size-8 items-center justify-center text-deep hover:text-ink touch:size-11"
                       >
                         −
                       </button>
@@ -87,7 +87,7 @@ export function KosikZoznam() {
                         type="button"
                         aria-label={texty.zvysit[lang]}
                         onClick={() => zmenitMnozstvo(polozka.slug, polozka.variant, polozka.mnozstvo + 1)}
-                        className="flex size-8 items-center justify-center text-deep hover:text-ink"
+                        className="flex size-8 items-center justify-center text-deep hover:text-ink touch:size-11"
                       >
                         +
                       </button>
@@ -99,7 +99,7 @@ export function KosikZoznam() {
                 <button
                   type="button"
                   onClick={() => odobrat(polozka.slug, polozka.variant)}
-                  className="mt-1 self-start text-[13px] text-drift underline decoration-drift/50 underline-offset-4 hover:text-deep hover:decoration-deep"
+                  className="mt-1 self-start text-[13px] text-drift underline decoration-drift/50 underline-offset-4 hover:text-deep hover:decoration-deep touch:mt-0 touch:min-h-11"
                 >
                   {texty.odobrat[lang]}
                 </button>

@@ -1,4 +1,4 @@
-import type { Localized } from "@/lib/i18n";
+import { bindShortWords, type Localized } from "@/lib/i18n";
 import { getLang } from "@/lib/i18n-server";
 import { pageMetadata } from "@/lib/metadata";
 import { formular } from "@/content/atelier";
@@ -86,7 +86,7 @@ export default async function PreFirmyPage() {
 function Karta({ nadpis, text }: { nadpis: string; text: string }) {
   return (
     <Reveal className="rounded-card bg-mint p-8">
-      <h3 className="text-h3 text-deep">{nadpis}</h3>
+      <h3 className="text-h3 text-deep">{bindShortWords(nadpis)}</h3>
       <p className="mt-3 text-[15px] leading-relaxed text-ink/80">{text}</p>
     </Reveal>
   );

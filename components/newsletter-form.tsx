@@ -29,17 +29,17 @@ export function NewsletterForm() {
       <label htmlFor="newsletter-email" className="sr-only">
         {texty.email[lang]}
       </label>
-      <div className="flex items-center rounded-full border border-sand/40 p-1.5 pl-5 transition-colors focus-within:border-sand">
+      <div className="flex items-center rounded-full border border-sand/40 p-1.5 pl-5 transition-colors focus-within:border-sand touch:p-1 touch:pl-5">
         <input
           id="newsletter-email"
           type="email"
           required
           placeholder={texty.placeholder[lang]}
-          className="min-w-0 flex-1 bg-transparent text-[15px] text-sand placeholder:text-sand/60 focus:outline-none"
+          className="min-w-0 flex-1 self-stretch bg-transparent text-[15px] text-sand placeholder:text-sand/60 focus:outline-none touch:text-base"
         />
         <button
           type="submit"
-          className="rounded-full bg-sand px-4 py-2 text-[14px] font-medium text-deep transition-colors hover:bg-aqua hover:text-ink"
+          className="shrink-0 rounded-full bg-sand px-4 py-2 text-[14px] font-medium text-deep transition-colors hover:bg-aqua hover:text-ink touch:min-h-11"
         >
           {texty.odoberat[lang]}
         </button>

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { formatDate, type Localized } from "@/lib/i18n";
+import { bindShortWords, formatDate, type Localized } from "@/lib/i18n";
 import { getLang } from "@/lib/i18n-server";
 import { pageMetadata } from "@/lib/metadata";
 import { clanky } from "@/content/blog";
@@ -58,7 +58,7 @@ export default async function BlogPage() {
                 <p className="eyebrow mt-6 text-drift">
                   <time dateTime={clanok.datum}>{formatDate(clanok.datum, lang)}</time>
                 </p>
-                <h2 className="mt-3 text-h3 text-deep">{clanok.nazov[lang]}</h2>
+                <h2 className="mt-3 text-h3 text-deep">{bindShortWords(clanok.nazov[lang])}</h2>
                 <p className="mt-4 max-w-[34rem] text-base leading-relaxed text-ink/80 md:text-[17px]">{clanok.popis[lang]}</p>
                 <span className="mt-5 inline-block text-[15px] font-medium text-deep underline decoration-sage underline-offset-4 transition-colors group-hover:decoration-deep">
                   {texty.citat[lang]}

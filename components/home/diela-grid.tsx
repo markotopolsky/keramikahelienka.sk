@@ -1,4 +1,4 @@
-import type { Localized } from "@/lib/i18n";
+import { bindShortWords, type Localized } from "@/lib/i18n";
 import { getLang } from "@/lib/i18n-server";
 import { najdiProdukt, polozkaObchodu, type Produkt } from "@/lib/produkty";
 import { dielaNaDomov } from "@/content/diela";
@@ -31,7 +31,7 @@ export async function DielaGrid() {
         <div className="mb-12 flex flex-col gap-6 md:mb-20 md:flex-row md:items-end md:justify-between md:gap-10">
           <Reveal>
             <p className="eyebrow mb-5 text-drift">{texty.eyebrow[lang]}</p>
-            <h2 className="text-h2 text-deep">{texty.nadpis[lang]}</h2>
+            <h2 className="text-h2 text-deep">{bindShortWords(texty.nadpis[lang])}</h2>
           </Reveal>
           <Reveal delay={0.1} className="flex max-w-[24rem] flex-col items-start gap-6 md:items-end md:text-right">
             <p className="text-[15px] leading-relaxed text-drift">{texty.text[lang]}</p>

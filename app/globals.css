@@ -84,6 +84,17 @@
   --container-site: 90rem;
 }
 
+/*
+ * Phones, tablets and every touch screen (an iPad in landscape gets the desktop layout but is
+ * still tapped with a finger). There links and buttons grow to at least 44px, the touch target
+ * size of Apple's guidelines and WCAG 2.5.5, and inputs use 16px text so iOS does not zoom in on focus.
+ */
+@custom-variant touch {
+  @media (width < 64rem), (pointer: coarse) {
+    @slot;
+  }
+}
+
 /* next/font exposes the self-hosted families as CSS variables on <html> */
 @theme inline {
   --font-display: var(--font-playfair-display), ui-serif, Georgia, serif;
@@ -133,20 +144,26 @@
 
 /*
  * Info bar (components/info-lista.tsx). It sits in the fixed header, so the page starts
- * below it: --info-lista is its measured height, 2.5rem (one line) until the script measures it.
+ * below it. --info-vyska is the space it takes: its measured height (--info-lista),
+ * 2.5rem (one line) until the script measures it, and 0 once closed. The homepage hero
+ * subtracts it too, so the hero still ends at the bottom of the first screen.
  * data-info-zavreta is set before the first paint when the visitor has closed it.
  * Outside @layer base on purpose: the bar's own `grid` utility would win over a base-layer rule.
  */
-html:has([data-info-lista]) main {
-  padding-top: var(--info-lista, 2.5rem);
+html:has([data-info-lista]) {
+  --info-vyska: var(--info-lista, 2.5rem);
+}
+
+html[data-info-zavreta] {
+  --info-vyska: 0px;
 }
 
 html[data-info-zavreta] [data-info-lista] {
   display: none;
 }
 
-html[data-info-zavreta] main {
-  padding-top: 0;
+main {
+  padding-top: var(--info-vyska, 0px);
 }
 
 @utility site-container {

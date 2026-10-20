@@ -92,9 +92,11 @@ export function SiteHeader() {
       style={{ animationDelay: "0.2s", animationDuration: "0.6s" }}
     >
       <InfoLista skryta={!naVrchu} />
-      <div className="site-container flex h-16 items-center justify-between lg:grid lg:h-20 lg:grid-cols-[1fr_auto_1fr]">
-        {/* The logo's own colors on the solid sand bar, its shape in sand over the dark hero; the two crossfade */}
-        <LocaleLink href="/" className="grid w-32 justify-self-start lg:w-40">
+      {/* The links sit in the middle of the bar from 1280px; at 1024px (an iPad held sideways) the bar is too narrow to centre them */}
+      <div className="site-container flex h-16 items-center justify-between gap-4 lg:h-20 xl:grid xl:grid-cols-[1fr_auto_1fr]">
+        {/* The logo's own colors on the solid sand bar, its shape in sand over the dark hero; the two crossfade.
+            It is the one item that may shrink, so the cart and menu buttons fit on a 320px phone. */}
+        <LocaleLink href="/" className="grid w-32 min-w-0 justify-self-start lg:w-40">
           <span aria-hidden={!solid} className={`col-start-1 row-start-1 transition-opacity duration-500 ${solid ? "" : "opacity-0"}`}>
             <Logo farba="znacka" className="w-full" />
           </span>
@@ -104,13 +106,13 @@ export function SiteHeader() {
         </LocaleLink>
 
         <nav aria-label={texty.navigacia[lang]} className="max-lg:hidden">
-          <ul className="flex items-center gap-9 text-[15px]">
+          <ul className="flex items-center gap-6 whitespace-nowrap text-[15px] xl:gap-9">
             {navigacia.map((item) => (
               <li key={item.href}>
                 <LocaleLink
                   href={item.href}
                   aria-current={section === item.href ? "page" : undefined}
-                  className="relative py-1 after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-300 hover:after:scale-x-100 aria-[current=page]:after:scale-x-100"
+                  className="relative py-1 after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px touch:py-3 touch:after:bottom-1.5 after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-300 hover:after:scale-x-100 aria-[current=page]:after:scale-x-100"
                 >
                   {item.label[lang]}
                 </LocaleLink>
@@ -119,16 +121,16 @@ export function SiteHeader() {
           </ul>
         </nav>
 
-        <div className="flex items-center gap-2 justify-self-end">
+        <div className="flex shrink-0 items-center gap-2 justify-self-end">
           <LanguageSwitcher className="mr-3 max-lg:hidden" />
-          <ButtonLink href={formular.kurzy} variant="deep" className="max-sm:hidden">
+          <ButtonLink href={formular.kurzy} variant="deep" className="whitespace-nowrap max-sm:hidden">
             {texty.rezervovat[lang]}
           </ButtonLink>
           <LocaleLink
             href={kosik}
             aria-label={texty.kosik[lang]}
             aria-current={section === kosik ? "page" : undefined}
-            className="relative inline-flex size-[2.875rem] items-center justify-center rounded-full border border-current/40 transition-colors hover:border-current aria-[current=page]:border-current"
+            className="relative inline-flex size-[2.875rem] shrink-0 items-center justify-center rounded-full border border-current/40 transition-colors hover:border-current aria-[current=page]:border-current"
           >
             <BasketIcon className="size-5" />
             {pocetKusov > 0 && (
@@ -146,7 +148,7 @@ export function SiteHeader() {
             aria-haspopup="dialog"
             aria-expanded={menuOpen}
             aria-controls="mobilne-menu"
-            className="inline-flex items-center gap-2.5 rounded-full border border-current/40 px-4 py-3 text-[15px] font-medium leading-[1.5] transition-colors hover:border-current lg:hidden"
+            className="inline-flex shrink-0 items-center gap-2.5 rounded-full border border-current/40 px-4 py-3 text-[15px] font-medium leading-[1.5] transition-colors hover:border-current lg:hidden"
           >
             {texty.menu[lang]}
             <svg viewBox="0 0 16 10" aria-hidden className="h-2.5 w-4">
@@ -210,25 +212,26 @@ export function SiteHeader() {
               <ButtonLink href={formular.kurzy}>{texty.rezervovat[lang]}</ButtonLink>
               <LanguageSwitcher className="text-[15px]" />
             </div>
-            <ul className="mt-8 space-y-1.5 text-[15px] text-sand/80">
-              <li>
+            {/* Each line is a 44px row, so the links are easy to tap */}
+            <ul className="mt-6 text-[15px] text-sand/80">
+              <li className="flex min-h-11 items-center">
                 {kontakt.ulica}, {kontakt.mesto}
               </li>
               <li>
-                <a href={kontakt.telefonHref} className="hover:text-aqua">
+                <a href={kontakt.telefonHref} className="flex min-h-11 items-center hover:text-aqua">
                   {kontakt.telefon}
                 </a>
               </li>
               <li>
-                <a href={`mailto:${kontakt.email}`} className="hover:text-aqua">
+                <a href={`mailto:${kontakt.email}`} className="flex min-h-11 items-center hover:text-aqua">
                   {kontakt.email}
                 </a>
               </li>
-              <li className="flex gap-5 pt-1.5">
-                <a href={kontakt.instagram} className="hover:text-aqua">
+              <li className="flex gap-6">
+                <a href={kontakt.instagram} className="inline-flex min-h-11 items-center hover:text-aqua">
                   Instagram
                 </a>
-                <a href={kontakt.facebook} className="hover:text-aqua">
+                <a href={kontakt.facebook} className="inline-flex min-h-11 items-center hover:text-aqua">
                   Facebook
                 </a>
               </li>

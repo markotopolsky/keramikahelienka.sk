@@ -114,7 +114,7 @@ function Zoznam({
               <select
                 value={zoradenie}
                 onChange={(e) => nastavUrl(kategoria, e.target.value as Zoradenie)}
-                className="appearance-none rounded-full border border-sage bg-sand py-2 pl-4 pr-9 text-[14px] text-ink transition-colors hover:border-sea focus:border-deep focus:outline-none"
+                className="appearance-none rounded-full border border-sage bg-sand py-2 pl-4 pr-9 text-[14px] text-ink transition-colors hover:border-sea focus:border-deep focus:outline-none touch:min-h-11 touch:text-base"
               >
                 {zoradenia.map((z) => (
                   <option key={z} value={z}>
@@ -167,7 +167,7 @@ function Chip({ aktivny, onClick, children }: { aktivny: boolean; onClick: () =>
       type="button"
       aria-pressed={aktivny}
       onClick={onClick}
-      className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border border-sage px-4 py-2 text-[14px] text-deep transition-colors hover:border-deep aria-pressed:border-deep aria-pressed:bg-deep aria-pressed:text-sand"
+      className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border border-sage px-4 py-2 text-[14px] text-deep touch:min-h-11 transition-colors hover:border-deep aria-pressed:border-deep aria-pressed:bg-deep aria-pressed:text-sand"
     >
       {children}
     </button>

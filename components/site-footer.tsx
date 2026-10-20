@@ -22,6 +22,9 @@ const texty = {
   atelier: { sk: "Ateliér", en: "Studio" },
 } satisfies Record<string, Localized>;
 
+// On touch screens every line of the link columns is a 44px row, so the links are easy to tap
+const riadok = "touch:flex touch:min-h-11 touch:items-center";
+
 // Alternating tilt and offset for the photo strip, like prints dropped on a table
 const tilt = ["-rotate-3 translate-y-4", "rotate-2", "-rotate-1 translate-y-6", "rotate-3 translate-y-2"];
 
@@ -61,7 +64,7 @@ export async function SiteFooter() {
             <FooterColumn title={texty.stranky[lang]}>
               {navigacia.map((item) => (
                 <li key={item.href}>
-                  <LocaleLink href={item.href} className="hover:text-aqua">
+                  <LocaleLink href={item.href} className={`hover:text-aqua ${riadok}`}>
                     {item.label[lang]}
                   </LocaleLink>
                 </li>
@@ -69,27 +72,27 @@ export async function SiteFooter() {
             </FooterColumn>
             <FooterColumn title={texty.sledujte[lang]}>
               <li>
-                <a href={kontakt.instagram} className="hover:text-aqua">
+                <a href={kontakt.instagram} className={`hover:text-aqua ${riadok}`}>
                   Instagram
                 </a>
               </li>
               <li>
-                <a href={kontakt.facebook} className="hover:text-aqua">
+                <a href={kontakt.facebook} className={`hover:text-aqua ${riadok}`}>
                   Facebook
                 </a>
               </li>
             </FooterColumn>
             {/* The e-mail address is too long for half a phone screen, so this column takes a full row there */}
             <FooterColumn title={texty.atelier[lang]} className="max-md:col-span-2">
-              <li>{kontakt.ulica}</li>
-              <li>{kontakt.mesto}</li>
+              <li className={riadok}>{kontakt.ulica}</li>
+              <li className={riadok}>{kontakt.mesto}</li>
               <li>
-                <a href={kontakt.telefonHref} className="hover:text-aqua">
+                <a href={kontakt.telefonHref} className={`hover:text-aqua ${riadok}`}>
                   {kontakt.telefon}
                 </a>
               </li>
               <li>
-                <a href={`mailto:${kontakt.email}`} className="hover:text-aqua">
+                <a href={`mailto:${kontakt.email}`} className={`hover:text-aqua ${riadok}`}>
                   {kontakt.email}
                 </a>
               </li>
@@ -101,13 +104,17 @@ export async function SiteFooter() {
           {/* Spans the column on phones and tablets; drawn in sand because teal would vanish on the deep background */}
           <Logo farba="text" className="w-full max-w-[44rem] shrink-0 lg:w-[clamp(28rem,45vw,44rem)]" />
           <div className="flex min-w-0 flex-col gap-2 text-[13px] text-sand/70 lg:items-end lg:pb-4 lg:text-right">
-            <div className="flex flex-wrap gap-x-5 gap-y-2 lg:justify-end">
+            <div className="flex flex-wrap gap-x-5 gap-y-2 lg:justify-end touch:gap-y-0">
               {pravneStranky.map((stranka) => (
-                <LocaleLink key={stranka.slug} href={`/${stranka.slug}`} className="hover:text-sand">
+                <LocaleLink
+                  key={stranka.slug}
+                  href={`/${stranka.slug}`}
+                  className="hover:text-sand touch:inline-flex touch:min-h-11 touch:items-center"
+                >
                   {stranka.nazov[lang]}
                 </LocaleLink>
               ))}
-              <NastaveniaCookies className="hover:text-sand" />
+              <NastaveniaCookies className="hover:text-sand touch:inline-flex touch:min-h-11 touch:items-center" />
             </div>
             <div className="flex flex-wrap items-center gap-x-6 gap-y-2 lg:justify-end">
               <p>© 2026 {kontakt.nazov}</p>
@@ -124,7 +131,7 @@ function FooterColumn({ title, children, className = "" }: { title: string; chil
   return (
     <div className={className}>
       <p className="eyebrow text-[11px] text-aqua">{title}</p>
-      <ul className="mt-4 space-y-2 text-sand/90">{children}</ul>
+      <ul className="mt-4 space-y-2 text-sand/90 touch:mt-2 touch:space-y-0">{children}</ul>
     </div>
   );
 }

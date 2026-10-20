@@ -50,7 +50,7 @@ export async function Cennik() {
               <h3 className="text-[26px] leading-none tracking-[-0.02em] md:text-[30px]">{texty.mesacny[lang]}</h3>
               <table className="mt-6 w-full text-left">
                 <thead>
-                  <tr className="eyebrow text-[10px] tracking-[0.04em] text-aqua sm:text-[11px] sm:tracking-[0.08em]">
+                  <tr className="eyebrow text-[11px] tracking-[0.02em] text-aqua sm:tracking-[0.08em]">
                     <th scope="col" className="pb-3 pr-3 font-medium">
                       {texty.rozsah[lang]}
                     </th>

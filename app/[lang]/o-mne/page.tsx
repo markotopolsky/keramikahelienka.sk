@@ -1,4 +1,4 @@
-import type { Localized } from "@/lib/i18n";
+import { bindShortWords, type Localized } from "@/lib/i18n";
 import { getLang } from "@/lib/i18n-server";
 import { pageMetadata } from "@/lib/metadata";
 import { oMneUvod, zaujalo } from "@/content/o-mne";
@@ -45,7 +45,7 @@ export default async function OMnePage() {
 
       <section className="bg-sand py-24 md:py-36">
         <Reveal className="site-container flex flex-col items-center text-center">
-          <h2 className="text-h2 text-deep">{texty.zaujalo[lang]}</h2>
+          <h2 className="text-h2 text-deep">{bindShortWords(texty.zaujalo[lang])}</h2>
           <p className="mt-6 max-w-[34rem] text-lead text-ink/80">{zaujalo[lang]}</p>
           {/* The original "Tu ma nájdete" button led nowhere; now it opens the contact page */}
           <div className="mt-10 flex flex-wrap justify-center gap-3">

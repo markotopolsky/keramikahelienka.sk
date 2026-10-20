@@ -1,4 +1,4 @@
-import type { Localized } from "@/lib/i18n";
+import { bindShortWords, type Localized } from "@/lib/i18n";
 import { getLang } from "@/lib/i18n-server";
 import { pageMetadata } from "@/lib/metadata";
 import { kontakt, mapa } from "@/content/atelier";
@@ -53,12 +53,12 @@ export default async function KontaktPage() {
         aside={
           <dl className="divide-y divide-sand/15 border-y border-sand/15">
             {kanaly.map((kanal) => (
-              <div key={kanal.href} className="py-5">
+              <div key={kanal.href} className="py-5 touch:pb-3.5">
                 <dt className="eyebrow text-[11px] text-aqua">{kanal.nazov}</dt>
-                <dd className="mt-2">
+                <dd className="mt-2 touch:mt-0.5">
                   <a
                     href={kanal.href}
-                    className="font-display text-[20px] leading-tight tracking-[-0.02em] transition-colors hover:text-aqua sm:text-[24px]"
+                    className="font-display text-[20px] leading-tight tracking-[-0.02em] transition-colors hover:text-aqua sm:text-[24px] touch:inline-flex touch:min-h-11 touch:items-center"
                   >
                     {kanal.hodnota}
                   </a>
@@ -75,7 +75,7 @@ export default async function KontaktPage() {
         <div className="site-container grid gap-12 lg:grid-cols-[1fr_2fr] lg:items-end lg:gap-16">
           <Reveal>
             <p className="eyebrow text-drift">{texty.kde[lang]}</p>
-            <h2 className="mt-5 text-h2 text-deep">{texty.atelierNadpis[lang]}</h2>
+            <h2 className="mt-5 text-h2 text-deep">{bindShortWords(texty.atelierNadpis[lang])}</h2>
             <address className="mt-6 text-lead not-italic text-ink/80">
               {kontakt.nazov}
               <br />

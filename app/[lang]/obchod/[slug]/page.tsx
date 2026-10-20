@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { plural, type Localized } from "@/lib/i18n";
+import { bindShortWords, plural, type Localized } from "@/lib/i18n";
 import { getLang } from "@/lib/i18n-server";
 import { pageMetadata } from "@/lib/metadata";
 import { produktData } from "@/lib/strukturovane-data";
@@ -79,17 +79,20 @@ export default async function ProduktPage({ params }: PageProps<"/[lang]/obchod/
       <JsonLd data={produktData(produkt, lang)} />
       <section className="bg-sand pb-20 pt-24 md:pb-28 md:pt-32">
         <div className="site-container">
-          <nav aria-label={texty.navigacia[lang]} className="mb-8 text-[14px] text-drift md:mb-10">
+          <nav aria-label={texty.navigacia[lang]} className="mb-8 text-[14px] text-drift md:mb-10 touch:-mt-3 touch:mb-5">
             <ol className="flex flex-wrap items-center gap-2">
               <li>
-                <LocaleLink href="/obchod" className="hover:text-deep">
+                <LocaleLink href="/obchod" className="hover:text-deep touch:inline-flex touch:min-h-11 touch:items-center">
                   {texty.obchod[lang]}
                 </LocaleLink>
               </li>
               {hlavnaKategoria && (
                 <li className="flex items-center gap-2">
                   <span aria-hidden>/</span>
-                  <LocaleLink href={`/obchod?kategoria=${hlavnaKategoria}`} className="hover:text-deep">
+                  <LocaleLink
+                    href={`/obchod?kategoria=${hlavnaKategoria}`}
+                    className="hover:text-deep touch:inline-flex touch:min-h-11 touch:items-center"
+                  >
                     {kategorie[hlavnaKategoria][lang]}
                   </LocaleLink>
                 </li>
@@ -102,7 +105,7 @@ export default async function ProduktPage({ params }: PageProps<"/[lang]/obchod/
 
             <div className="lg:pt-4">
               <p className="eyebrow text-drift">{produkt.kategorie.map((k) => kategorie[k][lang]).join(" · ")}</p>
-              <h1 className="mt-4 text-h2 text-deep">{nazov}</h1>
+              <h1 className="mt-4 text-h2 text-deep">{bindShortWords(nazov)}</h1>
 
               <div className="mt-6 flex flex-wrap items-baseline gap-x-5 gap-y-2">
                 <p className={`font-display text-[32px] leading-none tracking-[-0.02em] ${produkt.vypredane ? "text-drift" : "text-ink"}`}>
@@ -131,7 +134,7 @@ export default async function ProduktPage({ params }: PageProps<"/[lang]/obchod/
                     <DoKosika slug={produkt.slug} varianty={produkt.varianty} />
                     <LocaleLink
                       href={formular.otazka}
-                      className="mt-2 inline-block text-[15px] text-deep underline decoration-sage underline-offset-4 hover:decoration-deep"
+                      className="mt-2 inline-block text-[15px] text-deep underline decoration-sage underline-offset-4 hover:decoration-deep touch:mt-0 touch:inline-flex touch:min-h-11 touch:items-center"
                     >
                       {texty.opytat[lang]}
                     </LocaleLink>
@@ -167,7 +170,7 @@ export default async function ProduktPage({ params }: PageProps<"/[lang]/obchod/
       {podobne.length > 0 && (
         <section className="bg-mint py-20 md:py-28">
           <div className="site-container">
-            <div className="mb-10 flex flex-col gap-5 md:mb-14 md:flex-row md:items-end md:justify-between">
+            <div className="mb-10 flex flex-col items-start gap-5 md:mb-14 md:flex-row md:items-end md:justify-between">
               <h2 className="text-h3 text-deep">{texty.dalsie[lang]}</h2>
               <ButtonLink href="/obchod" variant="deep">
                 {texty.celyObchod[lang]}

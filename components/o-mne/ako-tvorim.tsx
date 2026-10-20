@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { quote, type Localized } from "@/lib/i18n";
+import { bindShortWords, quote, type Localized } from "@/lib/i18n";
 import { getLang } from "@/lib/i18n-server";
 import { bloky, citatProces } from "@/content/o-mne";
 import { Reveal } from "@/components/ui/reveal";
@@ -46,7 +46,7 @@ export async function AkoTvorim() {
                   className="object-cover"
                 />
               </div>
-              <h3 className="mt-6 text-[26px] leading-none tracking-[-0.02em] text-deep md:text-[30px]">{blok.nazov[lang]}</h3>
+              <h3 className="mt-6 text-[26px] leading-none tracking-[-0.02em] text-deep md:text-[30px]">{bindShortWords(blok.nazov[lang])}</h3>
               <p className="mt-3 max-w-[26rem] text-[15px] leading-relaxed text-ink/80 md:text-base">{blok.text[lang]}</p>
             </Reveal>
           ))}

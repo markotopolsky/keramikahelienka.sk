@@ -1,4 +1,4 @@
-import { quote, type Localized } from "@/lib/i18n";
+import { bindShortWords, quote, type Localized } from "@/lib/i18n";
 import { getLang } from "@/lib/i18n-server";
 import { recenzie, temaRecenzie } from "@/content/atelier";
 import { Reveal } from "@/components/ui/reveal";
@@ -20,7 +20,7 @@ export async function Recenzie() {
       <div className="site-container">
         <div className="mb-10 flex flex-col gap-5 md:mb-16 md:flex-row md:items-end md:justify-between md:gap-10">
           <Reveal>
-            <h2 className="text-h2 text-deep">{texty.nadpis[lang]}</h2>
+            <h2 className="text-h2 text-deep">{bindShortWords(texty.nadpis[lang])}</h2>
           </Reveal>
           <Reveal delay={0.1} className="max-w-[22rem] text-[15px] leading-relaxed text-drift md:text-right">
             {texty.aside[lang]}
@@ -40,7 +40,7 @@ export async function Recenzie() {
                 as="li"
                 key={r.meno}
                 delay={i * 0.1}
-                className={`flex w-[min(85%,24rem)] shrink-0 snap-start flex-col justify-between gap-10 rounded-card p-6 md:p-8 lg:w-auto lg:gap-12 ${
+                className={`flex w-[min(85%,24rem)] shrink-0 snap-start md:w-[44%] flex-col justify-between gap-10 rounded-card p-6 md:p-8 lg:w-auto lg:gap-12 ${
                   featured ? "bg-deep text-sand" : "border border-sage bg-sand text-ink"
                 }`}
               >

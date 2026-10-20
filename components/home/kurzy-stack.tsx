@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useRef } from "react";
 import { motion, useScroll, useTransform, type MotionValue } from "motion/react";
-import type { Localized } from "@/lib/i18n";
+import { bindShortWords, type Localized } from "@/lib/i18n";
 import { formular } from "@/content/atelier";
 import { kurzy, type Kurz } from "@/content/kurzy";
 import { useLang } from "@/components/locale-provider";
@@ -48,7 +48,7 @@ export function KurzyStack({ title = texty.nadpis, aside = texty.aside, links = 
       <div className="site-container">
         <div className="mb-12 flex flex-col gap-5 md:mb-20 md:flex-row md:items-end md:justify-between md:gap-10">
           <Reveal>
-            <h2 className="text-h2 text-deep">{title[lang]}</h2>
+            <h2 className="text-h2 text-deep">{bindShortWords(title[lang])}</h2>
           </Reveal>
           <Reveal delay={0.1} className="max-w-[22rem] text-[15px] leading-relaxed text-drift md:text-right">
             {aside[lang]}
@@ -117,7 +117,7 @@ function KurzCard({ kurz, index, total, progress, stacked }: KurzCardProps) {
       >
         <div className="flex flex-col justify-between gap-6 px-2 pt-3 md:py-5 md:pl-5 md:pr-0">
           <div>
-            <h3 className="text-h3">{kurz.nazov[lang]}</h3>
+            <h3 className="text-h3">{bindShortWords(kurz.nazov[lang])}</h3>
             <p className="mt-3 text-[15px] text-sand/70 md:mt-4 md:text-base">{kurz.rozsah[lang]}</p>
           </div>
           <div>

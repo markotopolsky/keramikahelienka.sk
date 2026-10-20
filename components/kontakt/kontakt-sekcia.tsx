@@ -1,4 +1,4 @@
-import type { Localized } from "@/lib/i18n";
+import { bindShortWords, type Localized } from "@/lib/i18n";
 import { getLang } from "@/lib/i18n-server";
 import { kontakt } from "@/content/atelier";
 import { KontaktForm } from "@/components/kontakt/kontakt-form";
@@ -39,25 +39,25 @@ export async function KontaktSekcia({ tone = "sand", kanaly = false }: KontaktSe
 
   return (
     <section id="formular" className={`${tones[tone].section} py-24 md:py-36`}>
-      <div className="site-container grid gap-14 lg:grid-cols-[1fr_36rem] lg:gap-20 xl:grid-cols-[1fr_40rem]">
+      <div className="site-container grid gap-14 lg:grid-cols-[1fr_30rem] lg:gap-16 xl:grid-cols-[1fr_40rem] xl:gap-20">
         <div>
           <Reveal>
             <p className="eyebrow text-drift">{texty.eyebrow[lang]}</p>
-            <h2 className="mt-5 text-h2 text-deep">{texty.nadpis[lang]}</h2>
+            <h2 className="mt-5 text-h2 text-deep">{bindShortWords(texty.nadpis[lang])}</h2>
             <p className="mt-6 max-w-[28rem] text-lead text-ink/80">{texty.text[lang]}</p>
           </Reveal>
 
           {kanaly && (
-            <Reveal delay={0.1} className="mt-10 space-y-2">
+            <Reveal delay={0.1} className="mt-10 space-y-2 touch:space-y-0">
               <a
                 href={kontakt.telefonHref}
-                className="block font-display text-[22px] leading-tight tracking-[-0.02em] text-deep transition-colors hover:text-sea"
+                className="block font-display text-[22px] leading-tight tracking-[-0.02em] text-deep transition-colors hover:text-sea touch:flex touch:min-h-11 touch:items-center"
               >
                 {kontakt.telefon}
               </a>
               <a
                 href={`mailto:${kontakt.email}`}
-                className="block font-display text-[22px] leading-tight tracking-[-0.02em] text-deep transition-colors hover:text-sea"
+                className="block font-display text-[22px] leading-tight tracking-[-0.02em] text-deep transition-colors hover:text-sea touch:flex touch:min-h-11 touch:items-center"
               >
                 {kontakt.email}
               </a>
@@ -73,7 +73,7 @@ export async function KontaktSekcia({ tone = "sand", kanaly = false }: KontaktSe
                     href={siet.href}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex rounded-full border border-sage px-4 py-2 text-[15px] text-deep transition-colors hover:border-deep hover:bg-deep hover:text-sand"
+                    className="inline-flex rounded-full border border-sage px-4 py-2 text-[15px] text-deep touch:py-2.5 transition-colors hover:border-deep hover:bg-deep hover:text-sand"
                   >
                     {siet.nazov}
                   </a>

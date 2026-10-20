@@ -1,5 +1,5 @@
 import Image from "next/image";
-import type { Localized } from "@/lib/i18n";
+import { bindShortWords, type Localized } from "@/lib/i18n";
 import { getLang } from "@/lib/i18n-server";
 import { krasa, pribeh } from "@/content/o-mne";
 import { Reveal } from "@/components/ui/reveal";
@@ -30,7 +30,7 @@ export async function Pribeh() {
         <div>
           <Reveal>
             <p className="eyebrow text-drift">{texty.eyebrow[lang]}</p>
-            <h2 className="mt-5 text-display text-deep">{krasa[lang]}</h2>
+            <h2 className="mt-5 text-display text-deep">{bindShortWords(krasa[lang])}</h2>
           </Reveal>
           <Reveal delay={0.1} className="mt-8 max-w-[36rem] space-y-5 md:mt-10">
             <p className="font-display text-[24px] leading-[1.3] tracking-[-0.02em] text-deep md:text-[28px]">{prvy}</p>

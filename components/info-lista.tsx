@@ -75,7 +75,7 @@ export function InfoLista({ skryta }: { skryta: boolean }) {
               type="button"
               onClick={zavriet}
               aria-label={texty.zavriet[lang]}
-              className="absolute right-[calc(var(--spacing-gutter)-0.5rem)] top-1/2 grid size-9 -translate-y-1/2 place-items-center rounded-full transition-colors hover:bg-ink/10"
+              className="absolute right-[calc(var(--spacing-gutter)-0.75rem)] top-1/2 grid size-10 -translate-y-1/2 place-items-center rounded-full transition-colors hover:bg-ink/10"
             >
               <svg viewBox="0 0 12 12" aria-hidden className="size-3">
                 <path d="m1 1 10 10M11 1 1 11" stroke="currentColor" strokeWidth="1.5" />

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import type { Localized } from "@/lib/i18n";
+import { bindShortWords, type Localized } from "@/lib/i18n";
 import { getLang } from "@/lib/i18n-server";
 import { pageMetadata } from "@/lib/metadata";
 import { pravneStranky, type Blok } from "@/content/pravne";
@@ -79,7 +79,7 @@ export async function PravnaStrankaObsah({ slug }: { slug: string }) {
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <div>
-                  <h2 className="text-[26px] leading-tight tracking-[-0.02em] text-deep md:text-[30px]">{sekcia.nadpis}</h2>
+                  <h2 className="text-[26px] leading-tight tracking-[-0.02em] text-deep md:text-[30px]">{bindShortWords(sekcia.nadpis)}</h2>
                   <div className="mt-4 space-y-4 text-base leading-relaxed text-ink/85 md:text-[17px]">
                     {sekcia.bloky.map((blok, j) => (
                       <BlokTextu key={j} blok={blok} />

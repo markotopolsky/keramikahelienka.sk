@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
+import { bindShortWords } from "@/lib/i18n";
 import { TornEdge } from "@/components/ui/torn-edge";
 
 type PageHeroProps = {
@@ -28,11 +29,11 @@ export function PageHero({ eyebrow, title, lead, actions, aside }: PageHeroProps
         <div>
           <div className="motion-safe:animate-rise">
             <p className="eyebrow text-aqua">{eyebrow}</p>
-            <h1 className="mt-5 max-w-[52rem] text-display md:mt-6">{title}</h1>
+            <h1 className="mt-5 max-w-[52rem] text-display md:mt-6">{typeof title === "string" ? bindShortWords(title) : title}</h1>
           </div>
           {lead && (
             <div className="mt-7 max-w-[36rem] text-lead text-sand/90 motion-safe:animate-rise md:mt-9" style={{ animationDelay: "0.1s" }}>
-              {lead}
+              {typeof lead === "string" ? bindShortWords(lead) : lead}
             </div>
           )}
           {actions && (

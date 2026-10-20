@@ -62,10 +62,13 @@ export default function GlobalNotFound() {
           <p className="mt-4 max-w-[36rem] text-base leading-relaxed text-ink/80 md:text-[17px]">
             You may have followed an old link. The website has a new look and some addresses have changed.
           </p>
-          <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-[15px]">
+          <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-[15px] touch:gap-y-0">
             {odkazy.map((o) => (
               <li key={o.href}>
-                <Link href={o.href === "/" ? "/en" : `/en${o.href}`} className="text-deep underline decoration-sage underline-offset-4 hover:decoration-deep">
+                <Link
+                  href={o.href === "/" ? "/en" : `/en${o.href}`}
+                  className="text-deep underline decoration-sage underline-offset-4 hover:decoration-deep touch:inline-flex touch:min-h-11 touch:items-center"
+                >
                   {o.en}
                 </Link>
               </li>

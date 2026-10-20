@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { bindShortWords } from "@/lib/i18n";
 import { LocaleLink } from "@/components/ui/locale-link";
 
 /** Card data already in the page language, so the client-side shop list gets no other language */
@@ -49,7 +50,7 @@ export function ProduktKarta({
           <p
             className={`mt-1 font-display text-[17px] leading-tight md:text-[20px] ${produkt.vypredane ? "text-ink/60" : "text-ink"}`}
           >
-            {produkt.nazov}
+            {bindShortWords(produkt.nazov)}
           </p>
         </div>
         <p className={`shrink-0 text-[15px] ${produkt.vypredane ? "text-drift" : "text-deep"}`}>

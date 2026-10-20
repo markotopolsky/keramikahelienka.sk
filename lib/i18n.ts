@@ -35,6 +35,15 @@ export function quote(text: string, lang: Locale) {
   return lang === "sk" ? `„${text}“` : `“${text}”`;
 }
 
+/**
+ * Keeps one-letter words (a, i, k, o, s, u, v, z) off the end of a line, as Slovak typesetting
+ * requires: the space after them becomes a non-breaking one. On a phone "Teambuilding s hlinou"
+ * then breaks before "s hlinou", never after "s". Harmless in English ("a piece", "I make").
+ */
+export function bindShortWords(text: string) {
+  return text.replace(/(?<=^|[\s(„“"])([aikosuvz]) /gi, "$1 ");
+}
+
 /** "129 €" in Slovak, "€129" in English. Cents only when the price has them: "7,90 €". */
 export function formatPrice(eur: number, lang: Locale) {
   const digits = Number.isInteger(eur) ? 0 : 2;

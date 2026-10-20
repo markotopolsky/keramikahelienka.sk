@@ -1,5 +1,5 @@
 import Image from "next/image";
-import type { Localized } from "@/lib/i18n";
+import { bindShortWords, type Localized } from "@/lib/i18n";
 import { getLang } from "@/lib/i18n-server";
 import { oMneDomov } from "@/content/o-mne";
 import { ButtonLink } from "@/components/ui/button-link";
@@ -34,7 +34,7 @@ export async function OMne() {
         <div className="flex flex-col items-center text-center">
           <Reveal>
             <p className="eyebrow text-drift">{texty.eyebrow[lang]}</p>
-            <h2 className="mt-5 text-h2 text-deep">{texty.nadpis[lang]}</h2>
+            <h2 className="mt-5 text-h2 text-deep">{bindShortWords(texty.nadpis[lang])}</h2>
             <span aria-hidden className="mx-auto mt-7 block h-[3px] w-16 rounded-full bg-sea" />
           </Reveal>
 

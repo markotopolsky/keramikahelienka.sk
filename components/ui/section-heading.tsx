@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { bindShortWords } from "@/lib/i18n";
 import { Reveal } from "@/components/ui/reveal";
 
 type SectionHeadingProps = {
@@ -17,7 +18,7 @@ export function SectionHeading({ eyebrow, title, aside, tone = "light" }: Sectio
     <div className="mb-12 flex flex-col gap-5 md:mb-16 md:flex-row md:items-end md:justify-between md:gap-10">
       <Reveal>
         {eyebrow && <p className={`eyebrow mb-5 ${dark ? "text-aqua" : "text-drift"}`}>{eyebrow}</p>}
-        <h2 className={`max-w-[44rem] text-h2 ${dark ? "" : "text-deep"}`}>{title}</h2>
+        <h2 className={`max-w-[44rem] text-h2 ${dark ? "" : "text-deep"}`}>{typeof title === "string" ? bindShortWords(title) : title}</h2>
       </Reveal>
       {aside && (
         <Reveal

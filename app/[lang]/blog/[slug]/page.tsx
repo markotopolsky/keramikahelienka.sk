@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { formatDate, type Localized } from "@/lib/i18n";
+import { bindShortWords, formatDate, type Localized } from "@/lib/i18n";
 import { getLang } from "@/lib/i18n-server";
 import { pageMetadata } from "@/lib/metadata";
 import { clanky } from "@/content/blog";
@@ -77,7 +77,10 @@ export default async function ClanokPage({ params }: PageProps<"/[lang]/blog/[sl
             </div>
 
             <nav className="mt-14 flex flex-col gap-4 border-t border-sage pt-8 text-[15px] sm:flex-row sm:items-center sm:justify-between">
-              <LocaleLink href="/blog" className="text-deep underline decoration-sage underline-offset-4 hover:decoration-deep">
+              <LocaleLink
+                href="/blog"
+                className="self-start text-deep underline decoration-sage sm:self-auto underline-offset-4 hover:decoration-deep touch:inline-flex touch:min-h-11 touch:items-center"
+              >
                 {texty.vsetky[lang]}
               </LocaleLink>
               {dalsi && (
@@ -95,7 +98,7 @@ export default async function ClanokPage({ params }: PageProps<"/[lang]/blog/[sl
 
       <section className="bg-mint py-20 md:py-28">
         <div className="site-container flex flex-col items-center text-center">
-          <h2 className="text-h2 text-deep">{texty.vyskusat[lang]}</h2>
+          <h2 className="text-h2 text-deep">{bindShortWords(texty.vyskusat[lang])}</h2>
           <p className="mt-5 max-w-[32rem] text-lead text-ink/80">{texty.vyskusatText[lang]}</p>
           <ButtonLink href="/kurzy" variant="deep" className="mt-8">
             {texty.kurzy[lang]}
