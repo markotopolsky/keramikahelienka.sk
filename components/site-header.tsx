@@ -11,6 +11,7 @@ import { InfoLista } from "@/components/info-lista";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { ButtonLink } from "@/components/ui/button-link";
 import { LocaleLink } from "@/components/ui/locale-link";
+import { Logo } from "@/components/ui/logo";
 
 const texty = {
   rezervovat: { sk: "Rezervovať kurz", en: "Book a class" },
@@ -92,8 +93,14 @@ export function SiteHeader() {
     >
       <InfoLista skryta={!naVrchu} />
       <div className="site-container flex h-16 items-center justify-between lg:grid lg:h-20 lg:grid-cols-[1fr_auto_1fr]">
-        <LocaleLink href="/" className="justify-self-start font-display text-[26px] leading-none tracking-[-0.02em] lg:text-[30px]">
-          He-lienka
+        {/* The logo's own colors on the solid sand bar, its shape in sand over the dark hero; the two crossfade */}
+        <LocaleLink href="/" className="grid w-32 justify-self-start lg:w-40">
+          <span aria-hidden={!solid} className={`col-start-1 row-start-1 transition-opacity duration-500 ${solid ? "" : "opacity-0"}`}>
+            <Logo farba="znacka" className="w-full" />
+          </span>
+          <span aria-hidden={solid} className={`col-start-1 row-start-1 transition-opacity duration-500 ${solid ? "opacity-0" : ""}`}>
+            <Logo farba="text" className="w-full" />
+          </span>
         </LocaleLink>
 
         <nav aria-label={texty.navigacia[lang]} className="max-lg:hidden">
@@ -159,8 +166,8 @@ export function SiteHeader() {
       >
         <div className="site-container flex min-h-full flex-col pb-10">
           <div className="flex h-16 shrink-0 items-center justify-between">
-            <LocaleLink href="/" className="font-display text-[26px] leading-none tracking-[-0.02em]">
-              He-lienka
+            <LocaleLink href="/" className="w-32">
+              <Logo farba="text" className="w-full" />
             </LocaleLink>
             <button
               ref={closeRef}

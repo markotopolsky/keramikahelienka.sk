@@ -8,6 +8,7 @@ import { pravneStranky } from "@/content/pravne";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { NewsletterForm } from "@/components/newsletter-form";
 import { LocaleLink } from "@/components/ui/locale-link";
+import { Logo } from "@/components/ui/logo";
 
 const texty = {
   newsletter: { sk: "Listy z ateliéru", en: "Letters from the studio" },
@@ -96,10 +97,8 @@ export async function SiteFooter() {
         </div>
 
         <div className="mt-16 flex flex-col gap-6 md:mt-24 lg:flex-row lg:items-end lg:justify-between lg:gap-10">
-          {/* Sized to the viewport so the wordmark spans the column on phones and tablets */}
-          <p className="shrink-0 whitespace-nowrap font-display text-[min(21vw,15rem)] leading-[0.8] tracking-[-0.04em] lg:text-[clamp(8rem,13vw,13rem)]">
-            He-lienka
-          </p>
+          {/* Spans the column on phones and tablets; drawn in sand because teal would vanish on the deep background */}
+          <Logo farba="text" className="w-full max-w-[44rem] shrink-0 lg:w-[clamp(28rem,45vw,44rem)]" />
           <div className="flex min-w-0 flex-col gap-2 text-[13px] text-sand/70 lg:items-end lg:pb-4 lg:text-right">
             <div className="flex flex-wrap gap-x-5 gap-y-2 lg:justify-end">
               {pravneStranky.map((stranka) => (

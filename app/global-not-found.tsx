@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Playfair_Display, PT_Serif } from "next/font/google";
 import Link from "next/link";
+import { Logo } from "@/components/ui/logo";
 import { TornEdge } from "@/components/ui/torn-edge";
 import "./globals.css";
 
@@ -28,8 +29,8 @@ export default function GlobalNotFound() {
       <body className="flex min-h-dvh flex-col bg-sand">
         <section className="bg-deep text-sand">
           <div className="site-container flex h-16 items-center lg:h-20">
-            <Link href="/" className="font-display text-[26px] leading-none tracking-[-0.02em] lg:text-[30px]">
-              He-lienka
+            <Link href="/" className="w-32 lg:w-40">
+              <Logo farba="text" className="w-full" />
             </Link>
           </div>
           <div className="site-container pb-16 pt-16 md:pb-24 md:pt-24">
