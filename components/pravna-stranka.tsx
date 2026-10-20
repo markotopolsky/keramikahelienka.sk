@@ -9,10 +9,10 @@ import { Doplnit } from "@/components/ui/doplnit";
 
 const texty = {
   eyebrow: { sk: "Právne informácie", en: "Legal information" },
-  vzor: { sk: "Vzorový text – čaká na znenie od právnika", en: "Sample text – awaiting wording from a lawyer" },
+  vzor: { sk: "Návrh podľa platných zákonov – pred spustením ho skontroluje právnik", en: "Draft based on current Slovak law – a lawyer checks it before launch" },
   vzorDetail: {
-    sk: "Konečné znenie dodá Helenka. Údaje v žltom ešte chýbajú.",
-    en: "Helena will supply the final wording. Data highlighted in yellow is still missing.",
+    sk: "Údaje v žltom ešte chýbajú, doplní ich Helenka.",
+    en: "Data highlighted in yellow is still missing; Helena will supply it.",
   },
 } satisfies Record<string, Localized>;
 

@@ -3,9 +3,11 @@ import { notFound } from "next/navigation";
 import { plural, type Localized } from "@/lib/i18n";
 import { getLang } from "@/lib/i18n-server";
 import { pageMetadata } from "@/lib/metadata";
+import { produktData } from "@/lib/strukturovane-data";
 import { cenaProduktu, najdiProdukt, podobneProdukty, polozkaObchodu, produkty } from "@/lib/produkty";
 import { formular, kontakt } from "@/content/atelier";
 import { kategorie } from "@/content/produkty";
+import { JsonLd } from "@/components/json-ld";
 import { Galeria } from "@/components/obchod/galeria";
 import { DoKosika } from "@/components/obchod/do-kosika";
 import { ProduktKarta } from "@/components/obchod/produkt-karta";
@@ -53,6 +55,7 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/obchod/[sl
       sk: produkt.popis.sk[0] ?? `${nazov.sk} – ručne robená keramika z ateliéru Keramika He-lienka v Bratislave.`,
       en: produkt.popis.en[0] ?? `${nazov.en} – handmade ceramics from the Keramika He-lienka studio in Bratislava.`,
     },
+    obrazok: produkt.fotky[0],
   });
 }
 
@@ -73,6 +76,7 @@ export default async function ProduktPage({ params }: PageProps<"/[lang]/obchod/
 
   return (
     <>
+      <JsonLd data={produktData(produkt, lang)} />
       <section className="bg-sand pb-20 pt-24 md:pb-28 md:pt-32">
         <div className="site-container">
           <nav aria-label={texty.navigacia[lang]} className="mb-8 text-[14px] text-drift md:mb-10">

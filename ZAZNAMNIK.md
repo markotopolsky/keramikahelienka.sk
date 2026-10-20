@@ -22,6 +22,20 @@ Súvisiace súbory:
 - Poznámka: web je za firewallom (WAF). Obyčajný `curl` dostane „Access Denied“. Treba poslať hlavičky prehliadača (User-Agent, Accept, Accept-Language, Sec-Fetch-*).
 - Prototyp domovskej stránky je responzívny: telefón od 320 px, tablet, notebook aj desktop. Na telefóne a tablete (do 1024 px) je navigácia v menu cez celú obrazovku. Mobilné rozloženie vychádza zo šablóny SkillClass: karty kurzov sa ukladajú na seba aj na mobile, recenzie sa posúvajú do strany, pätička má veľké logo cez celú šírku.
 
+### 2026-10-20
+- **Rozhodnutie:** vývojár na požiadavku doplnil návrhy právnych textov sám (mení to sekciu 14). Sú napísané podľa platných zákonov zo slov-lex.sk (znenie od 27. 9. 2026), nie skopírované z iného e-shopu: zákon č. 108/2024 Z. z. (odstúpenie § 19 – § 22, online funkcia § 20a, vzorový formulár z prílohy č. 2), Občiansky zákonník § 619 – § 624 (vady tovaru), zákon č. 391/2015 Z. z. (riešenie sporov), GDPR a zákon č. 18/2018 Z. z., zákon č. 452/2021 Z. z. § 109 ods. 8 (cookies). Texty sú v `content/pravne.ts`. Pruh hore na stránkach hovorí „Návrh podľa platných zákonov – pred spustením ho skontroluje právnik“. Stránky ostávajú `noindex`.
+  - Žlté „doplniť“ ostáva iba pri firemných údajoch a rozhodnutiach Helenky: kto platí poštovné pri vrátení, dodacia lehota, platnosť poukážok, ďalšie spôsoby platby, doby uchovávania, hosting a ďalší sprostredkovatelia.
+  - Kurzy na presný termín nemajú právo na odstúpenie do 14 dní (§ 19 ods. 1 písm. l) zákona č. 108/2024 Z. z.). Platia storno podmienky ateliéru.
+  - Platforma EÚ na riešenie sporov online (ODR) skončila 20. 7. 2025, preto na ňu texty neodkazujú.
+- **Nová povinnosť (pred spustením e-shopu):** § 20a zákona č. 108/2024 Z. z. vyžaduje na webe funkciu „odstúpiť od zmluvy tu“. Zákazník v nej vyplní meno, číslo objednávky a e-mail, potvrdí tlačidlom „potvrdiť odstúpenie od zmluvy“ a hneď dostane potvrdenie e-mailom s obsahom, dátumom a časom. Potrebuje odosielanie e-mailov (fáza 0). Pridané do fázy 6.
+- Analytika a súhlas s cookies (`lib/analytika.ts`, `components/cookie-lista.tsx`):
+  - Google Tag Manager, Google Analytics 4 a Microsoft Clarity. ID sa zadávajú v env premenných (`.env.example`). Bez nich web nemá analytiku, cookie lištu ani odkaz „Nastavenia cookies“.
+  - Nič od Google ani Microsoftu sa nenačíta pred súhlasom. Google Consent Mode v2 je predvolene všade „denied“. Clarity dostane signál `consentv2`.
+  - Lišta: „Prijať všetko“ a „Odmietnuť“ sú rovnako výrazné, „Nastavenia“ ukáže kategórie. Marketingová kategória sa ukáže iba so zapnutým GTM. Voľba je v localStorage `kh-suhlas-cookies`. Odkaz „Nastavenia cookies“ v pätičke lištu otvorí znova. Po odvolaní súhlasu sa analytické cookies zmažú a stránka sa znova načíta.
+  - GA4 ide priamo z kódu. V GTM ho **nepridávať**, inak sa každá návšteva započíta dvakrát. Každá značka v GTM musí rešpektovať Consent Mode.
+- SEO: `app/sitemap.ts` (všetky stránky v oboch jazykoch s hreflang, bez košíka, pokladne a právnych návrhov), `app/robots.ts` (zakáže `/kosik` a `/pokladna`), Open Graph na každej stránke (portrét Helenky 1200 × 630 z Cloudinary, pri produkte a článku jeho fotka), štruktúrované dáta: ateliér ako `Store` na domovskej stránke a `Product` s cenou a dostupnosťou pri každom produkte. Overenie v Google Search Console cez env `GOOGLE_SITE_VERIFICATION`.
+- Overené: `tsc`, `eslint` a `next build` s testovacími ID bez chýb. `robots.txt`, `sitemap.xml` (114 adries), meta značky, predvolený consent a JSON-LD skontrolované cez curl. Cookie lišta ešte nie je otestovaná v prehliadači.
+
 ### 2026-10-10
 - Zapísané poznámky zo stretnutia s Helenkou do sekcie 12. Nejasné body sú ako otázky 14 – 20 v sekcii 11.
 - Zistené: prototyp je v rozpore s dvomi požiadavkami. Domovská stránka ukazuje kurzy pred dielami. Nadpisy sú v pätkovom písme Instrument Serif.
@@ -786,9 +800,11 @@ Poradie:
 - [ ] Rezervácie kurzov – samostatný veľký projekt, iba ak ho Helenka chce v prvej verzii.
 
 ### Fáza 6 – Pred spustením (asi 2 dni)
-- [ ] SEO: title a description pre každú stránku, OG obrázky, `sitemap.xml`, `robots.txt`, štruktúrované dáta produktov.
+- [x] SEO: title a description pre každú stránku, OG obrázky, `sitemap.xml`, `robots.txt`, štruktúrované dáta produktov. Hotové 20. 10. 2026. Po nasadení: overiť web v Google Search Console a poslať sitemapu.
 - [ ] Presmerovania 301 zo starých URL (sekcia 4) v `next.config.ts`.
-- [ ] Cookie lišta – iba ak bude na webe analytika.
+- [x] Cookie lišta a analytika (GTM, GA4, Clarity) so súhlasom. Hotové 20. 10. 2026. Po nasadení: zadať ID do env premenných na hostingu. [čaká: účty Google Analytics, GTM a Clarity na meno Helenky]
+- [ ] Funkcia „odstúpiť od zmluvy tu“ podľa § 20a zákona č. 108/2024 Z. z. (formulár + potvrdenie e-mailom). Povinná pre e-shop. Potom doplniť jej adresu do obchodných podmienok.
+- [ ] Právnik skontroluje návrhy právnych textov v `content/pravne.ts`, potom zrušiť `noindex` a pruh „Návrh“. [čaká: firemné údaje a rozhodnutia Helenky]
 - [ ] Nasadenie: hosting, doména, databáza, env premenné.
 - [ ] Záloha WordPressu a export objednávok a faktúr. Až potom zrušiť starý web.
 

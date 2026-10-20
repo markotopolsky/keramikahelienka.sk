@@ -3,10 +3,13 @@ import { Playfair_Display, PT_Serif } from "next/font/google";
 import { locales, type Localized } from "@/lib/i18n";
 import { infoLista, infoListaKluc } from "@/content/info-lista";
 import { getLang } from "@/lib/i18n-server";
+import { analytikaZapnuta, suhlasPredvolenySkript } from "@/lib/analytika";
+import { webUrl, zakladOpenGraph } from "@/lib/metadata";
 import { LocaleProvider } from "@/components/locale-provider";
 import { MotionProvider } from "@/components/motion-provider";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { CookieLista } from "@/components/cookie-lista";
 import "../globals.css";
 
 // Serif site-wide (fint z muoiatelier.com/en: Playfair Display na nadpisy, PT Serif na text).
@@ -43,12 +46,15 @@ export const dynamicParams = false;
 export async function generateMetadata(): Promise<Metadata> {
   const lang = await getLang();
   return {
-    metadataBase: new URL("https://www.keramikahelienka.sk"),
+    metadataBase: new URL(webUrl),
     title: {
       default: texty.title[lang],
       template: "%s · Keramika He-lienka",
     },
     description: texty.description[lang],
+    openGraph: { ...zakladOpenGraph(lang), title: texty.title[lang], description: texty.description[lang] },
+    // Google Search Console ownership check (HTML tag method); the value comes from .env
+    ...(process.env.GOOGLE_SITE_VERIFICATION && { verification: { google: process.env.GOOGLE_SITE_VERIFICATION } }),
   };
 }
 
@@ -65,6 +71,8 @@ export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
             __html: `try{if(localStorage.getItem(${JSON.stringify(infoListaKluc)})===${JSON.stringify(infoLista.id)})document.documentElement.setAttribute("data-info-zavreta","")}catch(e){}`,
           }}
         />
+        {/* Google Consent Mode: everything "denied" until the visitor chooses in the cookie bar */}
+        {analytikaZapnuta && <script dangerouslySetInnerHTML={{ __html: suhlasPredvolenySkript }} />}
       </head>
       <body>
         <LocaleProvider lang={lang}>
@@ -72,6 +80,7 @@ export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
             <SiteHeader />
             <main>{children}</main>
             <SiteFooter />
+            <CookieLista />
           </MotionProvider>
         </LocaleProvider>
       </body>

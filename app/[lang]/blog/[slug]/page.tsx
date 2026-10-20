@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/blog/[slug
   const { slug } = await params;
   const clanok = clanky.find((c) => c.slug === slug);
   if (!clanok) return {};
-  return pageMetadata({ path: `/blog/${slug}`, title: clanok.nazov, description: clanok.popis });
+  return pageMetadata({ path: `/blog/${slug}`, title: clanok.nazov, description: clanok.popis, obrazok: clanok.foto });
 }
 
 export default async function ClanokPage({ params }: PageProps<"/[lang]/blog/[slug]">) {

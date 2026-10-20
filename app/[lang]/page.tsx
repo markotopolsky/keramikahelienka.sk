@@ -1,4 +1,7 @@
+import { getLang } from "@/lib/i18n-server";
 import { pageMetadata } from "@/lib/metadata";
+import { atelierData } from "@/lib/strukturovane-data";
+import { JsonLd } from "@/components/json-ld";
 import { Hero } from "@/components/home/hero";
 import { Intro } from "@/components/home/intro";
 import { KurzyStack } from "@/components/home/kurzy-stack";
@@ -17,9 +20,11 @@ export function generateMetadata() {
   });
 }
 
-export default function Home() {
+export default async function Home() {
+  const lang = await getLang();
   return (
     <>
+      <JsonLd data={atelierData(lang)} />
       <Hero />
       <Intro />
       {/* Helena's own work comes first, courses second (ZAZNAMNIK.md section 12) */}

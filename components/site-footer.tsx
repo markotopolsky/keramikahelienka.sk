@@ -5,6 +5,7 @@ import { getLang } from "@/lib/i18n-server";
 import { kontakt, navigacia } from "@/content/atelier";
 import { pasFotiek } from "@/content/diela";
 import { pravneStranky } from "@/content/pravne";
+import { NastaveniaCookies } from "@/components/cookie-lista";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { NewsletterForm } from "@/components/newsletter-form";
 import { LocaleLink } from "@/components/ui/locale-link";
@@ -106,6 +107,7 @@ export async function SiteFooter() {
                   {stranka.nazov[lang]}
                 </LocaleLink>
               ))}
+              <NastaveniaCookies className="hover:text-sand" />
             </div>
             <div className="flex flex-wrap items-center gap-x-6 gap-y-2 lg:justify-end">
               <p>© 2026 {kontakt.nazov}</p>
