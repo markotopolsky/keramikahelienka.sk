@@ -6,6 +6,10 @@ const nextConfig: NextConfig = {
     // a 404 inside the layout on the server, so app/global-not-found.tsx renders it instead.
     globalNotFound: true,
   },
+  images: {
+    loader: "custom",
+    loaderFile: "./lib/cloudinary-loader.ts",
+  },
 };
 
 export default nextConfig;

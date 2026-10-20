@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Open_Sans } from "next/font/google";
+import { Playfair_Display, PT_Serif } from "next/font/google";
 import { locales, type Localized } from "@/lib/i18n";
 import { infoLista, infoListaKluc } from "@/content/info-lista";
 import { getLang } from "@/lib/i18n-server";
@@ -9,15 +9,16 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import "../globals.css";
 
-// Headings are sans-serif at Helena's request. Open Sans stands in until we know
-// the font she liked ("Môj ateliér", question 16 in ZAZNAMNIK.md).
-const openSans = Open_Sans({
-  variable: "--font-open-sans",
+// Serif site-wide (fint z muoiatelier.com/en: Playfair Display na nadpisy, PT Serif na text).
+// Prepisuje pôvodnú požiadavku na bezpätkové písmo (otázka 16 v ZAZNAMNIK.md) — treba dať Helenke schváliť.
+const playfairDisplay = Playfair_Display({
+  variable: "--font-playfair-display",
   subsets: ["latin", "latin-ext"],
 });
 
-const inter = Inter({
-  variable: "--font-inter",
+const ptSerif = PT_Serif({
+  variable: "--font-pt-serif",
+  weight: ["400", "700"],
   subsets: ["latin", "latin-ext"],
 });
 
@@ -56,7 +57,7 @@ export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
 
   return (
     // suppressHydrationWarning: the script below may add data-info-zavreta before React hydrates
-    <html lang={lang} className={`${openSans.variable} ${inter.variable} antialiased`} suppressHydrationWarning>
+    <html lang={lang} className={`${playfairDisplay.variable} ${ptSerif.variable} antialiased`} suppressHydrationWarning>
       <head>
         {/* Hides the info bar before the first paint if the visitor closed this version of it */}
         <script

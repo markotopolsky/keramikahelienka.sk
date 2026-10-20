@@ -23,7 +23,7 @@ export async function OMne() {
         <Reveal className="relative mx-auto aspect-[3/4] w-full max-w-[28rem] overflow-hidden rounded-card bg-sage md:max-w-none lg:aspect-[2/3]">
           {/* The photo is cropped close above her head, so it stays anchored to the top */}
           <Image
-            src="/images/helena-kvety.jpg"
+            src="/images/helena/helena-kvety.jpg"
             alt={texty.alt[lang]}
             fill
             sizes="(min-width: 90rem) 620px, (min-width: 48rem) 45vw, (min-width: 28rem) 448px, calc(100vw - 2.5rem)"

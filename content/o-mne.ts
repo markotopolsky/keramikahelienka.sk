@@ -36,7 +36,7 @@ export const bloky: { nazov: Localized; text: Localized; foto: string; alt: Loca
       sk: "Každý výrobok je robený ručne, čo mu dáva výnimočný charakter a autentickosť. Obsahuje kúsok duše jeho tvorcu, ktorý ho s láskou vytvoril.",
       en: "Every piece is made by hand, which gives it a unique character and authenticity. It holds a bit of the soul of the maker who created it with love.",
     },
-    foto: "/images/proces-hneda-misa.jpg",
+    foto: "/images/diela/proces-hneda-misa.jpg",
     alt: { sk: "Misa z hnedej hliny pred výpalom", en: "Brown clay bowl before firing" },
   },
   {
@@ -45,7 +45,7 @@ export const bloky: { nazov: Localized; text: Localized; foto: string; alt: Loca
       sk: "Výrobky z nášho ateliéru sú nielen krásne, ale aj praktické. Bude mi veľkým potešením, keď sa niektorý kúsok dotkne vášho srdca a stane sa súčasťou vášho domova.",
       en: "Pieces from our studio are not only beautiful but also practical. It will be a great pleasure for me if one of them touches your heart and becomes part of your home.",
     },
-    foto: "/images/nakup-biela-misa.jpg",
+    foto: "/images/diela/nakup-biela-misa.jpg",
     alt: { sk: "Biela misa s vlnitým okrajom v rukách", en: "White bowl with a wavy rim held in hands" },
   },
 ];

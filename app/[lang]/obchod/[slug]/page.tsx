@@ -124,7 +124,7 @@ export default async function ProduktPage({ params }: PageProps<"/[lang]/obchod/
                   </div>
                 ) : (
                   <>
-                    <DoKosika varianty={produkt.varianty} />
+                    <DoKosika slug={produkt.slug} varianty={produkt.varianty} />
                     <LocaleLink
                       href={formular.otazka}
                       className="mt-2 inline-block text-[15px] text-deep underline decoration-sage underline-offset-4 hover:decoration-deep"

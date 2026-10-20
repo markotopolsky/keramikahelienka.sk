@@ -25,6 +25,7 @@ export const mapa = {
 /** Slovak paths; LocaleLink adds /en on English pages */
 export const navigacia: { label: Localized; href: string }[] = [
   { label: { sk: "Kurzy", en: "Classes" }, href: "/kurzy" },
+  { label: { sk: "Pre firmy", en: "For companies" }, href: "/pre-firmy" },
   { label: { sk: "Obchod", en: "Shop" }, href: "/obchod" },
   { label: { sk: "O mne", en: "About me" }, href: "/o-mne" },
   { label: { sk: "Blog", en: "Blog" }, href: "/blog" },

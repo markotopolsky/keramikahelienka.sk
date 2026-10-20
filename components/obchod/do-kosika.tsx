@@ -3,20 +3,22 @@
 import { useState } from "react";
 import { formatPrice, type Localized } from "@/lib/i18n";
 import type { Variant } from "@/content/produkty";
+import { kosik } from "@/content/atelier";
+import { useCart } from "@/lib/use-cart";
 import { useLang } from "@/components/locale-provider";
+import { LocaleLink } from "@/components/ui/locale-link";
 
 const texty = {
   variant: { sk: "Vyberte variant", en: "Choose an option" },
   doKosika: { sk: "Pridať do košíka", en: "Add to cart" },
-  prototyp: {
-    sk: "Prototyp: košík zatiaľ nie je hotový. Kúsok si môžete objednať telefonicky alebo e-mailom.",
-    en: "Prototype: the cart is not ready yet. You can order this piece by phone or email.",
-  },
+  pridane: { sk: "Pridané do košíka.", en: "Added to cart." },
+  zobrazitKosik: { sk: "Zobraziť košík", en: "View cart" },
 } satisfies Record<string, Localized>;
 
-/** Variant choice and the cart button. Looks only for now: the cart comes in phase 4 (ZAZNAMNIK.md section 15). */
-export function DoKosika({ varianty }: { varianty: Variant[] }) {
+/** Variant choice and the cart button. */
+export function DoKosika({ slug, varianty }: { slug: string; varianty: Variant[] }) {
   const lang = useLang();
+  const { pridat } = useCart();
   const [variant, setVariant] = useState(0);
   const [klik, setKlik] = useState(false);
 
@@ -50,14 +52,24 @@ export function DoKosika({ varianty }: { varianty: Variant[] }) {
 
       <button
         type="button"
-        onClick={() => setKlik(true)}
+        onClick={() => {
+          pridat(slug, varianty.length > 0 ? variant : null);
+          setKlik(true);
+        }}
         className="w-full rounded-full bg-deep px-6 py-3.5 text-[15px] font-medium tracking-[-0.01em] text-sand transition-colors duration-300 hover:bg-ink sm:w-auto"
       >
         {texty.doKosika[lang]}
         {varianty.length > 0 && ` · ${formatPrice(varianty[variant].cena, lang)}`}
       </button>
       <p aria-live="polite" className="mt-3 min-h-5 text-[14px] leading-relaxed text-deep">
-        {klik ? texty.prototyp[lang] : ""}
+        {klik && (
+          <>
+            {texty.pridane[lang]}{" "}
+            <LocaleLink href={kosik} className="underline decoration-current/50 underline-offset-4 hover:decoration-current">
+              {texty.zobrazitKosik[lang]}
+            </LocaleLink>
+          </>
+        )}
       </p>
     </div>
   );

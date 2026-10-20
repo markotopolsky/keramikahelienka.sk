@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Open_Sans } from "next/font/google";
+import { Playfair_Display, PT_Serif } from "next/font/google";
 import Link from "next/link";
 import { TornEdge } from "@/components/ui/torn-edge";
 import "./globals.css";
@@ -8,8 +8,8 @@ import "./globals.css";
 // it says the same in Slovak and English and offers both versions of the site.
 // It is a full document without the site header and footer (they need the page language).
 
-const openSans = Open_Sans({ variable: "--font-open-sans", subsets: ["latin", "latin-ext"] });
-const inter = Inter({ variable: "--font-inter", subsets: ["latin", "latin-ext"] });
+const playfairDisplay = Playfair_Display({ variable: "--font-playfair-display", subsets: ["latin", "latin-ext"] });
+const ptSerif = PT_Serif({ variable: "--font-pt-serif", weight: ["400", "700"], subsets: ["latin", "latin-ext"] });
 
 export const metadata: Metadata = {
   title: "Stránka sa nenašla · Page not found · Keramika He-lienka",
@@ -24,7 +24,7 @@ const odkazy = [
 
 export default function GlobalNotFound() {
   return (
-    <html lang="sk" className={`${openSans.variable} ${inter.variable} antialiased`}>
+    <html lang="sk" className={`${playfairDisplay.variable} ${ptSerif.variable} antialiased`}>
       <body className="flex min-h-dvh flex-col bg-sand">
         <section className="bg-deep text-sand">
           <div className="site-container flex h-16 items-center lg:h-20">

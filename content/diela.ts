@@ -21,7 +21,7 @@ export const pasFotiek = [
   "/images/diela/strip-img_2212.jpg",
   "/images/diela/strip-img_2266.jpg",
   "/images/diela/strip-img_3551.jpg",
-  "/images/variabilna.jpg",
+  "/images/diela/variabilna.jpg",
   "/images/diela/strip-img_3123.jpg",
   "/images/diela/misa-morska-velka.jpg",
   "/images/diela/strip-img_2218.jpg",

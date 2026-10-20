@@ -5,6 +5,7 @@ import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { useMotionValueEvent, useScroll } from "motion/react";
 import { formular, kontakt, kosik, navigacia } from "@/content/atelier";
 import type { Localized } from "@/lib/i18n";
+import { useCart } from "@/lib/use-cart";
 import { useLang } from "@/components/locale-provider";
 import { InfoLista } from "@/components/info-lista";
 import { LanguageSwitcher } from "@/components/language-switcher";
@@ -33,6 +34,7 @@ function heroScrolledAway() {
  */
 export function SiteHeader() {
   const lang = useLang();
+  const { pocetKusov } = useCart();
   // Effects only: with proxy.ts rewrites the pathname differs between server and browser
   const pathname = usePathname();
   // The section the page belongs to ("/kurzy"), the same on server and client
@@ -115,16 +117,21 @@ export function SiteHeader() {
           <ButtonLink href={formular.kurzy} variant="deep" className="max-sm:hidden">
             {texty.rezervovat[lang]}
           </ButtonLink>
-          {/* TODO: phase 4 adds the cart and a badge with the number of pieces in it.
-              Until /kosik exists, prefetching it would request a 404 on every page. */}
           <LocaleLink
             href={kosik}
-            prefetch={false}
             aria-label={texty.kosik[lang]}
             aria-current={section === kosik ? "page" : undefined}
-            className="inline-flex size-[2.875rem] items-center justify-center rounded-full border border-current/40 transition-colors hover:border-current aria-[current=page]:border-current"
+            className="relative inline-flex size-[2.875rem] items-center justify-center rounded-full border border-current/40 transition-colors hover:border-current aria-[current=page]:border-current"
           >
             <BasketIcon className="size-5" />
+            {pocetKusov > 0 && (
+              <span
+                aria-hidden
+                className="absolute right-0 top-0 flex size-5 items-center justify-center rounded-full bg-aqua text-[11px] font-medium text-ink"
+              >
+                {pocetKusov}
+              </span>
+            )}
           </LocaleLink>
           <button
             type="button"

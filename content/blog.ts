@@ -68,7 +68,7 @@ export const clanky: Clanok[] = [
         "I do, however, have pieces with small or larger imperfections that do not affect how they work. If you are interested in such a one-of-a-kind piece, do not hesitate to contact me.",
       ],
     },
-    foto: "/images/proces-hneda-misa.jpg",
+    foto: "/images/diela/proces-hneda-misa.jpg",
     fotoAlt: { sk: "Misa z hnedej hliny pred výpalom", en: "Brown clay bowl before firing" },
   },
 ];

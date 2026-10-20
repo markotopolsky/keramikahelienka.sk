@@ -34,7 +34,7 @@ Súvisiace súbory:
   - Hlavička a pätička sú teraz v `app/layout.tsx`, nie na každej stránke zvlášť.
   - Kontaktný formulár je iba vzhľad, nič neodosiela. Mapa Google sa načíta až po kliknutí na „Zobraziť mapu“.
   - Prihláška na kurz stále vedie na Google formulár Helenky (sekcia 6).
-  - `public/images/helena-kvety.jpg` je `helena-portret.jpg` bez bielych okrajov.
+  - `public/images/helena/helena-kvety.jpg` je `helena-portret.jpg` bez bielych okrajov.
 - `/kurzy` zjednodušené na 3 sekcie: úvod, karty kurzov (tie isté ako na domovskej stránke) a cenník s prihláškou. Postup výroby, dlhý popis kurzu a samostatný blok o teambuildingu sú preč.
 - Rýchlosť: úvod stránky a hlavička sa animujú cez CSS, nečakajú na JavaScript. Hlavička je celá viditeľná za ~0,8 s namiesto ~1,2 s (merané lokálne). Pri zapnutom „obmedziť pohyb“ sa obsah ukáže hneď. Vývojový režim (`next dev`) je pomalší ako ostrý web: posiela ~950 KB JavaScriptu, ostrý build ~195 KB.
 - Domovská stránka, sekcia „O mne“: nové rozloženie podľa muoiatelier.com/en/o-nas. Fotka vľavo, vpravo nadpis „Moja cesta s hlinou“, krátky príbeh (vety z „O nás“) a podpis. Plávajúce fotky a citát sú preč.
@@ -774,8 +774,8 @@ Poradie:
 - [x] `/obchod/[slug]` – detail produktu. Tlačidlo „Pridať do košíka“ je zatiaľ iba vzhľad.
 - [ ] Misa mesiaca na domovskej stránke a v obchode, so zľavnenou cenou. [čaká: 18]
 - [ ] Domovská stránka berie diela z CMS, nie z `content/diela.ts`.
-- [ ] Košík.
-- [ ] Pokladňa: údaje zákazníka, doprava, súhlas s podmienkami. Vytvorí objednávku „čaká na platbu“ a zarezervuje kusy. [čaká: 2 – doprava]
+- [x] Košík (`/kosik`). Reálne funguje – pridáva/odoberá/pamätá si položky v localStorage prehliadača, badge v headri. Bez CMS/DB zatiaľ nič nerezervuje.
+- [x] Pokladňa (`/pokladna`): údaje zákazníka, doprava (iba osobný odber je reálna možnosť, kuriér čaká na odpoveď 2), súhlas s podmienkami. Vytvorí objednávku v stave „čaká na platbu“ – uloženú len v prehliadači (`/pokladna/hotovo`), nikam sa neodosiela. Rezervácia kusov, e-mail a platba cez Comgate prídu s backendom (fáza 3) a §13. [čaká: 2 – doprava]
 
 ### Fáza 5 – Funkcie z poznámok (3 – 5 dní, podľa výberu Helenky)
 - [ ] Info lišta hore na stránke (text z CMS).

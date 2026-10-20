@@ -38,7 +38,7 @@ export default async function OMnePage() {
         eyebrow={texty.eyebrow[lang]}
         title={texty.nadpis[lang]}
         lead={oMneUvod[lang]}
-        aside={<PageHeroImage src="/images/helena-kvety.jpg" alt={texty.alt[lang]} position="50% 0%" />}
+        aside={<PageHeroImage src="/images/helena/helena-kvety.jpg" alt={texty.alt[lang]} position="50% 0%" />}
       />
       <Pribeh />
       <AkoTvorim />

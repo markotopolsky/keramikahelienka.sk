@@ -19,7 +19,7 @@ export async function Pribeh() {
       <div className="site-container grid gap-12 md:grid-cols-[5fr_6fr] md:items-center md:gap-14 lg:gap-24">
         <Reveal className="relative aspect-[8/9] overflow-hidden rounded-card bg-sage max-md:max-w-[28rem]">
           <Image
-            src="/images/helena-more.jpg"
+            src="/images/helena/helena-more.jpg"
             alt={texty.alt[lang]}
             fill
             sizes="(min-width: 90rem) 580px, (min-width: 48rem) 42vw, (min-width: 28rem) 448px, calc(100vw - 2.5rem)"
