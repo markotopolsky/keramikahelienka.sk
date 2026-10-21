@@ -1,84 +1,44 @@
-// The shop reads the products exported from the original site (docs/povodny-web/produkty.json)
-// until the phase 3 CMS replaces it. Photos were downloaded to public/images/produkty/<slug>-<n>.<ext>.
-import data from "@/docs/povodny-web/produkty.json";
-import { formatPrice, type Locale, type Localized } from "@/lib/i18n";
-import { kategorie, povodneKategorie, textyProduktov, type KategoriaSlug, type Variant } from "@/content/produkty";
-import type { PolozkaObchodu } from "@/components/obchod/obchod-zoznam";
+// The shop reads its products from the Supabase `produkty` table, edited in /admin.
+// While the database is not set up, fails or is still empty, it shows the products from the
+// original site (predvoleneProdukty in lib/produkty-zaklad.ts), so the shop never goes blank.
+import { unstable_cache } from "next/cache";
+import type { Locale } from "@/lib/i18n";
+import { supabase } from "@/lib/supabase";
+import { getContent } from "@/lib/content";
+import { KATEGORIE, predvoleneProdukty, zRiadku, type NazvyKategorii, type Produkt } from "@/lib/produkty-zaklad";
 
-export type Produkt = {
-  slug: string;
-  /** Position in the original shop, newest first */
-  poradie: number;
-  nazov: Localized;
-  popis: Localized<string[]>;
-  /** Lowest price; products with variants start at this price */
-  cena: number;
-  varianty: Variant[];
-  vypredane: boolean;
-  /** null when the original shop did not track the count */
-  pocetKusov: number | null;
-  kategorie: KategoriaSlug[];
-  fotky: string[];
-};
+export * from "@/lib/produkty-zaklad";
 
-function lokalnaFotka(slug: string, url: string, i: number) {
-  const ext = (url.split("?")[0].match(/\.\w+$/)?.[0] ?? ".jpg").toLowerCase().replace(".jpeg", ".jpg");
-  return `/images/produkty/${slug}-${i + 1}${ext}`;
+async function nacitajProdukty(): Promise<Produkt[]> {
+  if (!supabase) return predvoleneProdukty;
+
+  const { data, error } = await supabase.from("produkty").select("*").order("poradie");
+
+  if (error) {
+    console.error("getProdukty() failed:", error.message);
+    return predvoleneProdukty;
+  }
+  if (!data || data.length === 0) return predvoleneProdukty;
+  return data.map(zRiadku);
 }
 
-export const produkty: Produkt[] = data.produkty.map((p, poradie) => {
-  const text = textyProduktov[p.slug];
-  if (!text) throw new Error(`content/produkty.ts has no texts for product "${p.slug}"`);
-  const slugyKategorii =
-    text.kategorie ?? p.kategorie.map((k) => povodneKategorie[k]).filter((k): k is KategoriaSlug => Boolean(k));
-
-  return {
-    slug: p.slug,
-    poradie,
-    nazov: text.nazov,
-    popis: text.popis,
-    cena: p.cena_eur,
-    varianty: text.varianty ?? [],
-    vypredane: !p.na_sklade,
-    pocetKusov: p.pocet_kusov,
-    kategorie: [...new Set(slugyKategorii)],
-    fotky: p.fotky.map((url, i) => lokalnaFotka(p.slug, url, i)),
-  };
+const cachedProdukty = unstable_cache(nacitajProdukty, ["produkty"], {
+  // Fallback only: /api/revalidate busts the "produkty" tag on every admin save
+  revalidate: 3600,
+  tags: ["produkty"],
 });
 
-export function najdiProdukt(slug: string) {
-  return produkty.find((p) => p.slug === slug);
+/** Published products in shop order */
+export async function getProdukty(): Promise<Produkt[]> {
+  const produkty = await cachedProdukty();
+  return produkty.filter((p) => p.zverejneny);
 }
 
-/** "75 €", or "od 39 €" for a cup that comes with or without a lid */
-export function cenaProduktu(p: Produkt, lang: Locale) {
-  const cena = formatPrice(p.cena, lang);
-  if (p.varianty.length === 0) return cena;
-  return lang === "sk" ? `od ${cena}` : `from ${cena}`;
+export async function najdiProdukt(slug: string) {
+  return (await getProdukty()).find((p) => p.slug === slug);
 }
 
-const vypredaneText: Localized = { sk: "Vypredané", en: "Sold out" };
-
-/** Card data for the shop list, in one language only */
-export function polozkaObchodu(p: Produkt, lang: Locale): PolozkaObchodu {
-  return {
-    slug: p.slug,
-    nazov: p.nazov[lang],
-    kategoria: p.kategorie.map((k) => kategorie[k][lang]).join(" · "),
-    cena: cenaProduktu(p, lang),
-    foto: p.fotky[0],
-    vypredane: p.vypredane,
-    vypredaneText: vypredaneText[lang],
-    kategorie: p.kategorie,
-    cenaCislo: p.cena,
-    poradie: p.poradie,
-  };
-}
-
-/** Up to `pocet` other available pieces, from the same category first */
-export function podobneProdukty(produkt: Produkt, pocet = 4) {
-  const ostatne = produkty.filter((p) => p.slug !== produkt.slug && !p.vypredane);
-  const rovnaka = ostatne.filter((p) => p.kategorie.some((k) => produkt.kategorie.includes(k)));
-  const ine = ostatne.filter((p) => !rovnaka.includes(p));
-  return [...rovnaka, ...ine].slice(0, pocet);
+export async function getNazvyKategorii(lang: Locale): Promise<NazvyKategorii> {
+  const content = await getContent("kategorie", lang);
+  return Object.fromEntries(KATEGORIE.map((k) => [k, content[`kategorie.${k}`]])) as NazvyKategorii;
 }

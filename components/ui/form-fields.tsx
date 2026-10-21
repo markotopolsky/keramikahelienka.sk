@@ -44,16 +44,25 @@ export function Field({ id, label, className = "", required = false, ...input }:
   );
 }
 
-type SelectProps = { id: string; label: string; placeholder: string; name: string; options: string[]; required?: boolean };
+type SelectProps = {
+  id: string;
+  label: string;
+  placeholder: string;
+  name: string;
+  options: string[];
+  required?: boolean;
+  /** The option chosen at first; the placeholder when empty */
+  defaultValue?: string;
+};
 
-export function Select({ id, label, placeholder, name, options, required = false }: SelectProps) {
+export function Select({ id, label, placeholder, name, options, required = false, defaultValue = "" }: SelectProps) {
   return (
     <div>
       <Label htmlFor={id} required={required}>
         {label}
       </Label>
       <div className="relative">
-        <select id={id} name={name} required={required} defaultValue="" className={`${fieldClasses} appearance-none pr-10`}>
+        <select id={id} name={name} required={required} defaultValue={defaultValue} className={`${fieldClasses} appearance-none pr-10`}>
           <option value="" disabled>
             {placeholder}
           </option>

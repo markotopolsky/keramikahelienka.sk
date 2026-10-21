@@ -4,13 +4,13 @@ import { useId, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/lib/use-cart";
 import { useLang } from "@/components/locale-provider";
-import { kontakt } from "@/content/atelier";
 import { formatPrice, localizeHref, type Localized } from "@/lib/i18n";
-import { najdiProdukt } from "@/lib/produkty";
+import type { Produkt } from "@/lib/produkty-zaklad";
 import { Checkbox, Choice, Field } from "@/components/ui/form-fields";
 import { ButtonLink } from "@/components/ui/button-link";
 import { Doplnit } from "@/components/ui/doplnit";
 import { LocaleLink } from "@/components/ui/locale-link";
+import { odoslatObjednavku } from "@/lib/objednavka-akcia";
 
 const texty = {
   prazdny: { sk: "Košík je prázdny, nie je čo zaplatiť.", en: "Your cart is empty, there is nothing to pay." },
@@ -26,33 +26,46 @@ const texty = {
   spolu: { sk: "Spolu", en: "Total" },
   suhlas: { sk: "Súhlasím s ", en: "I agree to the " },
   podmienky: { sk: "obchodnými podmienkami", en: "terms and conditions" },
-  zaplatit: { sk: "Zaplatiť", en: "Pay" },
+  // Button wording for an order that creates an obligation to pay (zákon č. 108/2024 Z. z.)
+  objednat: { sk: "Objednať s povinnosťou platby", en: "Order with obligation to pay" },
+  odosiela: { sk: "Odosielam objednávku…", en: "Sending the order…" },
   poznamka: {
-    sk: "Platobná brána zatiaľ nie je zapojená – po odoslaní objednávky vás budeme kontaktovať na dohodnutie platby.",
-    en: "The payment gateway is not connected yet – after you submit the order we will contact you to arrange payment.",
+    sk: "Platbu kartou cez Comgate zapojíme pred spustením obchodu. Zatiaľ sa objednávka iba uloží a kúsky vám podržíme 30 minút.",
+    en: "Card payment through Comgate is connected before the shop opens. For now the order is only saved and we hold the pieces for 30 minutes.",
+  },
+  chybaUdaje: { sk: "Skontrolujte, prosím, meno, e-mail a telefón.", en: "Please check your name, email and phone." },
+  chybaNedostupne: {
+    sk: "Tieto kúsky medzitým objednal niekto iný: {nazvy}. Odstránili sme ich z košíka. Skontrolujte súhrn a odošlite objednávku znova.",
+    en: "Someone else has just ordered these pieces: {nazvy}. We removed them from your cart. Please check the summary and send the order again.",
+  },
+  chybaLimit: {
+    sk: "Z tohto e-mailu už na platbu čakajú tri objednávky. Dokončite ich, alebo nám napíšte.",
+    en: "Three orders from this email are already awaiting payment. Please complete them or write to us.",
+  },
+  chybaServer: {
+    sk: "Objednávku sa nepodarilo odoslať. Skúste to o chvíľu znova, alebo nám napíšte.",
+    en: "The order could not be sent. Please try again in a moment or write to us.",
   },
 } satisfies Record<string, Localized>;
 
-function vygenerujCisloObjednavky() {
-  const den = new Date().toISOString().slice(0, 10).replace(/-/g, "");
-  const kod = Math.random().toString(36).slice(2, 6).toUpperCase();
-  return `OBJ-${den}-${kod}`;
-}
+/** Where the thank-you page (components/obchod/objednavka-hotovo.tsx) reads the confirmed order */
+export const KLUC_OBJEDNAVKY = "kh-objednavka";
 
 /**
- * Pokladňa. Vytvorí objednávku v stave "čaká na platbu" – iba v tomto prehliadači (localStorage),
- * nikam sa neodosiela. Reálna rezervácia kusov a e-mail prídu s backendom (ZAZNAMNIK.md fáza 3),
- * platba cez Comgate "až nakoniec" (ZAZNAMNIK.md §13).
+ * Pokladňa. Pošle košík na server (lib/objednavka-akcia.ts). Ceny a sklad overí databáza, zamkne
+ * kusy a vytvorí objednávku v stave „čaká na platbu“. Platba cez Comgate a potvrdenie e-mailom
+ * prídu neskôr (ZAZNAMNIK.md §13 a fáza 6).
  */
-export function PokladnaForm() {
+export function PokladnaForm({ produkty, ulica }: { produkty: Produkt[]; ulica: string }) {
   const lang = useLang();
   const router = useRouter();
-  const { polozky, vyprazdnit } = useCart();
+  const { polozky, vyprazdnit, odobrat } = useCart();
   const id = useId();
   const [odosiela, setOdosiela] = useState(false);
+  const [chyba, setChyba] = useState<string | null>(null);
 
   const riadky = polozky.map((polozka) => {
-    const produkt = najdiProdukt(polozka.slug);
+    const produkt = produkty.find((p) => p.slug === polozka.slug);
     const variant = produkt && polozka.variant !== null ? produkt.varianty[polozka.variant] : undefined;
     const jednotkovaCena = variant ? variant.cena : produkt?.cena ?? 0;
     return { polozka, produkt, variant, jednotkovaCena };
@@ -71,33 +84,52 @@ export function PokladnaForm() {
     );
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const objednavka = {
-      cislo: vygenerujCisloObjednavky(),
-      vytvorene: new Date().toISOString(),
-      stav: "čaká na platbu" as const,
-      meno: String(data.get("meno") ?? ""),
-      telefon: String(data.get("telefon") ?? ""),
-      email: String(data.get("email") ?? ""),
-      doprava: "osobny-odber" as const,
-      polozky: platneRiadky.map((r) => ({
-        nazov: r.produkt!.nazov[lang],
-        variant: r.variant?.nazov[lang],
-        mnozstvo: r.polozka.mnozstvo,
-        cena: r.jednotkovaCena,
-      })),
-      spolu,
-    };
-    try {
-      localStorage.setItem("kh-posledna-objednavka", JSON.stringify(objednavka));
-    } catch {
-      // Zakázané úložisko – stránka "hotovo" potom ukáže náhradnú správu.
-    }
     setOdosiela(true);
-    vyprazdnit();
-    router.push(localizeHref("/pokladna/hotovo", lang));
+    setChyba(null);
+
+    let vysledok: Awaited<ReturnType<typeof odoslatObjednavku>>;
+    try {
+      vysledok = await odoslatObjednavku({
+        jazyk: lang,
+        meno: String(data.get("meno") ?? ""),
+        email: String(data.get("email") ?? ""),
+        telefon: String(data.get("telefon") ?? ""),
+        doprava: "osobny-odber",
+        suhlas: data.get("suhlas") !== null,
+        polozky: platneRiadky.map((r) => ({ slug: r.polozka.slug, variant: r.polozka.variant, pocet: r.polozka.mnozstvo })),
+        web: String(data.get("web") ?? ""),
+      });
+    } catch {
+      vysledok = { ok: false, chyba: "server" };
+    }
+
+    if (vysledok.ok) {
+      try {
+        localStorage.setItem(KLUC_OBJEDNAVKY, JSON.stringify(vysledok.objednavka));
+      } catch {
+        // Zakázané úložisko – stránka "hotovo" potom ukáže náhradnú správu.
+      }
+      vyprazdnit();
+      router.push(localizeHref("/pokladna/hotovo", lang));
+      return;
+    }
+
+    if (vysledok.chyba === "nedostupne") {
+      const prec = vysledok.nedostupne ?? [];
+      const nazvy = platneRiadky.filter((r) => prec.includes(r.polozka.slug)).map((r) => r.produkt!.nazov[lang]);
+      for (const r of riadky) if (prec.includes(r.polozka.slug)) odobrat(r.polozka.slug, r.polozka.variant);
+      setChyba(texty.chybaNedostupne[lang].replace("{nazvy}", [...new Set(nazvy)].join(", ")));
+      // Fresh products from the server, so the cart and the shop show these pieces as sold out
+      router.refresh();
+    } else {
+      setChyba(
+        { udaje: texty.chybaUdaje, limit: texty.chybaLimit, server: texty.chybaServer }[vysledok.chyba][lang],
+      );
+    }
+    setOdosiela(false);
   }
 
   return (
@@ -115,7 +147,7 @@ export function PokladnaForm() {
           name="doprava"
           defaultValue="osobny-odber"
           options={[
-            { value: "osobny-odber", label: `${texty.osobnyOdber[lang]} (${kontakt.ulica})` },
+            { value: "osobny-odber", label: `${texty.osobnyOdber[lang]} (${ulica})` },
             { value: "kurier", label: texty.kurier[lang], disabled: true },
           ]}
         />
@@ -151,14 +183,23 @@ export function PokladnaForm() {
         </LocaleLink>
       </Checkbox>
 
+      {/* Honeypot: hidden from people and screen readers, bots fill it in */}
+      <input type="text" name="web" tabIndex={-1} autoComplete="off" aria-hidden className="hidden" />
+
       <p className="text-[13px] leading-relaxed text-drift">{texty.poznamka[lang]}</p>
+
+      {chyba && (
+        <p role="alert" className="rounded-card bg-note p-4 text-[14px] leading-relaxed text-ink">
+          {chyba}
+        </p>
+      )}
 
       <button
         type="submit"
         disabled={odosiela}
         className="w-full rounded-full bg-deep px-6 py-3.5 text-[15px] font-medium tracking-[-0.01em] text-sand transition-colors duration-300 hover:bg-ink disabled:opacity-60 sm:w-auto"
       >
-        {texty.zaplatit[lang]} · {formatPrice(spolu, lang)}
+        {odosiela ? texty.odosiela[lang] : `${texty.objednat[lang]} · ${formatPrice(spolu, lang)}`}
       </button>
     </form>
   );

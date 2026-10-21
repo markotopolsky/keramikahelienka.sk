@@ -25,8 +25,9 @@ export function zakladOpenGraph(lang: Locale, obrazok = predvolenyObrazok): NonN
 type PageMetadata = {
   /** Slovak path of the page, e.g. "/kurzy" */
   path: string;
-  title?: Localized;
-  description: Localized;
+  /** A text in the page language (from /admin), or both languages */
+  title?: Localized | string;
+  description: Localized | string;
   /** "/images/..." photo for sharing; Helena's portrait when left out */
   obrazok?: string;
 };
@@ -37,17 +38,19 @@ type PageMetadata = {
  */
 export async function pageMetadata({ path, title, description, obrazok }: PageMetadata): Promise<Metadata> {
   const lang = await getLang();
+  const titulok = typeof title === "string" ? title : title?.[lang];
+  const popis = typeof description === "string" ? description : description[lang];
   return {
-    ...(title && { title: title[lang] }),
-    description: description[lang],
+    ...(titulok && { title: titulok }),
+    description: popis,
     alternates: {
       canonical: localizeHref(path, lang),
       languages: { sk: path, en: localizeHref(path, "en"), "x-default": path },
     },
     openGraph: {
       ...zakladOpenGraph(lang, obrazok),
-      ...(title && { title: title[lang] }),
-      description: description[lang],
+      ...(titulok && { title: titulok }),
+      description: popis,
       url: localizeHref(path, lang),
     },
   };

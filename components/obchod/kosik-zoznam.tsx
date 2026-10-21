@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useCart } from "@/lib/use-cart";
 import { useLang } from "@/components/locale-provider";
 import { formatPrice, type Localized } from "@/lib/i18n";
-import { najdiProdukt } from "@/lib/produkty";
+import type { Produkt } from "@/lib/produkty-zaklad";
 import { ButtonLink } from "@/components/ui/button-link";
 import { LocaleLink } from "@/components/ui/locale-link";
 
@@ -24,12 +24,12 @@ const texty = {
  * Obsah košíka. Číta položky z `useCart()` a pre každú si dotiahne aktuálne dáta produktu
  * (cena, foto, sklad) – košík si pamätá iba slug, variant a množstvo, nie samotnú cenu.
  */
-export function KosikZoznam() {
+export function KosikZoznam({ produkty }: { produkty: Produkt[] }) {
   const lang = useLang();
   const { polozky, zmenitMnozstvo, odobrat } = useCart();
 
   const riadky = polozky.map((polozka) => {
-    const produkt = najdiProdukt(polozka.slug);
+    const produkt = produkty.find((p) => p.slug === polozka.slug);
     const variant = polozka.variant !== null ? produkt?.varianty[polozka.variant] : undefined;
     const jednotkovaCena = variant ? variant.cena : produkt?.cena ?? 0;
     return { polozka, produkt, variant, jednotkovaCena };

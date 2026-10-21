@@ -1,6 +1,8 @@
 import type { Localized } from "@/lib/i18n";
 import { getLang } from "@/lib/i18n-server";
 import { pageMetadata } from "@/lib/metadata";
+import { getKontakt } from "@/lib/content";
+import { getProdukty } from "@/lib/produkty";
 import { PageHero } from "@/components/page-hero";
 import { PokladnaForm } from "@/components/obchod/pokladna-form";
 
@@ -28,7 +30,7 @@ export default async function PokladnaPage() {
       <PageHero eyebrow={texty.eyebrow[lang]} title={texty.nadpis[lang]} />
       <section className="bg-sand py-16 md:py-20">
         <div className="site-container max-w-[40rem]">
-          <PokladnaForm />
+          <PokladnaForm produkty={await getProdukty()} ulica={(await getKontakt()).ulica} />
         </div>
       </section>
     </>

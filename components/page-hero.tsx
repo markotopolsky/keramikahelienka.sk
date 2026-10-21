@@ -14,13 +14,14 @@ type PageHeroProps = {
 };
 
 /**
- * Dark teal opening of a subpage. The header stays transparent over it (`data-hero`),
- * and a torn-paper edge leads into the sand page below.
+ * Aqua opening of a subpage, with ink text (6.8:1; sand or deep text would fail contrast on aqua).
+ * The header stays transparent over it (`data-hero`), and a torn-paper edge leads into the sand page below.
+ * Buttons in `actions` use the deep or outline variant: the primary one is aqua too.
  * It animates in with CSS, not <Reveal>, so it shows before the page's JavaScript has loaded.
  */
 export function PageHero({ eyebrow, title, lead, actions, aside }: PageHeroProps) {
   return (
-    <section data-hero className="bg-deep text-sand">
+    <section data-hero className="bg-aqua text-ink">
       <div
         className={`site-container pb-14 pt-32 md:pb-20 md:pt-44 ${
           aside ? "grid gap-12 md:gap-16 lg:grid-cols-[1fr_24rem] lg:items-end xl:grid-cols-[1fr_28rem]" : ""
@@ -28,11 +29,11 @@ export function PageHero({ eyebrow, title, lead, actions, aside }: PageHeroProps
       >
         <div>
           <div className="motion-safe:animate-rise">
-            <p className="eyebrow text-aqua">{eyebrow}</p>
+            <p className="eyebrow text-ink/85">{eyebrow}</p>
             <h1 className="mt-5 max-w-[52rem] text-display md:mt-6">{typeof title === "string" ? bindShortWords(title) : title}</h1>
           </div>
           {lead && (
-            <div className="mt-7 max-w-[36rem] text-lead text-sand/90 motion-safe:animate-rise md:mt-9" style={{ animationDelay: "0.1s" }}>
+            <div className="mt-7 max-w-[36rem] text-lead text-ink/90 motion-safe:animate-rise md:mt-9" style={{ animationDelay: "0.1s" }}>
               {typeof lead === "string" ? bindShortWords(lead) : lead}
             </div>
           )}

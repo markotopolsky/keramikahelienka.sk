@@ -1,6 +1,7 @@
 import type { Localized } from "@/lib/i18n";
 import { getLang } from "@/lib/i18n-server";
 import { pageMetadata } from "@/lib/metadata";
+import { getProdukty } from "@/lib/produkty";
 import { PageHero } from "@/components/page-hero";
 import { KosikZoznam } from "@/components/obchod/kosik-zoznam";
 
@@ -28,7 +29,7 @@ export default async function KosikPage() {
       <PageHero eyebrow={texty.eyebrow[lang]} title={texty.nadpis[lang]} />
       <section className="bg-sand py-16 md:py-20">
         <div className="site-container max-w-[48rem]">
-          <KosikZoznam />
+          <KosikZoznam produkty={await getProdukty()} />
         </div>
       </section>
     </>

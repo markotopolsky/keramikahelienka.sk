@@ -3,8 +3,8 @@
 import { Suspense, useEffect, useId, useState, type FormEvent } from "react";
 import { useSearchParams } from "next/navigation";
 import type { Localized } from "@/lib/i18n";
-import { kontakt, type TypDopytu } from "@/content/atelier";
-import { kurzy, terminy } from "@/content/kurzy";
+import type { TypDopytu } from "@/content/atelier";
+import type { Kurz, Termin } from "@/lib/content";
 import { useLang } from "@/components/locale-provider";
 import { Doplnit } from "@/components/ui/doplnit";
 import { Choice, Field, Label, Select, fieldClasses } from "@/components/ui/form-fields";
@@ -53,8 +53,8 @@ const texty = {
   ponuka: { sk: "Pripravíme vám cenovú ponuku na mieru.", en: "We will prepare a custom quote for you." },
   ochrana: { sk: "Ochrana osobných údajov", en: "Privacy policy" },
   prototyp: {
-    sk: `Prototyp: formulár zatiaľ správy neodosiela. Napíšte nám na ${kontakt.email} alebo zavolajte.`,
-    en: `Prototype: the form does not send messages yet. Write to ${kontakt.email} or call us.`,
+    sk: "Prototyp: formulár zatiaľ správy neodosiela. Napíšte nám na {email} alebo zavolajte.",
+    en: "Prototype: the form does not send messages yet. Write to {email} or call us.",
   },
 } satisfies Record<string, Localized>;
 
@@ -63,14 +63,28 @@ function isTyp(value: string | null): value is TypDopytu {
 }
 
 /**
- * The one form on the site: a switch for companies (teambuilding), course sign-up or a question,
- * then the fields that choice needs. Links from `formular` in content/atelier.ts open it on the right tab.
+ * The form on the site. With `typ` it is fixed to that kind (the sign-up on /kurzy, the enquiry on /pre-firmy);
+ * without it a switch picks companies (teambuilding), course sign-up or a question (the homepage and /kontakt),
+ * and the fields follow the choice. Links from `formular` in content/atelier.ts open the right one.
  * The fields are a first draft from the meeting notes (ZAZNAMNIK.md section 12) and will be refined (question 15).
  * TODO: phase 5 sends the message by e-mail. Before that, Helena supplies the privacy notice text for the form.
  */
-export function KontaktForm({ typ: defaultTyp = "otazka" }: { typ?: TypDopytu }) {
+type KontaktFormProps = {
+  /** Fixed kind of form, without the switch */
+  typ?: TypDopytu;
+  /** Slug of the course chosen at first in the sign-up (on /kurzy/<slug>); ?kurz=<slug> in the URL wins */
+  kurz?: string;
+  /** Course names and class times for the sign-up tab, from /admin */
+  kurzy: Kurz[];
+  terminy: Termin[];
+  email: string;
+};
+
+export function KontaktForm({ typ: pevnyTyp, kurz, kurzy, terminy, email }: KontaktFormProps) {
   const lang = useLang();
-  const [typ, setTyp] = useState<TypDopytu>(defaultTyp);
+  const [typ, setTyp] = useState<TypDopytu>(pevnyTyp ?? "otazka");
+  const [kurzSlug, setKurzSlug] = useState(kurz);
+  const zvolenyKurz = kurzy.find((k) => k.slug === kurzSlug)?.nazov ?? "";
   const [sent, setSent] = useState(false);
   const id = useId();
 
@@ -86,32 +100,38 @@ export function KontaktForm({ typ: defaultTyp = "otazka" }: { typ?: TypDopytu })
 
   return (
     <form onSubmit={handleSubmit} className="grid gap-5 sm:grid-cols-2">
-      {/* Reading ?typ= must not hold back the prerendered form, so it sits in its own Suspense boundary */}
+      {/* Reading the URL must not hold back the prerendered form, so it sits in its own Suspense boundary */}
       <Suspense fallback={null}>
-        <TypFromUrl onTyp={setTyp} />
+        <ZUrl onTyp={pevnyTyp ? undefined : setTyp} onKurz={setKurzSlug} />
       </Suspense>
 
-      <fieldset className="sm:col-span-2">
-        <legend className="text-[14px] font-medium text-ink">{texty.typ[lang]}</legend>
-        <div className="mt-2 grid grid-cols-3 gap-1 rounded-full border border-sage bg-(--field) p-1">
-          {typy.map((t) => (
-            <label
-              key={t.id}
-              className="cursor-pointer rounded-full px-2 py-2.5 text-center text-[15px] font-medium text-deep transition-colors duration-300 hover:bg-sage/50 has-checked:bg-deep has-checked:text-sand has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-sea"
-            >
-              <input
-                type="radio"
-                name="typ"
-                value={t.id}
-                checked={typ === t.id}
-                onChange={() => chooseTyp(t.id)}
-                className="sr-only"
-              />
-              {t.label[lang]}
-            </label>
-          ))}
-        </div>
-      </fieldset>
+      {pevnyTyp ? (
+        <input type="hidden" name="typ" value={pevnyTyp} />
+      ) : (
+        <>
+          <fieldset className="sm:col-span-2">
+            <legend className="text-[14px] font-medium text-ink">{texty.typ[lang]}</legend>
+            <div className="mt-2 grid grid-cols-3 gap-1 rounded-full border border-sage bg-(--field) p-1">
+              {typy.map((t) => (
+                <label
+                  key={t.id}
+                  className="cursor-pointer rounded-full px-2 py-2.5 text-center text-[15px] font-medium text-deep transition-colors duration-300 hover:bg-sage/50 has-checked:bg-deep has-checked:text-sand has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-sea"
+                >
+                  <input
+                    type="radio"
+                    name="typ"
+                    value={t.id}
+                    checked={typ === t.id}
+                    onChange={() => chooseTyp(t.id)}
+                    className="sr-only"
+                  />
+                  {t.label[lang]}
+                </label>
+              ))}
+            </div>
+          </fieldset>
+        </>
+      )}
 
       <Field id={`${id}-meno`} label={texty.meno[lang]} name="meno" autoComplete="name" required />
       <Field id={`${id}-telefon`} label={texty.telefon[lang]} name="telefon" type="tel" autoComplete="tel" required />
@@ -129,12 +149,15 @@ export function KontaktForm({ typ: defaultTyp = "otazka" }: { typ?: TypDopytu })
       <div key={typ} className="grid gap-5 sm:col-span-2 sm:grid-cols-2 motion-safe:animate-fade-in">
         {typ === "kurzy" && (
           <>
+            {/* Keyed by the course, so a course from the URL is chosen once it has been read */}
             <Select
+              key={zvolenyKurz}
               id={`${id}-kurz`}
               label={texty.kurz[lang]}
               placeholder={texty.vyberte[lang]}
               name="kurz"
-              options={kurzy.map((k) => k.nazov[lang])}
+              options={kurzy.map((k) => k.nazov)}
+              defaultValue={zvolenyKurz}
               required
             />
             <Select
@@ -142,7 +165,7 @@ export function KontaktForm({ typ: defaultTyp = "otazka" }: { typ?: TypDopytu })
               label={texty.termin[lang]}
               placeholder={texty.vyberte[lang]}
               name="termin"
-              options={[...terminy.map((t) => `${t.den[lang]} ${t.cas}`), texty.nepravidelne[lang]]}
+              options={[...terminy.map((t) => `${t.den} ${t.cas}`.trim()), texty.nepravidelne[lang]]}
               required
             />
             <Field
@@ -236,21 +259,26 @@ export function KontaktForm({ typ: defaultTyp = "otazka" }: { typ?: TypDopytu })
       </div>
 
       <p aria-live="polite" className="min-h-5 text-[14px] leading-relaxed text-deep sm:col-span-2">
-        {sent ? texty.prototyp[lang] : ""}
+        {sent ? texty.prototyp[lang].replace("{email}", email) : ""}
       </p>
     </form>
   );
 }
 
 /**
- * Switches the form to the tab named in the URL, e.g. /kontakt?typ=kurzy, also when only the query changes.
- * `onTyp` must be stable (a state setter), or the effect would undo every click on the switch.
+ * Applies the URL: ?typ= switches the tab (e.g. /kontakt?typ=kurzy), ?kurz=<slug> chooses the course,
+ * also when only the query changes. The callbacks must be stable (state setters), or the effects
+ * would undo every click on the switch. Without `onTyp` (a fixed form) ?typ= is ignored.
  */
-function TypFromUrl({ onTyp }: { onTyp: (typ: TypDopytu) => void }) {
-  const typ = useSearchParams().get("typ");
+function ZUrl({ onTyp, onKurz }: { onTyp?: (typ: TypDopytu) => void; onKurz: (slug: string) => void }) {
+  const params = useSearchParams();
+  const typ = params.get("typ");
+  const kurz = params.get("kurz");
   useEffect(() => {
-    if (isTyp(typ)) onTyp(typ);
+    if (onTyp && isTyp(typ)) onTyp(typ);
   }, [typ, onTyp]);
+  useEffect(() => {
+    if (kurz) onKurz(kurz);
+  }, [kurz, onKurz]);
   return null;
 }
-

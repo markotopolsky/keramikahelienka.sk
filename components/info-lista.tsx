@@ -2,7 +2,8 @@
 
 import { useEffect, useRef } from "react";
 import type { Localized } from "@/lib/i18n";
-import { infoLista, infoListaKluc } from "@/content/info-lista";
+import { infoListaKluc } from "@/content/info-lista";
+import type { InfoListaData } from "@/lib/content";
 import { useLang } from "@/components/locale-provider";
 import { Doplnit } from "@/components/ui/doplnit";
 
@@ -17,7 +18,7 @@ const texty = {
  * The bar's height is published as --info-lista; <main> uses it as top padding so the bar,
  * which sits in the fixed header, never covers the page.
  */
-export function InfoLista({ skryta }: { skryta: boolean }) {
+export function InfoLista({ infoLista, skryta }: { infoLista: InfoListaData; skryta: boolean }) {
   const lang = useLang();
   const obsah = useRef<HTMLDivElement>(null);
 
@@ -36,7 +37,7 @@ export function InfoLista({ skryta }: { skryta: boolean }) {
   function zavriet() {
     document.documentElement.setAttribute("data-info-zavreta", "");
     try {
-      localStorage.setItem(infoListaKluc, infoLista.id);
+      localStorage.setItem(infoListaKluc, infoLista.verzia);
     } catch {
       // Private mode without storage: the bar stays closed until the next page load
     }
@@ -58,7 +59,7 @@ export function InfoLista({ skryta }: { skryta: boolean }) {
         <div ref={obsah} className="bg-aqua text-ink">
           <div className="site-container relative flex min-h-10 items-center justify-center py-2 pr-12 text-center text-[14px] leading-snug sm:pr-14">
             <p>
-              {infoLista.text ? infoLista.text[lang] : <Doplnit>aktuálny oznam od Helenky – zľava, zľavový kód alebo výstava</Doplnit>}
+              {infoLista.text || <Doplnit>aktuálny oznam od Helenky – zľava, zľavový kód alebo výstava</Doplnit>}
               {infoLista.odkaz && (
                 <>
                   {" "}
@@ -66,7 +67,7 @@ export function InfoLista({ skryta }: { skryta: boolean }) {
                     href={infoLista.odkaz.href}
                     className="whitespace-nowrap font-medium underline decoration-ink/40 underline-offset-4 hover:decoration-ink"
                   >
-                    {infoLista.odkaz.text[lang]}
+                    {infoLista.odkaz.text}
                   </a>
                 </>
               )}

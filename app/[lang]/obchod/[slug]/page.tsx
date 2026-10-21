@@ -4,9 +4,9 @@ import { bindShortWords, plural, type Localized } from "@/lib/i18n";
 import { getLang } from "@/lib/i18n-server";
 import { pageMetadata } from "@/lib/metadata";
 import { produktData } from "@/lib/strukturovane-data";
-import { cenaProduktu, najdiProdukt, podobneProdukty, polozkaObchodu, produkty } from "@/lib/produkty";
-import { formular, kontakt } from "@/content/atelier";
-import { kategorie } from "@/content/produkty";
+import { getContent, getKontakt } from "@/lib/content";
+import { cenaProduktu, getNazvyKategorii, getProdukty, podobneProdukty, polozkaObchodu } from "@/lib/produkty";
+import { formular } from "@/content/atelier";
 import { JsonLd } from "@/components/json-ld";
 import { Galeria } from "@/components/obchod/galeria";
 import { DoKosika } from "@/components/obchod/do-kosika";
@@ -20,32 +20,26 @@ const texty = {
   navigacia: { sk: "Omrvinková navigácia", en: "Breadcrumb" },
   skladom: { sk: "Skladom", en: "In stock" },
   vypredane: { sk: "Vypredané", en: "Sold out" },
-  vypredaneText: {
-    sk: "Tento kúsok už má nový domov. Ostáva tu ako galéria. Ak sa vám páči, opýtajte sa na podobný.",
-    en: "This piece has found a new home and stays here as a gallery. If you like it, ask about a similar one.",
-  },
   opytat: { sk: "Opýtať sa na kúsok", en: "Ask about this piece" },
   opytatPodobny: { sk: "Opýtať sa na podobný", en: "Ask about a similar piece" },
   doprava: { sk: "Doprava", en: "Delivery" },
   odber: { sk: "Osobný odber", en: "Pickup" },
-  odberText: {
-    sk: `V ateliéri, ${kontakt.ulica}, Bratislava. Zadarmo.`,
-    en: `At the studio, ${kontakt.ulica}, Bratislava. Free.`,
-  },
+  odberText: { sk: "V ateliéri, {ulica}, Bratislava. Zadarmo.", en: "At the studio, {ulica}, Bratislava. Free." },
+  kod: { sk: "Kód", en: "Code" },
   dalsie: { sk: "Ďalšie kúsky", en: "More pieces" },
   celyObchod: { sk: "Celý obchod", en: "Whole shop" },
 } satisfies Record<string, Localized>;
 
-export function generateStaticParams() {
-  return produkty.map((p) => ({ slug: p.slug }));
+export async function generateStaticParams() {
+  return (await getProdukty()).map((p) => ({ slug: p.slug }));
 }
 
-// Any other value is a 404 (app/global-not-found.tsx)
-export const dynamicParams = false;
+// Products added in /admin after the build render on their first visit; an unknown slug is a 404
+export const dynamicParams = true;
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/obchod/[slug]">): Promise<Metadata> {
   const { slug } = await params;
-  const produkt = najdiProdukt(slug);
+  const produkt = (await getProdukty()).find((p) => p.slug === slug);
   if (!produkt) return {};
   const nazov = produkt.nazov;
   return pageMetadata({
@@ -61,9 +55,11 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/obchod/[sl
 
 export default async function ProduktPage({ params }: PageProps<"/[lang]/obchod/[slug]">) {
   const { slug } = await params;
-  const produkt = najdiProdukt(slug);
+  const produkty = await getProdukty();
+  const produkt = produkty.find((p) => p.slug === slug);
   if (!produkt) notFound();
   const lang = await getLang();
+  const [c, kontakt, nazvy] = await Promise.all([getContent("obchod", lang), getKontakt(), getNazvyKategorii(lang)]);
 
   const nazov = produkt.nazov[lang];
   const sklad = produkt.vypredane
@@ -71,7 +67,7 @@ export default async function ProduktPage({ params }: PageProps<"/[lang]/obchod/
     : produkt.pocetKusov
       ? `${texty.skladom[lang]}, ${plural(produkt.pocetKusov, lang, { sk: ["kus", "kusy", "kusov"], en: ["piece", "pieces"] })}`
       : texty.skladom[lang];
-  const podobne = podobneProdukty(produkt).map((p) => polozkaObchodu(p, lang));
+  const podobne = podobneProdukty(produkty, produkt).map((p) => polozkaObchodu(p, lang, nazvy));
   const hlavnaKategoria = produkt.kategorie[0];
 
   return (
@@ -93,7 +89,7 @@ export default async function ProduktPage({ params }: PageProps<"/[lang]/obchod/
                     href={`/obchod?kategoria=${hlavnaKategoria}`}
                     className="hover:text-deep touch:inline-flex touch:min-h-11 touch:items-center"
                   >
-                    {kategorie[hlavnaKategoria][lang]}
+                    {nazvy[hlavnaKategoria]}
                   </LocaleLink>
                 </li>
               )}
@@ -104,7 +100,7 @@ export default async function ProduktPage({ params }: PageProps<"/[lang]/obchod/
             <Galeria fotky={produkt.fotky} nazov={nazov} vypredane={produkt.vypredane} />
 
             <div className="lg:pt-4">
-              <p className="eyebrow text-drift">{produkt.kategorie.map((k) => kategorie[k][lang]).join(" · ")}</p>
+              <p className="eyebrow text-drift">{produkt.kategorie.map((k) => nazvy[k]).join(" · ")}</p>
               <h1 className="mt-4 text-h2 text-deep">{bindShortWords(nazov)}</h1>
 
               <div className="mt-6 flex flex-wrap items-baseline gap-x-5 gap-y-2">
@@ -124,7 +120,7 @@ export default async function ProduktPage({ params }: PageProps<"/[lang]/obchod/
               <div className="mt-8 border-t border-sage pt-8">
                 {produkt.vypredane ? (
                   <div className="flex flex-col items-start gap-5">
-                    <p className="max-w-[30rem] text-[15px] leading-relaxed text-ink/80">{texty.vypredaneText[lang]}</p>
+                    <p className="max-w-[30rem] text-[15px] leading-relaxed text-ink/80">{c["obchod.vypredane_text"]}</p>
                     <ButtonLink href={formular.otazka} variant="deep">
                       {texty.opytatPodobny[lang]}
                     </ButtonLink>
@@ -153,7 +149,7 @@ export default async function ProduktPage({ params }: PageProps<"/[lang]/obchod/
               <dl className="mt-10 divide-y divide-sage border-y border-sage text-[15px]">
                 <div className="flex flex-col gap-1 py-4 sm:flex-row sm:gap-6">
                   <dt className="eyebrow shrink-0 pt-1 text-[11px] text-drift sm:w-28">{texty.odber[lang]}</dt>
-                  <dd className="text-ink">{texty.odberText[lang]}</dd>
+                  <dd className="text-ink">{texty.odberText[lang].replace("{ulica}", kontakt.ulica)}</dd>
                 </div>
                 <div className="flex flex-col gap-1 py-4 sm:flex-row sm:gap-6">
                   <dt className="eyebrow shrink-0 pt-1 text-[11px] text-drift sm:w-28">{texty.doprava[lang]}</dt>
@@ -161,6 +157,12 @@ export default async function ProduktPage({ params }: PageProps<"/[lang]/obchod/
                     <Doplnit>spôsoby a ceny dopravy – otázka 2</Doplnit>
                   </dd>
                 </div>
+                {produkt.kod && (
+                  <div className="flex flex-col gap-1 py-4 sm:flex-row sm:gap-6">
+                    <dt className="eyebrow shrink-0 pt-1 text-[11px] text-drift sm:w-28">{texty.kod[lang]}</dt>
+                    <dd className="text-ink">{produkt.kod}</dd>
+                  </div>
+                )}
               </dl>
             </div>
           </div>

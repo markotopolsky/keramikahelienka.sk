@@ -1,4 +1,5 @@
-// Contact details and reviews from keramikahelienka.sk.
+// Contact details from keramikahelienka.sk. They are the defaults of the "kontakt" section in /admin
+// (lib/content-defaults.ts); the site reads them through getKontakt() in lib/content.ts.
 import type { Localized } from "@/lib/i18n";
 
 export const kontakt = {
@@ -36,56 +37,30 @@ export const navigacia: { label: Localized; href: string }[] = [
 export const kosik = "/kosik";
 
 /**
- * Links to the one form on the site (`KontaktForm` on /kontakt), each opening it on the right tab.
- * Course sign-ups used to go to Helena's Google form; they now land here too.
+ * Links to the right form (`KontaktSekcia`): the sign-up on /kurzy, the enquiry on /pre-firmy,
+ * and a question on /kontakt, whose form keeps the switch. Course sign-ups used to go to Helena's Google form.
  */
 export const formular = {
-  firmy: "/kontakt?typ=firmy#formular",
-  kurzy: "/kontakt?typ=kurzy#formular",
+  firmy: "/pre-firmy#formular",
+  kurzy: "/kurzy#formular",
   otazka: "/kontakt?typ=otazka#formular",
 };
 
 export type TypDopytu = keyof typeof formular;
 
-export const temaRecenzie = {
-  kurz: { sk: "Kurz", en: "Class" },
-  nakup: { sk: "Nákup", en: "Purchase" },
-} satisfies Record<string, Localized>;
-
-export type Recenzia = {
-  /** The English text is a translation of the Slovak original */
-  text: Localized;
-  meno: string;
-  miesto: Localized;
-  tema: keyof typeof temaRecenzie;
-};
-
-export const recenzie: Recenzia[] = [
-  {
-    text: {
-      sk: "Som veľmi spokojná, výrobok je prekrásny, perfektne zabalený. Komunikácia s pani Helenkou, ktorá sväteničku vyrobila, bola výborná. Len tak ďalej. Zaslúži si najvyššie hodnotenie.",
-      en: "I am very happy, the piece is beautiful and perfectly packed. Communication with Helenka, who made the holy water font, was excellent. Keep it up. She deserves the highest rating.",
-    },
-    meno: "Jana",
-    miesto: { sk: "Sološnica", en: "Sološnica" },
-    tema: "nakup",
-  },
-  {
-    text: {
-      sk: "Kurz keramiky v Ateliéri He-lienka bol pre mňa vždy relaxom a zdrojom inšpirácie aj mnohých nových možností. Helenka ako lektorka je veľmi ústretová a nápomocná. Počas viac ako roka to bol náš spoločný tvorivý čas s dcérou (7 r.). Individuálny prístup a priateľská atmosféra ateliéru mi veľmi vyhovuje.",
-      en: "The pottery class at Ateliér He-lienka has always been a way to relax for me, and a source of inspiration and many new possibilities. As a teacher, Helenka is very accommodating and helpful. For more than a year it was our shared creative time with my daughter (7). The individual approach and the friendly atmosphere of the studio suit me very well.",
-    },
-    meno: "Radka",
-    miesto: { sk: "výtvarníčka", en: "artist" },
-    tema: "kurz",
-  },
-  {
-    text: {
-      sk: "Pani Helenka, ďakujem veľmi pekne. Svietniky sú nádherné. Vaše dielka sú zosúladené, harmonické vzorom a aj farebne. Perfektné balenie. Budú sa v exteriéri nenápadne vynímať. Ešte raz Vám ďakujem a prajem veľa nadšenia, radosti a tvorivých nápadov.",
-      en: "Helenka, thank you very much. The candle holders are wonderful. Your pieces go well together, harmonious in pattern and in colour. Perfect packaging. They will stand out quietly outdoors. Thank you once again, and I wish you lots of enthusiasm, joy and creative ideas.",
-    },
-    meno: "Vlastina",
-    miesto: { sk: "Belá-Dulice", en: "Belá-Dulice" },
-    tema: "nakup",
-  },
+/**
+ * Subpages /kurzy/<slug> of the course cards, in card order: the first belongs to slot
+ * "kurzy_ponuka.kurz1_…" in /admin. `cennik` adds the full price list, for the courses it has prices of.
+ * A slug is a public address; changing one needs a redirect from the old address.
+ */
+export const kurzyStranky: { slug: string; cennik: boolean }[] = [
+  { slug: "mesacny-kurz", cennik: true },
+  { slug: "workshop", cennik: false },
+  { slug: "volny-atelier", cennik: false },
+  { slug: "deti-a-rodicia", cennik: true },
 ];
+
+/** The sign-up tab of the form with this course already chosen */
+export function prihlaskaNaKurz(slug: string) {
+  return `/kurzy?kurz=${slug}#formular`;
+}

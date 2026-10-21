@@ -3,26 +3,18 @@
 import { useSyncExternalStore } from "react";
 import { useLang } from "@/components/locale-provider";
 import { formatPrice, type Localized } from "@/lib/i18n";
+import type { PotvrdenaObjednavka } from "@/lib/objednavka-akcia";
 import { ButtonLink } from "@/components/ui/button-link";
-
-type Objednavka = {
-  cislo: string;
-  stav: string;
-  meno: string;
-  email: string;
-  telefon: string;
-  polozky: { nazov: string; variant?: string; mnozstvo: number; cena: number }[];
-  spolu: number;
-};
+import { KLUC_OBJEDNAVKY } from "@/components/obchod/pokladna-form";
 
 // Jednorazové čítanie z localStorage, uložené po prvom prečítaní – rovnaký vzor ako
 // hydratácia v lib/use-cart.ts, nech useSyncExternalStore nevracia pri každom volaní nový objekt.
-let nacitana: Objednavka | null | undefined;
+let nacitana: PotvrdenaObjednavka | null | undefined;
 
 function getSnapshot() {
   if (nacitana === undefined) {
     try {
-      const ulozena = localStorage.getItem("kh-posledna-objednavka");
+      const ulozena = localStorage.getItem(KLUC_OBJEDNAVKY);
       nacitana = ulozena ? JSON.parse(ulozena) : null;
     } catch {
       nacitana = null;
@@ -47,15 +39,19 @@ const texty = {
   doObchodu: { sk: "Prejsť do obchodu", en: "Go to the shop" },
   cislo: { sk: "Číslo objednávky", en: "Order number" },
   stavCakaNaPlatbu: { sk: "Čaká na platbu", en: "Awaiting payment" },
+  rezervacia: { sk: "Kúsky vám držíme do {cas}.", en: "We hold the pieces for you until {cas}." },
   poznamka: {
-    sk: "Toto je zatiaľ prototyp webu: objednávka sa uložila len v tomto prehliadači, nikam sa neodoslala. Platobná brána a potvrdenie e-mailom prídu neskôr – do vybavenia vás budeme kontaktovať na uvedenom telefóne alebo e-maile.",
-    en: "This is still a website prototype: the order was saved only in this browser and was not sent anywhere. The payment gateway and email confirmation come later – until then we will contact you by phone or email.",
+    sk: "Platbu kartou cez Comgate a potvrdenie e-mailom zapojíme pred spustením obchodu. Zatiaľ sa objednávka iba uložila.",
+    en: "Card payment through Comgate and the email confirmation are connected before the shop opens. For now the order has only been saved.",
   },
   spolu: { sk: "Spolu", en: "Total" },
   napatDomov: { sk: "Späť na domovskú stránku", en: "Back to the homepage" },
 } satisfies Record<string, Localized>;
 
-/** Číta poslednú objednávku uloženú pokladňou (`components/obchod/pokladna-form.tsx`) z localStorage. */
+/**
+ * Číta objednávku, ktorú server potvrdil pokladni (`components/obchod/pokladna-form.tsx`) a tá ju
+ * uložila do localStorage. Návštevník databázu objednávok čítať nesmie.
+ */
 export function ObjednavkaHotovo() {
   const lang = useLang();
   const objednavka = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
@@ -87,9 +83,9 @@ export function ObjednavkaHotovo() {
             <span className="text-ink">
               {p.nazov}
               {p.variant && <span className="text-drift"> · {p.variant}</span>}
-              <span className="text-drift"> × {p.mnozstvo}</span>
+              <span className="text-drift"> × {p.pocet}</span>
             </span>
-            <span className="shrink-0 text-deep">{formatPrice(p.cena * p.mnozstvo, lang)}</span>
+            <span className="shrink-0 text-deep">{formatPrice(p.cenaZaKus * p.pocet, lang)}</span>
           </li>
         ))}
       </ul>
@@ -98,7 +94,17 @@ export function ObjednavkaHotovo() {
         <span className="text-ink">{formatPrice(objednavka.spolu, lang)}</span>
       </p>
 
-      <p className="mt-8 text-[14px] leading-relaxed text-drift">{texty.poznamka[lang]}</p>
+      <p className="mt-8 text-[15px] leading-relaxed text-ink">
+        {texty.rezervacia[lang].replace(
+          "{cas}",
+          new Date(objednavka.rezervovaneDo).toLocaleTimeString(lang === "sk" ? "sk-SK" : "en-GB", {
+            timeZone: "Europe/Bratislava",
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
+        )}
+      </p>
+      <p className="mt-3 text-[14px] leading-relaxed text-drift">{texty.poznamka[lang]}</p>
 
       <ButtonLink href="/" variant="deep" className="mt-8">
         {texty.napatDomov[lang]}

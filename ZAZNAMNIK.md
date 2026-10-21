@@ -22,6 +22,53 @@ Súvisiace súbory:
 - Poznámka: web je za firewallom (WAF). Obyčajný `curl` dostane „Access Denied“. Treba poslať hlavičky prehliadača (User-Agent, Accept, Accept-Language, Sec-Fetch-*).
 - Prototyp domovskej stránky je responzívny: telefón od 320 px, tablet, notebook aj desktop. Na telefóne a tablete (do 1024 px) je navigácia v menu cez celú obrazovku. Mobilné rozloženie vychádza zo šablóny SkillClass: karty kurzov sa ukladajú na seba aj na mobile, recenzie sa posúvajú do strany, pätička má veľké logo cez celú šírku.
 
+### 2026-10-21
+- **Rozhodnutie:** CMS nebude Payload. Je to jednoduchý CMS zo Supabase a Cloudinary, rovnaký ako v projekte franek-skola-sportu. Postup je v README, časť „Editovateľný obsah“.
+  - `/admin` má prihlásenie cez Supabase Auth. Záložka „Texty a fotky“ obsahuje 24 sekcií, každý text po slovensky aj anglicky. Záložka „Produkty“ umožňuje pridať, upraviť, skryť a vymazať produkt, upraviť varianty a kategórie, nahrať fotky a zvoliť „na domovskej“.
+  - Defaulty sú v `lib/content-defaults.ts`. Produkty z pôvodného webu sú v `lib/produkty-zaklad.ts`. Bez databázy web ukazuje tieto defaulty.
+  - Kľúče zatiaľ nie sú zadané. Bez nich web beží z defaultov a `/admin` ukáže, čo chýba. Bez `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME` idú fotky z `public/images` bez optimalizácie.
+  - Zrušené súbory: `content/kurzy.ts` a `content/o-mne.ts`. Recenzie a pás fotiek v pätičke sú v CMS. Právne texty v `content/pravne.ts` ostávajú ako default; v CMS je každá stránka jeden text, „## nadpis“ začína očíslovanú časť.
+- Overené: `tsc`, `eslint`, `next build`, všetky stránky SK aj EN vracajú 200. Neprihlásený `POST /api/revalidate` vracia 401. `npm run seed:content -- --dry-run` vypíše 474 kľúčov, `seed:produkty` 48 produktov. Uloženie v admine zatiaľ nie je otestované, chýba Supabase projekt.
+- Supabase projekt založený, región Írsko (`eu-west-1`, v EÚ). Nové projekty nedávajú API rolám práva na tabuľky, preto `supabase/schema.sql` obsahuje `grant` príkazy.
+- **E-shop, krok 1 z 5 – databáza** (`supabase/schema.sql`, dá sa spustiť znova, starú databázu upraví bez straty dát):
+  - Produkt má interné `id` a kód `KH-0001`. Kód pridelí databáza, nikdy sa nemení. Pôvodné produkty dostali kódy od najstaršieho. Kód, `id` ani adresu (`slug`) nemožno zmeniť, stráži to databáza.
+  - História cien `produkty_ceny` sa zapisuje sama pri každej zmene ceny alebo variantov. Je potrebná na zľavy (najnižšia cena za 30 dní pred zľavou).
+  - Objednávky: `objednavky` (číslo `2026-0001` podľa roka, bez medzier, stav, zákazník, doprava, sumy, verzia obchodných podmienok), `objednavky_polozky` (kópia kódu, názvu, variantu a ceny v čase nákupu), `objednavky_stavy` (kto a kedy zmenil stav). Zapisuje ich iba server, admin mení iba stav a internú poznámku. Uchovávajú sa 10 rokov (zákon č. 431/2002 Z. z., § 35).
+  - Admini sú v tabuľke `admini`, prihlásenie samo nestačí. Platí to pre zápis textov a produktov, objednávky aj `/api/revalidate`. Produkt v objednávke sa nedá vymazať, admin ponúkne skrytie.
+- Overené na lokálnom Postgres 17: migrácia starej schémy (dvakrát po sebe), čistá inštalácia, kódy, história cien, číslovanie objednávok, práva návštevníka, cudzieho prihláseného účtu a admina. `tsc` a `eslint` bez chýb.
+- Schéma spustená v Supabase: 48 produktov má kódy KH-0001 (najstarší) až KH-0048, história cien 48 záznamov, registrácia vypnutá, prvý admin pridaný do `admini`.
+- **E-shop, krok 2 z 5 – admin:**
+  - Záložka „Objednávky“ (`app/admin/objednavky-panel.tsx`): zoznam s hľadaním (číslo, meno, e-mail, kód produktu) a filtrom stavu, detail so zákazníkom, položkami, sumami, verziou obchodných podmienok, zmenou stavu, internou poznámkou a históriou stavov.
+  - Pri produkte kód v zozname, v hľadaní a v editore (iba na čítanie). Na stránke produktu riadok „Kód“ a `sku` v štruktúrovaných dátach.
+  - Spoločné triedy admina sú v `app/admin/styly.ts`.
+- Overené: `tsc`, `eslint`, `next build`. Stránka produktu ukazuje KH-0001 z databázy. `/api/revalidate` bez tokenu aj s anon kľúčom vracia 401. Prihlásený admin ešte nie je otestovaný v prehliadači.
+- **Rozhodnutie:** platba bude iba cez Comgate, bez prevodu na účet. Platby sa zatiaľ nerobia.
+- **Fotky v Cloudinary:** všetkých 177 fotiek z `public/images` je nahraných (`keramikahelienka/...`) a každá vracia 200. V `.env.local` je cloud name a upload preset `keramikahelienka_unsigned`, priečinky pre admin sú vytvorené. Stránky už berú fotky z Cloudinary (`f_auto`, `q_auto`).
+- Zásady ochrany osobných údajov (SK aj EN): doplnení sprostredkovatelia Supabase, Inc. (databáza, servery v EÚ – Írsko) a Cloudinary Ltd. (fotky). Pri oboch je poznámka na kontrolu prenosu pre právnika.
+- **E-shop, krok 3 z 5 – pokladňa na serveri:**
+  - `lib/objednavka-akcia.ts` (Server Action) overí vstup a zavolá DB funkciu `vytvor_objednavku` so service role kľúčom (`lib/supabase-admin.ts`, `server-only`). Návštevník ani admin ju volať nemôžu.
+  - Databáza vezme ceny, názvy a sklad z produktov, nie z prehliadača. Zamkne objednané kusy, takže dvaja zákazníci nekúpia ten istý kus. Kus s počtom 0 sa označí ako vypredaný.
+  - Kusy sa podržia 30 minút (`rezervovane_do`). Nezaplatenú objednávku potom zruší `zrus_expirovane_objednavky` (Supabase Cron každých 5 minút a pred každou novou objednávkou) a kusy vráti na sklad. Zrušená objednávka sa nedá obnoviť. Platba Comgate musí vypršať v rovnakom čase.
+  - Znenie obchodných podmienok a reklamačného poriadku v čase nákupu sa uloží raz za verziu (`podmienky_verzie`). Admin ho vidí pri objednávke.
+  - Ochrana: najviac 3 nezaplatené objednávky z jedného e-mailu za hodinu, skryté pole proti robotom.
+  - Tlačidlo „Objednať s povinnosťou platby“. Pri vypredanom kuse pokladňa povie, ktorý to je, a odstráni ho z košíka.
+  - Admin: rezervácia pri objednávke, „Zrušená“ je konečná a obnoví obchod.
+  - `SUPABASE_SERVICE_ROLE_KEY` musí byť aj na hostingu ako serverová premenná (README).
+- **Presmerovania 301** zo starých adries WordPressu (`next.config.ts`), SK aj `/en`: `/o_nas`, `/kurzy-keramiky`, `/produkt/<slug>`, kategórie, značky, 2 články blogu, stránky mimo menu, WooCommerce stránky.
+- Overené: DB na lokálnom Postgres 17 (objednávka, vypredanie, súbeh dvoch zákazníkov na jeden kus, vypršanie, vrátenie kusov, limit, práva). `tsc`, `eslint`, `next build` bez chýb. 17 starých adries vedie na správne nové stránky, nové stránky vracajú 200. Nová `supabase/schema.sql` spustená v Supabase. Test na skutočnej databáze: objednávka 2026-0001 (KH-0001) zamkla kus, druhá na ten istý kus vrátila „nedostupné“, anon volanie zamietnuté, vypršaná rezervácia zrušila objednávku a vrátila kus. Testovacia objednávka, znenie podmienok a číslovanie sú zmazané, prvá skutočná objednávka bude 2026-0001. Pokladňa v prehliadači ešte nie je otestovaná.
+- **Podstránky kurzov** `/kurzy/mesacny-kurz`, `/kurzy/workshop`, `/kurzy/volny-atelier`, `/kurzy/deti-a-rodicia` (SK aj `/en`), jedna šablóna `app/[lang]/kurzy/[slug]/page.tsx`:
+  - Sekcie: úvod, „Čo vás čaká“ s faktami (cena a rozsah z karty kurzu), priebeh v 4 krokoch, galéria (6 miest na fotky), časté otázky, ďalšie kurzy a formulár s vopred vybraným kurzom. Mesačný kurz a Deti a rodičia majú aj celý cenník.
+  - Texty a fotky každej podstránky sú v admine („Podstránka …“ v skupine Kurzy a firmy). Názov, cenu, rozsah a úvodnú fotku berie z karty kurzu. Adresy sú v `content/atelier.ts` (`kurzyStranky`).
+  - Karty kurzov na `/` a `/kurzy` majú tlačidlo „Viac o kurze“, celá karta je odkaz.
+  - `/pre-firmy` má navyše priebeh od dopytu po výpal, galériu a časté otázky.
+  - 9 nových fotiek z ateliéru (Helenka, október 2026) v `public/images/kurzy/`, zmenšené na 1800 px, bez metadát, aj na Cloudinary. Sú na kartách kurzov, v úvode `/pre-firmy` a v galériách. Fotky detí zatiaľ nie sú.
+  - Texty sú iba z faktov v sekciách 5 a 6. Čo nevieme, je skryté („xxx“, doplní Helenka v admine) alebo viditeľné „doplniť“: čo je v cene voľného ateliéru a kedy sa dá prísť, od koľkých rokov môže prísť dieťa, pri teambuildingu počet ľudí, dĺžka a odovzdanie výrobkov.
+  - Stará adresa `/workshopy` vedie na `/kurzy/workshop`.
+  - Pôvodný web (overené 21. 10.): `/kurzy-keramiky/` má iba odkaz na Google formulár a vetu o teambuildingu, `/workshopy/` je prázdna. Nový obsah tam nie je.
+- Overené: `tsc`, `eslint`, `next build` (8 nových stránok), neznámy kurz vracia 404, v konzole prehliadača bez chýb, mobil 390 px aj desktop 1440 px.
+- **Favicon** z loga mory (tyrkysová `#359594`): `app/favicon.ico` (16, 32, 48 px, malé veľkosti majú hrubšie čiary), `app/icon.png` (512 px, priehľadné), `app/apple-icon.png` (180 px na pozadí stránky).
+- **Pozadie stránky** zmenené z béžovej `#f3eadb` (pôsobila príliš pieskovo) na teplú šedobéžovú `#f5f1ec` (vybraná zo 4 návrhov; porcelánovo biela `#f8f6f2` bola málo teplá, krémová `#faf3ea` stále pieskovitá). Token sa stále volá `--color-sand`. Kontrast nadpisov `deep` 5,1:1, sekundárneho textu `drift` 4,9:1.
+
 ### 2026-10-20
 - **Rozhodnutie:** vývojár na požiadavku doplnil návrhy právnych textov sám (mení to sekciu 14). Sú napísané podľa platných zákonov zo slov-lex.sk (znenie od 27. 9. 2026), nie skopírované z iného e-shopu: zákon č. 108/2024 Z. z. (odstúpenie § 19 – § 22, online funkcia § 20a, vzorový formulár z prílohy č. 2), Občiansky zákonník § 619 – § 624 (vady tovaru), zákon č. 391/2015 Z. z. (riešenie sporov), GDPR a zákon č. 18/2018 Z. z., zákon č. 452/2021 Z. z. § 109 ods. 8 (cookies). Texty sú v `content/pravne.ts`. Pruh hore na stránkach hovorí „Návrh podľa platných zákonov – pred spustením ho skontroluje právnik“. Stránky ostávajú `noindex`.
   - Žlté „doplniť“ ostáva iba pri firemných údajoch a rozhodnutiach Helenky: kto platí poštovné pri vrátení, dodacia lehota, platnosť poukážok, ďalšie spôsoby platby, doby uchovávania, hosting a ďalší sprostredkovatelia.
@@ -775,10 +822,10 @@ Poradie:
 - [x] Stránka 404 (`app/global-not-found.tsx`, po slovensky aj anglicky).
 
 ### Fáza 3 – CMS a produkty (3 – 4 dni)
-- [ ] Payload CMS v projekte, administrácia na `/admin`.
-- [ ] Kolekcie: produkty (názov, slug, cena, akciová cena, kategória, fotky, popis, sklad, misa mesiaca), kategórie, blog, objednávky.
+- [x] CMS v projekte, administrácia na `/admin`. Namiesto Payload je to Supabase + Cloudinary (rozhodnutie 21. 10. 2026). Čaká na Supabase projekt a kľúče.
+- [ ] Kolekcie: produkty (názov, slug, cena, akciová cena, kategória, fotky, popis, sklad, misa mesiaca), kategórie, blog, objednávky. Hotové 21. 10. 2026: produkty s kódom `KH-0001`, história cien, objednávky s položkami a históriou stavov, admini. Zostáva akciová cena (otázka 18) a blog.
 - [ ] Globálne nastavenia: info lišta, kontakty.
-- [ ] Import 48 produktov z `docs/povodny-web/produkty.json` vrátane fotiek.
+- [ ] Import 48 produktov z `docs/povodny-web/produkty.json` vrátane fotiek. Pripravené: `npm run seed:produkty` alebo tlačidlo v `/admin`. Spustiť po vytvorení Supabase projektu.
 - [ ] Opraviť chyby v produktoch zo sekcie 10 (zlé popisy, kategórie, slugy, preklepy, alt texty). [čaká: 7 – jazyk názvov]
 - [ ] Právne stránky ako stránky v CMS. Helenka do nich vloží texty sama, bez vývojára.
 
@@ -787,12 +834,12 @@ Poradie:
 - [x] Vypredané kusy ako galéria, jemne zosivené.
 - [x] `/obchod/[slug]` – detail produktu. Tlačidlo „Pridať do košíka“ je zatiaľ iba vzhľad.
 - [ ] Misa mesiaca na domovskej stránke a v obchode, so zľavnenou cenou. [čaká: 18]
-- [ ] Domovská stránka berie diela z CMS, nie z `content/diela.ts`.
+- [x] Domovská stránka berie diela z CMS (prepínač „na domovskej“ pri produkte), nie z `content/diela.ts`.
 - [x] Košík (`/kosik`). Reálne funguje – pridáva/odoberá/pamätá si položky v localStorage prehliadača, badge v headri. Bez CMS/DB zatiaľ nič nerezervuje.
 - [x] Pokladňa (`/pokladna`): údaje zákazníka, doprava (iba osobný odber je reálna možnosť, kuriér čaká na odpoveď 2), súhlas s podmienkami. Vytvorí objednávku v stave „čaká na platbu“ – uloženú len v prehliadači (`/pokladna/hotovo`), nikam sa neodosiela. Rezervácia kusov, e-mail a platba cez Comgate prídu s backendom (fáza 3) a §13. [čaká: 2 – doprava]
 
 ### Fáza 5 – Funkcie z poznámok (3 – 5 dní, podľa výberu Helenky)
-- [ ] Info lišta hore na stránke (text z CMS).
+- [x] Info lišta hore na stránke (text z CMS). [čaká: aktuálny oznam od Helenky]
 - [ ] Kontaktný formulár a formulár na teambuilding (odosielanie e-mailom).
 - [ ] Newsletter. [čaká: 8 – nástroj]
 - [x] Anglická verzia s prepínačom SK / EN, preklad cez AI. [čaká: 21 – kontrola anglických textov]
@@ -801,7 +848,7 @@ Poradie:
 
 ### Fáza 6 – Pred spustením (asi 2 dni)
 - [x] SEO: title a description pre každú stránku, OG obrázky, `sitemap.xml`, `robots.txt`, štruktúrované dáta produktov. Hotové 20. 10. 2026. Po nasadení: overiť web v Google Search Console a poslať sitemapu.
-- [ ] Presmerovania 301 zo starých URL (sekcia 4) v `next.config.ts`.
+- [x] Presmerovania 301 zo starých URL (sekcia 4) v `next.config.ts`. Hotové 21. 10. 2026.
 - [x] Cookie lišta a analytika (GTM, GA4, Clarity) so súhlasom. Hotové 20. 10. 2026. Po nasadení: zadať ID do env premenných na hostingu. [čaká: účty Google Analytics, GTM a Clarity na meno Helenky]
 - [ ] Funkcia „odstúpiť od zmluvy tu“ podľa § 20a zákona č. 108/2024 Z. z. (formulár + potvrdenie e-mailom). Povinná pre e-shop. Potom doplniť jej adresu do obchodných podmienok.
 - [ ] Právnik skontroluje návrhy právnych textov v `content/pravne.ts`, potom zrušiť `noindex` a pruh „Návrh“. [čaká: firemné údaje a rozhodnutia Helenky]

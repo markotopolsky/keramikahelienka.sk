@@ -1,78 +1,66 @@
-import { formatPrice, type Localized } from "@/lib/i18n";
+import { formatPrice, type Locale } from "@/lib/i18n";
+import { cislo, filled, getContent, getTerminy, slots } from "@/lib/content";
 import { getLang } from "@/lib/i18n-server";
 import { formular } from "@/content/atelier";
-import { cennikDeti, cennikDospeli, terminy } from "@/content/kurzy";
 import { ButtonLink } from "@/components/ui/button-link";
 import { LocaleLink } from "@/components/ui/locale-link";
 import { Reveal } from "@/components/ui/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
 
-const texty = {
-  eyebrow: { sk: "Cenník 2026", en: "Prices 2026" },
-  nadpis: { sk: "Cenník a prihláška", en: "Prices and sign-up" },
-  aside: {
-    sk: "V cene je materiál, pomôcky, dva výpaly v peci aj malé občerstvenie.",
-    en: "The price includes materials, tools, two kiln firings and light refreshments.",
-  },
-  mesacny: { sk: "Mesačný kurz, 4 lekcie", en: "Monthly course, 4 lessons" },
-  rozsah: { sk: "Rozsah", en: "Length" },
-  pravidelny: { sk: "Pravidelný čas", en: "Regular time" },
-  nepravidelny: { sk: "Nepravidelný čas", en: "Irregular time" },
-  deti: { sk: "Deti", en: "Children" },
-  hod: { sk: " / hod.", en: " / hour" },
-  sprievod: { sk: "Do 10 rokov v sprievode platiaceho rodiča.", en: "Under 10 with a paying parent." },
-  terminy: { sk: "Termíny", en: "Times" },
-  vikend: {
-    sk: "Skupinové workshopy podľa dohody, aj cez víkend.",
-    en: "Group workshops by arrangement, weekends included.",
-  },
-  prihlaska: { sk: "Vyplniť prihlášku", en: "Fill in the sign-up form" },
-  zaplatit: {
-    sk: "Kurz zaplaťte najneskôr 7 dní vopred. Teambuilding pre firmy pripravíme na mieru,",
-    en: "Please pay for the course at least 7 days in advance. We tailor team building for companies,",
-  },
-  napiste: { sk: "napíšte nám", en: "write to us" },
-} satisfies Record<string, Localized>;
+/** "156" from /admin as "156 €"; anything that is not a number is shown as typed */
+function cena(value: string, lang: Locale) {
+  const n = cislo(value);
+  return n === null ? value : formatPrice(n, lang);
+}
 
 // The price list used to be only an image. As text it can be read aloud and found by search engines.
 // Sign-up goes to the form on /kontakt (it only looks real for now); paid booking on the site is phase 5.
 export async function Cennik() {
   const lang = await getLang();
+  const [c, terminy] = await Promise.all([getContent("cennik", lang), getTerminy(lang)]);
+  const t = (pole: string) => c[`cennik.${pole}`] ?? "";
+  // A row shows once its first column is filled in
+  const cennikDospeli = slots(c, "cennik.dospeli", "rozsah").map((n) => ({
+    rozsah: t(`dospeli${n}_rozsah`),
+    pravidelne: cena(t(`dospeli${n}_pravidelne`), lang),
+    nepravidelne: cena(t(`dospeli${n}_nepravidelne`), lang),
+  }));
+  const cennikDeti = slots(c, "cennik.deti", "vek").map((n) => ({ vek: t(`deti${n}_vek`), cena: t(`deti${n}_cena`) }));
 
   return (
     <section id="cennik" className="bg-mint py-24 md:py-36">
       <div className="site-container">
-        <SectionHeading eyebrow={texty.eyebrow[lang]} title={texty.nadpis[lang]} aside={texty.aside[lang]} />
+        <SectionHeading eyebrow={t("eyebrow")} title={t("nadpis")} aside={t("aside")} />
 
         <Reveal className="rounded-card bg-deep p-5 text-sand sm:p-8 lg:p-12">
           <div className="grid gap-10 lg:grid-cols-[1fr_15rem_15rem] lg:gap-12">
             <div>
-              <h3 className="text-[26px] leading-none tracking-[-0.02em] md:text-[30px]">{texty.mesacny[lang]}</h3>
+              <h3 className="text-[26px] leading-none tracking-[-0.02em] md:text-[30px]">{t("mesacny")}</h3>
               <table className="mt-6 w-full text-left">
                 <thead>
                   <tr className="eyebrow text-[11px] tracking-[0.02em] text-aqua sm:tracking-[0.08em]">
                     <th scope="col" className="pb-3 pr-3 font-medium">
-                      {texty.rozsah[lang]}
+                      {t("rozsah")}
                     </th>
                     <th scope="col" className="pb-3 pr-3 text-right font-medium">
-                      {texty.pravidelny[lang]}
+                      {t("pravidelny")}
                     </th>
                     <th scope="col" className="pb-3 text-right font-medium">
-                      {texty.nepravidelny[lang]}
+                      {t("nepravidelny")}
                     </th>
                   </tr>
                 </thead>
                 <tbody>
                   {cennikDospeli.map((riadok) => (
-                    <tr key={riadok.rozsah.sk} className="border-t border-sand/15">
+                    <tr key={riadok.rozsah} className="border-t border-sand/15">
                       <th scope="row" className="whitespace-nowrap py-3.5 pr-3 text-[15px] font-normal md:text-base">
-                        {riadok.rozsah[lang]}
+                        {riadok.rozsah}
                       </th>
                       <td className="py-3.5 pr-3 text-right font-display text-[22px] leading-none tracking-[-0.02em] sm:text-[26px]">
-                        {formatPrice(riadok.pravidelne, lang)}
+                        {riadok.pravidelne}
                       </td>
                       <td className="py-3.5 text-right font-display text-[22px] leading-none tracking-[-0.02em] text-sand/75 sm:text-[26px]">
-                        {formatPrice(riadok.nepravidelne, lang)}
+                        {riadok.nepravidelne}
                       </td>
                     </tr>
                   ))}
@@ -81,23 +69,23 @@ export async function Cennik() {
             </div>
 
             <PriceList
-              title={texty.deti[lang]}
-              rows={cennikDeti.map((r) => [r.vek[lang], `${formatPrice(r.cena, lang)}${texty.hod[lang]}`])}
-              note={texty.sprievod[lang]}
+              title={t("deti")}
+              rows={cennikDeti.map((r) => [r.vek, `${cena(r.cena, lang)}${filled(r.cena) ? t("hod") : ""}`])}
+              note={t("sprievod")}
             />
             <PriceList
-              title={texty.terminy[lang]}
-              rows={terminy.map((t) => [t.den[lang], t.cas])}
-              note={texty.vikend[lang]}
+              title={t("terminy")}
+              rows={terminy.map((termin) => [termin.den, termin.cas])}
+              note={t("vikend")}
             />
           </div>
 
           <div className="mt-10 flex flex-col items-start gap-6 border-t border-sand/15 pt-8 md:mt-12 md:flex-row md:items-center md:justify-between">
-            <ButtonLink href={formular.kurzy}>{texty.prihlaska[lang]}</ButtonLink>
+            <ButtonLink href={formular.kurzy}>{t("prihlaska")}</ButtonLink>
             <p className="max-w-[28rem] text-[15px] leading-relaxed text-sand/80 md:text-right">
-              {texty.zaplatit[lang]}{" "}
+              {t("zaplatit")}{" "}
               <LocaleLink href={formular.firmy} className="text-sand underline decoration-aqua underline-offset-4 hover:text-aqua">
-                {texty.napiste[lang]}
+                {t("napiste")}
               </LocaleLink>
               .
             </p>

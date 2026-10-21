@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Playfair_Display, PT_Serif } from "next/font/google";
-import { locales, type Localized } from "@/lib/i18n";
-import { infoLista, infoListaKluc } from "@/content/info-lista";
+import { locales } from "@/lib/i18n";
+import { infoListaKluc } from "@/content/info-lista";
+import { getContent, getInfoLista, getKontakt } from "@/lib/content";
 import { getLang } from "@/lib/i18n-server";
 import { analytikaZapnuta, suhlasPredvolenySkript } from "@/lib/analytika";
 import { webUrl, zakladOpenGraph } from "@/lib/metadata";
@@ -25,17 +26,6 @@ const ptSerif = PT_Serif({
   subsets: ["latin", "latin-ext"],
 });
 
-const texty = {
-  title: {
-    sk: "Keramika He-lienka · keramický ateliér a kurzy keramiky v Bratislave",
-    en: "Keramika He-lienka · ceramics studio and pottery classes in Bratislava",
-  },
-  description: {
-    sk: "Ručne modelované misy, vázy, lampy a art objekty z ateliéru v Bratislave-Dúbravke. Kurzy keramiky pre dospelých aj deti.",
-    en: "Hand-built bowls, vases, lamps and art objects from a studio in Bratislava-Dúbravka. Pottery classes for adults and children.",
-  },
-} satisfies Record<string, Localized>;
-
 export function generateStaticParams() {
   return locales.map((lang) => ({ lang }));
 }
@@ -43,16 +33,22 @@ export function generateStaticParams() {
 // Any other value is a 404 (app/global-not-found.tsx)
 export const dynamicParams = false;
 
+// Fallback only: every save in /admin revalidates the texts and products right away (app/api/revalidate)
+export const revalidate = 3600;
+
 export async function generateMetadata(): Promise<Metadata> {
   const lang = await getLang();
+  const seo = await getContent("seo", lang);
+  const title = seo["seo.titulok"];
+  const description = seo["seo.popis"];
   return {
     metadataBase: new URL(webUrl),
     title: {
-      default: texty.title[lang],
+      default: title,
       template: "%s · Keramika He-lienka",
     },
-    description: texty.description[lang],
-    openGraph: { ...zakladOpenGraph(lang), title: texty.title[lang], description: texty.description[lang] },
+    description,
+    openGraph: { ...zakladOpenGraph(lang), title, description },
     // Google Search Console ownership check (HTML tag method); the value comes from .env
     ...(process.env.GOOGLE_SITE_VERIFICATION && { verification: { google: process.env.GOOGLE_SITE_VERIFICATION } }),
   };
@@ -60,6 +56,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
   const lang = await getLang();
+  const [infoLista, kontakt] = await Promise.all([getInfoLista(lang), getKontakt()]);
 
   return (
     // suppressHydrationWarning: the script below may add data-info-zavreta before React hydrates
@@ -68,7 +65,7 @@ export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
         {/* Hides the info bar before the first paint if the visitor closed this version of it */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `try{if(localStorage.getItem(${JSON.stringify(infoListaKluc)})===${JSON.stringify(infoLista.id)})document.documentElement.setAttribute("data-info-zavreta","")}catch(e){}`,
+            __html: `try{if(localStorage.getItem(${JSON.stringify(infoListaKluc)})===${JSON.stringify(infoLista.verzia)})document.documentElement.setAttribute("data-info-zavreta","")}catch(e){}`,
           }}
         />
         {/* Google Consent Mode: everything "denied" until the visitor chooses in the cookie bar */}
@@ -77,7 +74,7 @@ export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
       <body>
         <LocaleProvider lang={lang}>
           <MotionProvider>
-            <SiteHeader />
+            <SiteHeader infoLista={infoLista} kontakt={kontakt} />
             <main>{children}</main>
             <SiteFooter />
             <CookieLista />

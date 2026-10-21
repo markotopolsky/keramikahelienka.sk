@@ -1,64 +1,46 @@
-import { bindShortWords, type Localized } from "@/lib/i18n";
+import { bindShortWords } from "@/lib/i18n";
+import { getContent, getKontakt } from "@/lib/content";
 import { getLang } from "@/lib/i18n-server";
 import { pageMetadata } from "@/lib/metadata";
-import { kontakt, mapa } from "@/content/atelier";
+import { mapa } from "@/content/atelier";
 import { PageHero } from "@/components/page-hero";
 import { KontaktSekcia } from "@/components/kontakt/kontakt-sekcia";
 import { Mapa } from "@/components/kontakt/mapa";
 import { ButtonLink } from "@/components/ui/button-link";
 import { Reveal } from "@/components/ui/reveal";
 
-const texty = {
-  eyebrow: { sk: "Kontakt", en: "Contact" },
-  nadpis: { sk: "Zostaňme v kontakte", en: "Let’s stay in touch" },
-  lead: {
-    sk: "Radi vám pripravíme ponuku našich výrobkov, kurzov, workshopov a teambuildingu na mieru podľa vašich požiadaviek.",
-    en: "We are happy to prepare an offer of our pieces, classes, workshops and team building tailored to your wishes.",
-  },
-  telefon: { sk: "Telefón", en: "Phone" },
-  email: { sk: "E-mail", en: "Email" },
-  atelier: { sk: "Ateliér", en: "Studio" },
-  kde: { sk: "Kde nás nájdete", en: "Where to find us" },
-  atelierNadpis: { sk: "Ateliér v Dúbravke", en: "Studio in Dúbravka" },
-  trasa: { sk: "Naplánovať trasu", en: "Get directions" },
-} satisfies Record<string, Localized>;
-
-export function generateMetadata() {
-  return pageMetadata({
-    path: "/kontakt",
-    title: { sk: "Kontakt", en: "Contact" },
-    description: {
-      sk: "Keramika He-lienka, Na vrátkach 1K, 841 01 Bratislava-Dúbravka. Telefón 0903 394 212, e-mail info@keramikahelienka.sk.",
-      en: "Keramika He-lienka, Na vrátkach 1K, 841 01 Bratislava-Dúbravka. Phone +421 903 394 212, email info@keramikahelienka.sk.",
-    },
-  });
+export async function generateMetadata() {
+  const c = await getContent("kontakt_stranka", await getLang());
+  return pageMetadata({ path: "/kontakt", title: c["kontakt_stranka.meta_titulok"], description: c["kontakt_stranka.meta_popis"] });
 }
 
 export default async function KontaktPage() {
   const lang = await getLang();
+  const [c, kontakt] = await Promise.all([getContent("kontakt_stranka", lang), getKontakt()]);
+  const t = (pole: string) => c[`kontakt_stranka.${pole}`];
 
   // TODO: question 3 for Helena. Which address is the main one, info@ or her gmail?
   const kanaly = [
-    { nazov: texty.telefon[lang], hodnota: kontakt.telefon, href: kontakt.telefonHref },
-    { nazov: texty.email[lang], hodnota: kontakt.email, href: `mailto:${kontakt.email}` },
-    { nazov: texty.atelier[lang], hodnota: `${kontakt.ulica}, ${kontakt.mesto}`, href: "#mapa" },
+    { nazov: t("telefon"), hodnota: kontakt.telefon, href: kontakt.telefonHref },
+    { nazov: t("email"), hodnota: kontakt.email, href: `mailto:${kontakt.email}` },
+    { nazov: t("atelier"), hodnota: `${kontakt.ulica}, ${kontakt.mesto}`, href: "#mapa" },
   ];
 
   return (
     <>
       <PageHero
-        eyebrow={texty.eyebrow[lang]}
-        title={texty.nadpis[lang]}
-        lead={texty.lead[lang]}
+        eyebrow={t("eyebrow")}
+        title={t("nadpis")}
+        lead={t("lead")}
         aside={
-          <dl className="divide-y divide-sand/15 border-y border-sand/15">
+          <dl className="divide-y divide-ink/15 border-y border-ink/15">
             {kanaly.map((kanal) => (
               <div key={kanal.href} className="py-5 touch:pb-3.5">
-                <dt className="eyebrow text-[11px] text-aqua">{kanal.nazov}</dt>
+                <dt className="eyebrow text-[11px] text-ink/85">{kanal.nazov}</dt>
                 <dd className="mt-2 touch:mt-0.5">
                   <a
                     href={kanal.href}
-                    className="font-display text-[20px] leading-tight tracking-[-0.02em] transition-colors hover:text-aqua sm:text-[24px] touch:inline-flex touch:min-h-11 touch:items-center"
+                    className="font-display text-[20px] leading-tight tracking-[-0.02em] underline-offset-4 hover:underline sm:text-[24px] touch:inline-flex touch:min-h-11 touch:items-center"
                   >
                     {kanal.hodnota}
                   </a>
@@ -74,8 +56,8 @@ export default async function KontaktPage() {
       <section id="mapa" className="bg-mint py-24 md:py-36">
         <div className="site-container grid gap-12 lg:grid-cols-[1fr_2fr] lg:items-end lg:gap-16">
           <Reveal>
-            <p className="eyebrow text-drift">{texty.kde[lang]}</p>
-            <h2 className="mt-5 text-h2 text-deep">{bindShortWords(texty.atelierNadpis[lang])}</h2>
+            <p className="eyebrow text-drift">{t("kde")}</p>
+            <h2 className="mt-5 text-h2 text-deep">{bindShortWords(t("atelier_nadpis"))}</h2>
             <address className="mt-6 text-lead not-italic text-ink/80">
               {kontakt.nazov}
               <br />
@@ -85,7 +67,7 @@ export default async function KontaktPage() {
             </address>
             <div className="mt-8 flex flex-wrap gap-3">
               <ButtonLink href={mapa.trasa} variant="deep" external>
-                {texty.trasa[lang]}
+                {t("trasa")}
               </ButtonLink>
               <ButtonLink href={mapa.odkaz} variant="outline" className="text-deep" external>
                 Google Maps

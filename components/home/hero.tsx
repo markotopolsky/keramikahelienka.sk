@@ -14,69 +14,27 @@ import {
   type Variants,
 } from "motion/react";
 import type { Localized } from "@/lib/i18n";
+import type { ContentMap } from "@/lib/content";
 import { useLang } from "@/components/locale-provider";
 import { ButtonLink } from "@/components/ui/button-link";
 
+// Labels of the carousel controls; the visible texts and photos come from /admin (section "hero")
 const texty = {
-  headline: { sk: ["Krása", "a", "úžitok"], en: ["Beauty", "and", "purpose"] } satisfies Localized<string[]>,
   slider: { sk: "Fotky z ateliéru", en: "Studio photos" },
   fotka: { sk: "Fotka", en: "Photo" },
   z: { sk: "z", en: "of" },
   predosla: { sk: "Predošlá fotka", en: "Previous photo" },
   dalsia: { sk: "Ďalšia fotka", en: "Next photo" },
-  atelier: { sk: "Keramický ateliér", en: "Ceramics studio" },
-  odRoku: { sk: "od roku 2020", en: "since 2020" },
-  lead: {
-    sk: "Misy, vázy, lampy a objekty modelované ručne, bez hrnčiarskeho kruhu. A kurzy, na ktorých si to vyskúšate sami.",
-    en: "Bowls, vases, lamps and objects built by hand, without a potter’s wheel. And classes where you can try it yourself.",
-  },
-  kurzy: { sk: "Kurzy keramiky", en: "Pottery classes" },
-  obchod: { sk: "Obchod", en: "Shop" },
-  original: { sk: "Každý kus je originál. Žiadne dva nie sú rovnaké.", en: "Every piece is an original. No two are the same." },
-};
+} satisfies Record<string, Localized>;
 
-const slides = [
-  {
-    src: "/images/hero/hero-helena-chodnik.jpg",
-    pozicia: "object-[55%_60%]",
-    alt: {
-      sk: "Helena sedí na drevenom chodníku v tráve pri svojich ručne modelovaných vázach",
-      en: "Helena sitting on a wooden boardwalk in tall grass beside her hand-built vases",
-    },
-  },
-  {
-    src: "/images/hero/hero-nadoby-chodnik.jpg",
-    pozicia: "object-[45%_65%]",
-    alt: {
-      sk: "Tri ručne modelované vázy na drevenom chodníku medzi trávou",
-      en: "Three hand-built vases on a wooden boardwalk in tall grass",
-    },
-  },
-  {
-    src: "/images/hero/hero-helena-terasa.jpg",
-    pozicia: "object-[40%_60%]",
-    alt: {
-      sk: "Helena sedí na terase pred domom a ukladá svoje vázy na schod",
-      en: "Helena sitting on a terrace by the house, arranging her vases on a step",
-    },
-  },
-  {
-    src: "/images/hero/hero-sklenik.jpg",
-    pozicia: "object-[50%_70%]",
-    alt: {
-      sk: "Rad ručne modelovaných váz a mís na drevenej podlahe pred skleníkom",
-      en: "A row of hand-built vases and bowls on a wooden deck in front of a greenhouse",
-    },
-  },
-  {
-    src: "/images/hero/hero-biela-vaza.jpg",
-    pozicia: "object-[32%_70%]",
-    alt: {
-      sk: "Biela zvlnená váza na drevenom schode v jesennom slnku",
-      en: "A white wavy vase on a wooden step in autumn sunlight",
-    },
-  },
-] satisfies { src: string; pozicia: string; alt: Localized }[];
+// Crop of each photo slot, tuned for the original photos. A new photo uploaded in /admin keeps the slot's crop.
+const pozicie = [
+  "object-[55%_60%]",
+  "object-[45%_65%]",
+  "object-[40%_60%]",
+  "object-[50%_70%]",
+  "object-[32%_70%]",
+];
 
 // Swipes shorter than this count as taps
 const SWIPE_PX = 50;
@@ -96,8 +54,13 @@ const slideVariants: Variants = {
     reduced ? { zIndex: 1, opacity: 0, transition: WIPE } : { zIndex: 1, x: smer > 0 ? "-12%" : "12%", transition: WIPE },
 };
 
-export function Hero() {
+export function Hero({ obsah }: { obsah: ContentMap }) {
   const lang = useLang();
+  const slides = pozicie
+    .map((pozicia, i) => ({ src: obsah[`hero.foto${i + 1}`], alt: obsah[`hero.foto${i + 1}_alt`], pozicia }))
+    .filter((slide) => slide.src);
+  const pocet = slides.length;
+  const headline = obsah["hero.nadpis"].split(/\s+/).filter(Boolean);
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   // Photo drifts slower than the page, headline slightly faster: a shallow parallax
@@ -122,11 +85,11 @@ export function Hero() {
     const a = animate(progress, 1, {
       duration: INTERVAL_S,
       ease: "linear",
-      onComplete: () => setSlide(([i]) => [(i + 1) % slides.length, 1]),
+      onComplete: () => setSlide(([i]) => [(i + 1) % pocet, 1]),
     });
     autoplay.current = a;
     return () => a.stop();
-  }, [aktivna, progress]);
+  }, [aktivna, progress, pocet]);
   useEffect(() => {
     if (pauza) autoplay.current?.pause();
     else autoplay.current?.play();
@@ -178,7 +141,7 @@ export function Hero() {
               >
                 <Image
                   src={slide.src}
-                  alt={slide.alt[lang]}
+                  alt={slide.alt}
                   fill
                   preload={aktivna === 0}
                   sizes="100vw"
@@ -198,7 +161,7 @@ export function Hero() {
         <motion.div style={{ y: titleY }} className="site-container relative flex flex-col items-center pt-28 text-center text-sand md:pt-36">
           {/* Wraps on narrow phones: the English headline is longer */}
           <h1 className="flex flex-wrap justify-center gap-x-[0.22em] text-hero">
-            {texty.headline[lang].map((word, i) => (
+            {headline.map((word, i) => (
               <span key={word} className="-mb-[0.12em] inline-block overflow-hidden pb-[0.12em]">
                 <span
                   className="inline-block motion-safe:animate-word-up"
@@ -211,7 +174,7 @@ export function Hero() {
           </h1>
           <p className="eyebrow mt-6 text-balance text-sand/90 motion-safe:animate-fade-in md:mt-8" style={{ animationDelay: "0.8s" }}>
             {/* Lines may only break after a dot, never inside "Bratislava-Dúbravka" */}
-            {texty.atelier[lang]}&nbsp;· <span className="whitespace-nowrap">Bratislava-Dúbravka</span>&nbsp;· {texty.odRoku[lang]}
+            {obsah["hero.atelier"]}&nbsp;· <span className="whitespace-nowrap">Bratislava-Dúbravka</span>&nbsp;· {obsah["hero.od_roku"]}
           </p>
         </motion.div>
 
@@ -221,16 +184,16 @@ export function Hero() {
           style={{ animationDelay: "0.9s" }}
         >
           <div className="max-w-[34rem]">
-            <p className="text-lead">{texty.lead[lang]}</p>
+            <p className="text-lead">{obsah["hero.lead"]}</p>
             <div className="mt-6 flex flex-wrap gap-3 md:mt-7">
-              <ButtonLink href="/kurzy" variant="deep">{texty.kurzy[lang]}</ButtonLink>
+              <ButtonLink href="/kurzy" variant="deep">{obsah["hero.tlacidlo_kurzy"]}</ButtonLink>
               <ButtonLink href="/obchod" variant="outline">
-                {texty.obchod[lang]}
+                {obsah["hero.tlacidlo_obchod"]}
               </ButtonLink>
             </div>
           </div>
           <div className="flex shrink-0 flex-col gap-5 md:items-end">
-            <p className="eyebrow max-w-[16rem] text-right text-sand/80 max-md:hidden">{texty.original[lang]}</p>
+            <p className="eyebrow max-w-[16rem] text-right text-sand/80 max-md:hidden">{obsah["hero.original"]}</p>
             <div
               className="flex items-center gap-3"
               onPointerEnter={() => setPauza(true)}

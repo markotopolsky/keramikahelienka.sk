@@ -3,7 +3,8 @@
 import { usePathname, useSelectedLayoutSegments } from "next/navigation";
 import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { useMotionValueEvent, useScroll } from "motion/react";
-import { formular, kontakt, kosik, navigacia } from "@/content/atelier";
+import { formular, kosik, navigacia } from "@/content/atelier";
+import type { InfoListaData, Kontakt } from "@/lib/content";
 import type { Localized } from "@/lib/i18n";
 import { useCart } from "@/lib/use-cart";
 import { useLang } from "@/components/locale-provider";
@@ -21,7 +22,7 @@ const texty = {
   kosik: { sk: "Košík", en: "Cart" },
 } satisfies Record<string, Localized>;
 
-/** True once the page's dark top section (marked `data-hero`) has scrolled away, or if the page has none */
+/** True once the page's top section (marked `data-hero`) has scrolled away, or if the page has none */
 function heroScrolledAway() {
   const hero = document.querySelector("[data-hero]");
   const heroBottom = hero ? hero.getBoundingClientRect().bottom : 0;
@@ -29,11 +30,11 @@ function heroScrolledAway() {
 }
 
 /**
- * Transparent over the dark top section of a page, turns solid sand once that section scrolls away.
+ * Transparent over the top section of a page, turns solid sand once that section scrolls away.
  * Below 1024px the links move into a full-screen menu (a modal <dialog>, so the
  * browser handles Escape, focus and hiding the page from screen readers).
  */
-export function SiteHeader() {
+export function SiteHeader({ infoLista, kontakt }: { infoLista: InfoListaData; kontakt: Kontakt }) {
   const lang = useLang();
   const { pocetKusov } = useCart();
   // Effects only: with proxy.ts rewrites the pathname differs between server and browser
@@ -87,14 +88,19 @@ export function SiteHeader() {
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-colors duration-500 motion-safe:animate-fade-in ${
-        solid ? "bg-sand text-ink shadow-[0_1px_0_rgb(47_111_122/0.12)]" : "text-sand"
+        solid
+          ? "bg-sand text-ink shadow-[0_1px_0_rgb(47_111_122/0.12)]"
+          : // Sand over the homepage photo, ink over the aqua hero of a subpage
+            section === "/"
+            ? "text-sand"
+            : "text-ink"
       }`}
       style={{ animationDelay: "0.2s", animationDuration: "0.6s" }}
     >
-      <InfoLista skryta={!naVrchu} />
+      <InfoLista infoLista={infoLista} skryta={!naVrchu} />
       {/* The links sit in the middle of the bar from 1280px; at 1024px (an iPad held sideways) the bar is too narrow to centre them */}
       <div className="site-container flex h-16 items-center justify-between gap-4 lg:h-20 xl:grid xl:grid-cols-[1fr_auto_1fr]">
-        {/* The logo's own colors on the solid sand bar, its shape in sand over the dark hero; the two crossfade.
+        {/* The logo's own colors on the solid sand bar, its shape in the text color over the hero; the two crossfade.
             It is the one item that may shrink, so the cart and menu buttons fit on a 320px phone. */}
         <LocaleLink href="/" className="grid w-32 min-w-0 justify-self-start lg:w-40">
           <span aria-hidden={!solid} className={`col-start-1 row-start-1 transition-opacity duration-500 ${solid ? "" : "opacity-0"}`}>

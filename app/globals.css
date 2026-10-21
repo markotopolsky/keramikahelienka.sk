@@ -6,14 +6,14 @@
  * utilities: --color-deep → bg-deep / text-deep / border-deep, --text-h2 → text-h2.
  */
 @theme {
-  /* Palette: sand + sea, derived from the karo&auguste reference */
-  --color-sand: #fef8ef; /* page background */
+  /* Palette: warm greige + sea, derived from the karo&auguste reference */
+  --color-sand: #f5f1ec; /* page background, warm greige (was sandy beige #f3eadb) */
   --color-mint: #ecfaf8; /* alternate sections, cards */
   --color-sage: #c2ddd6; /* chips, accordion, timeline dots */
-  --color-aqua: #7abbca; /* buttons (with ink text), accents */
+  --color-aqua: #7abbca; /* subpage heroes, buttons (both with ink text), accents */
   --color-sea: #579dad; /* hover, icons; white text only at large sizes */
-  --color-deep: #2f6f7a; /* solid sections, headings (5.4:1 on sand) */
-  --color-drift: #7a6547; /* secondary text, numbers (5.3:1 on sand) */
+  --color-deep: #2f6f7a; /* solid sections, headings (5.1:1 on sand) */
+  --color-drift: #7a6547; /* secondary text, numbers (4.9:1 on sand) */
   --color-ink: #1e2b2e; /* body text */
   --color-note: #fff1c2; /* "doplniť" gaps and the "sample text" bar; gone before launch */
 

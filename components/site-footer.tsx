@@ -1,26 +1,14 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
-import type { Localized } from "@/lib/i18n";
 import { getLang } from "@/lib/i18n-server";
-import { kontakt, navigacia } from "@/content/atelier";
-import { pasFotiek } from "@/content/diela";
-import { pravneStranky } from "@/content/pravne";
+import { navigacia } from "@/content/atelier";
+import { getContent, getKontakt } from "@/lib/content";
+import { PRAVNE_SLUGY, pravnaSekciaPreSlug } from "@/lib/content-defaults";
 import { NastaveniaCookies } from "@/components/cookie-lista";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { NewsletterForm } from "@/components/newsletter-form";
 import { LocaleLink } from "@/components/ui/locale-link";
 import { Logo } from "@/components/ui/logo";
-
-const texty = {
-  newsletter: { sk: "Listy z ateliéru", en: "Letters from the studio" },
-  newsletterText: {
-    sk: "Nové kurzy, kolekcie a termíny workshopov do schránky.",
-    en: "New classes, collections and workshop dates in your inbox.",
-  },
-  stranky: { sk: "Stránky", en: "Pages" },
-  sledujte: { sk: "Sledujte", en: "Follow" },
-  atelier: { sk: "Ateliér", en: "Studio" },
-} satisfies Record<string, Localized>;
 
 // On touch screens every line of the link columns is a 44px row, so the links are easy to tap
 const riadok = "touch:flex touch:min-h-11 touch:items-center";
@@ -30,6 +18,15 @@ const tilt = ["-rotate-3 translate-y-4", "rotate-2", "-rotate-1 translate-y-6", 
 
 export async function SiteFooter() {
   const lang = await getLang();
+  const [c, kontakt, ...pravne] = await Promise.all([
+    getContent("paticka", lang),
+    getKontakt(),
+    ...PRAVNE_SLUGY.map((slug) => getContent(pravnaSekciaPreSlug(slug), lang)),
+  ]);
+  const pravneStranky = PRAVNE_SLUGY.map((slug, i) => ({ slug, nazov: pravne[i][`${pravnaSekciaPreSlug(slug)}.nazov`] }));
+  const pasFotiek = Object.keys(c)
+    .filter((key) => /^paticka\.pas_foto\d+$/.test(key) && c[key])
+    .map((key) => c[key]);
   // The strip is rendered twice so the marquee can loop without a seam
   const strip = [...pasFotiek, ...pasFotiek];
 
@@ -53,15 +50,15 @@ export async function SiteFooter() {
       <div className="site-container pb-8 pt-12 md:pb-10 md:pt-16">
         <div className="flex flex-col gap-12 lg:flex-row lg:items-start lg:justify-between lg:gap-10">
           <div id="newsletter">
-            <p className="font-medium">{texty.newsletter[lang]}</p>
-            <p className="mt-1.5 text-[14px] text-sand/75">{texty.newsletterText[lang]}</p>
+            <p className="font-medium">{c["paticka.newsletter"]}</p>
+            <p className="mt-1.5 text-[14px] text-sand/75">{c["paticka.newsletter_text"]}</p>
             <div className="mt-6">
               <NewsletterForm />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-x-8 gap-y-10 text-[15px] md:grid-cols-3 md:gap-12 xl:gap-16">
-            <FooterColumn title={texty.stranky[lang]}>
+            <FooterColumn title={c["paticka.stranky"]}>
               {navigacia.map((item) => (
                 <li key={item.href}>
                   <LocaleLink href={item.href} className={`hover:text-aqua ${riadok}`}>
@@ -70,7 +67,7 @@ export async function SiteFooter() {
                 </li>
               ))}
             </FooterColumn>
-            <FooterColumn title={texty.sledujte[lang]}>
+            <FooterColumn title={c["paticka.sledujte"]}>
               <li>
                 <a href={kontakt.instagram} className={`hover:text-aqua ${riadok}`}>
                   Instagram
@@ -83,7 +80,7 @@ export async function SiteFooter() {
               </li>
             </FooterColumn>
             {/* The e-mail address is too long for half a phone screen, so this column takes a full row there */}
-            <FooterColumn title={texty.atelier[lang]} className="max-md:col-span-2">
+            <FooterColumn title={c["paticka.atelier"]} className="max-md:col-span-2">
               <li className={riadok}>{kontakt.ulica}</li>
               <li className={riadok}>{kontakt.mesto}</li>
               <li>
@@ -111,7 +108,7 @@ export async function SiteFooter() {
                   href={`/${stranka.slug}`}
                   className="hover:text-sand touch:inline-flex touch:min-h-11 touch:items-center"
                 >
-                  {stranka.nazov[lang]}
+                  {stranka.nazov}
                 </LocaleLink>
               ))}
               <NastaveniaCookies className="hover:text-sand touch:inline-flex touch:min-h-11 touch:items-center" />

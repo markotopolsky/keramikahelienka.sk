@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { bindShortWords, type Localized } from "@/lib/i18n";
+import { bindShortWords, type Locale, type Localized } from "@/lib/i18n";
+import { getContent } from "@/lib/content";
+import { PRAVNE_SLUGY, pravnaSekciaPreSlug } from "@/lib/content-defaults";
 import { getLang } from "@/lib/i18n-server";
 import { pageMetadata } from "@/lib/metadata";
-import { pravneStranky, type Blok } from "@/content/pravne";
 import { PageHero } from "@/components/page-hero";
-import { Doplnit } from "@/components/ui/doplnit";
+import { RichText } from "@/components/rich-text";
 
 const texty = {
   eyebrow: { sk: "Právne informácie", en: "Legal information" },
@@ -16,14 +17,27 @@ const texty = {
   },
 } satisfies Record<string, Localized>;
 
-function najdi(slug: string) {
-  const stranka = pravneStranky.find((s) => s.slug === slug);
-  if (!stranka) notFound();
-  return stranka;
+async function nacitaj(slug: string, lang: Locale) {
+  if (!PRAVNE_SLUGY.includes(slug)) notFound();
+  const sekcia = pravnaSekciaPreSlug(slug);
+  const c = await getContent(sekcia, lang);
+  return { nazov: c[`${sekcia}.nazov`], uvod: c[`${sekcia}.uvod`], text: c[`${sekcia}.text`] };
+}
+
+/** The legal text from /admin split into numbered sections: each "## heading" line starts one */
+function rozdelit(text: string) {
+  const [pred, ...casti] = text.split(/^## /m);
+  return {
+    pred: pred.trim(),
+    sekcie: casti.map((cast) => {
+      const [nadpis, ...telo] = cast.split("\n");
+      return { nadpis: nadpis.trim(), telo: telo.join("\n").trim() };
+    }),
+  };
 }
 
 export async function pravnaMetadata(slug: string): Promise<Metadata> {
-  const stranka = najdi(slug);
+  const stranka = await nacitaj(slug, await getLang());
   return {
     ...(await pageMetadata({ path: `/${slug}`, title: stranka.nazov, description: stranka.uvod })),
     // Sample text must not end up in search results
@@ -31,37 +45,17 @@ export async function pravnaMetadata(slug: string): Promise<Metadata> {
   };
 }
 
-/** Renders "[[IČO]]" in a text as a visible "doplniť" gap */
-function Text({ children }: { children: string }) {
-  return children.split(/\[\[(.+?)\]\]/).map((cast, i) => (i % 2 === 1 ? <Doplnit key={i}>{cast}</Doplnit> : cast));
-}
-
-function BlokTextu({ blok }: { blok: Blok }) {
-  if (typeof blok === "string")
-    return (
-      <p>
-        <Text>{blok}</Text>
-      </p>
-    );
-  return (
-    <ul className="list-disc space-y-2 pl-5 marker:text-sea">
-      {blok.zoznam.map((polozka) => (
-        <li key={polozka}>
-          <Text>{polozka}</Text>
-        </li>
-      ))}
-    </ul>
-  );
-}
+const telo = "space-y-4 text-base leading-relaxed text-ink/85 md:text-[17px]";
 
 /** One legal page: title, the "sample text" bar and numbered sections. */
 export async function PravnaStrankaObsah({ slug }: { slug: string }) {
   const lang = await getLang();
-  const stranka = najdi(slug);
+  const stranka = await nacitaj(slug, lang);
+  const { pred, sekcie } = rozdelit(stranka.text);
 
   return (
     <>
-      <PageHero eyebrow={texty.eyebrow[lang]} title={stranka.nazov[lang]} lead={stranka.uvod[lang]} />
+      <PageHero eyebrow={texty.eyebrow[lang]} title={stranka.nazov} lead={stranka.uvod} />
 
       <div role="note" className="border-y border-drift/30 bg-note">
         <div className="site-container flex flex-col gap-1 py-4 text-ink sm:flex-row sm:items-baseline sm:gap-4">
@@ -72,19 +66,16 @@ export async function PravnaStrankaObsah({ slug }: { slug: string }) {
 
       <article className="bg-sand py-16 md:py-24">
         <div className="site-container">
+          {pred && <RichText value={pred} className={`mb-12 max-w-[52rem] ${telo}`} />}
           <ol className="max-w-[52rem] space-y-12 md:space-y-14">
-            {stranka.sekcie[lang].map((sekcia, i) => (
-              <li key={sekcia.nadpis} className="grid gap-4 md:grid-cols-[3rem_1fr] md:gap-6">
+            {sekcie.map((sekcia, i) => (
+              <li key={i} className="grid gap-4 md:grid-cols-[3rem_1fr] md:gap-6">
                 <span aria-hidden className="font-display text-[28px] leading-none tracking-[-0.02em] text-sea">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <div>
                   <h2 className="text-[26px] leading-tight tracking-[-0.02em] text-deep md:text-[30px]">{bindShortWords(sekcia.nadpis)}</h2>
-                  <div className="mt-4 space-y-4 text-base leading-relaxed text-ink/85 md:text-[17px]">
-                    {sekcia.bloky.map((blok, j) => (
-                      <BlokTextu key={j} blok={blok} />
-                    ))}
-                  </div>
+                  <RichText value={sekcia.telo} className={`mt-4 ${telo}`} />
                 </div>
               </li>
             ))}

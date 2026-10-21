@@ -20,6 +20,7 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  // Skip Next.js internals and files (anything with a dot, e.g. /images/hero.jpg, /favicon.ico)
-  matcher: ["/((?!_next|api|.*\\..*).*)"],
+  // Skip Next.js internals, the API, the admin (app/admin, Slovak only)
+  // and files (anything with a dot, e.g. /images/hero.jpg, /favicon.ico)
+  matcher: ["/((?!_next|api|admin|.*\\..*).*)"],
 };

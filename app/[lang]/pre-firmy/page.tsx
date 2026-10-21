@@ -1,84 +1,74 @@
-import { bindShortWords, type Localized } from "@/lib/i18n";
+import { bindShortWords } from "@/lib/i18n";
+import { getContent } from "@/lib/content";
 import { getLang } from "@/lib/i18n-server";
 import { pageMetadata } from "@/lib/metadata";
 import { formular } from "@/content/atelier";
 import { PageHero, PageHeroImage } from "@/components/page-hero";
+import { KontaktSekcia } from "@/components/kontakt/kontakt-sekcia";
+import { CasteOtazky, getOtazky } from "@/components/kurzy/caste-otazky";
+import { Fotky } from "@/components/kurzy/fotky";
+import { Priebeh } from "@/components/kurzy/priebeh";
 import { ButtonLink } from "@/components/ui/button-link";
 import { Reveal } from "@/components/ui/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
 
-const texty = {
-  eyebrow: { sk: "Pre firmy", en: "For companies" },
-  nadpis: { sk: "Teambuilding s hlinou v rukách", en: "Team building with clay in your hands" },
-  lead: {
-    sk: "Keramický workshop pre kolegov – spoločný zážitok, na ktorý sa dá aj po rokoch zaspomínať. Pripravíme ho na mieru podľa vašich požiadaviek.",
-    en: "A pottery workshop for colleagues – a shared experience worth remembering for years. We tailor it to your needs.",
-  },
-  napisat: { sk: "Napísať o ponuku", en: "Ask about a quote" },
-  alt: { sk: "Skupina ľudí pri keramickom workshope", en: "A group of people at a pottery workshop" },
-  ponuka: { sk: "Ako to prebieha", en: "How it works" },
-  ponukaAside: {
-    sk: "Robíme ho zvyčajne 1 – 2× do roka, podľa dohody.",
-    en: "We usually run it once or twice a year, by arrangement.",
-  },
-  miestoNadpis: { sk: "Kde", en: "Where" },
-  miestoText: {
-    sk: "V ateliéri v Dúbravke, alebo prídeme s materiálom priamo k vám do firmy.",
-    en: "At the studio in Dúbravka, or we bring the materials to your company.",
-  },
-  tvorbaNadpis: { sk: "Čo tvoríte", en: "What you make" },
-  tvorbaText: {
-    sk: "Jedno spoločné dielo, alebo si každý odnesie vlastný kúsok – vyberiete si.",
-    en: "One shared piece, or everyone takes home their own – you choose.",
-  },
-  cenaNadpis: { sk: "Cena", en: "Price" },
-  cenaText: {
-    sk: "Pripravíme cenovú ponuku na mieru podľa počtu ľudí a miesta konania.",
-    en: "We prepare a custom quote based on the number of people and the venue.",
-  },
-} satisfies Record<string, Localized>;
-
-export function generateMetadata() {
-  return pageMetadata({
-    path: "/pre-firmy",
-    title: { sk: "Pre firmy", en: "For companies" },
-    description: {
-      sk: "Teambuilding a firemné workshopy s keramikou v ateliéri v Bratislave-Dúbravke, alebo priamo u vás vo firme. Cenová ponuka na mieru.",
-      en: "Team building and company pottery workshops in our studio in Bratislava-Dúbravka, or at your company. Custom quotes.",
-    },
-  });
+export async function generateMetadata() {
+  const c = await getContent("pre_firmy", await getLang());
+  return pageMetadata({ path: "/pre-firmy", title: c["pre_firmy.meta_titulok"], description: c["pre_firmy.meta_popis"] });
 }
 
 export default async function PreFirmyPage() {
   const lang = await getLang();
+  const c = await getContent("pre_firmy", lang);
+  const t = (pole: string) => c[`pre_firmy.${pole}`];
+  const otazky = getOtazky(c, "pre_firmy");
 
   return (
     <>
       <PageHero
-        eyebrow={texty.eyebrow[lang]}
-        title={texty.nadpis[lang]}
-        lead={texty.lead[lang]}
-        actions={<ButtonLink href={formular.firmy}>{texty.napisat[lang]}</ButtonLink>}
-        aside={<PageHeroImage src="/images/produkty/keramicky-workshop-3-2-hodiny-1.jpg" alt={texty.alt[lang]} />}
+        eyebrow={t("eyebrow")}
+        title={t("nadpis")}
+        lead={t("lead")}
+        actions={
+          <ButtonLink href={formular.firmy} variant="deep">
+            {t("tlacidlo")}
+          </ButtonLink>
+        }
+        aside={<PageHeroImage src={t("foto")} alt={t("foto_alt")} position="50% 30%" />}
       />
 
       <section className="bg-sand py-24 md:py-36">
         <div className="site-container">
-          <SectionHeading eyebrow={texty.ponuka[lang]} title={texty.nadpis[lang]} aside={texty.ponukaAside[lang]} />
+          <SectionHeading eyebrow={t("ponuka")} title={t("nadpis")} aside={t("ponuka_aside")} />
 
           <div className="grid gap-6 md:grid-cols-3">
-            <Karta nadpis={texty.miestoNadpis[lang]} text={texty.miestoText[lang]} />
-            <Karta nadpis={texty.tvorbaNadpis[lang]} text={texty.tvorbaText[lang]} />
-            <Karta nadpis={texty.cenaNadpis[lang]} text={texty.cenaText[lang]} />
+            <Karta nadpis={t("miesto_nadpis")} text={t("miesto_text")} />
+            <Karta nadpis={t("tvorba_nadpis")} text={t("tvorba_text")} />
+            <Karta nadpis={t("cena_nadpis")} text={t("cena_text")} />
           </div>
 
           <Reveal className="mt-14 flex justify-center md:mt-20">
             <ButtonLink href={formular.firmy} variant="deep">
-              {texty.napisat[lang]}
+              {t("tlacidlo")}
             </ButtonLink>
           </Reveal>
         </div>
       </section>
+
+      <Priebeh obsah={c} sekcia="pre_firmy" />
+      <Fotky obsah={c} sekcia="pre_firmy" />
+
+      {otazky.length > 0 && (
+        <section className="bg-mint py-24 md:py-36">
+          <div className="site-container">
+            <div className="max-w-[60rem]">
+              <CasteOtazky nadpis={t("otazky_nadpis")} otazky={otazky} />
+            </div>
+          </div>
+        </section>
+      )}
+
+      <KontaktSekcia tone={otazky.length > 0 ? "sand" : "mint"} typ="firmy" />
     </>
   );
 }
