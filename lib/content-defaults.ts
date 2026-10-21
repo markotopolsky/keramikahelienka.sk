@@ -127,6 +127,22 @@ export const SECTIONS: SectionDef[] = [
     odkaz_href: "#newsletter",
   }),
 
+  // Popup window over the page (components/popup.tsx). Off by default; Helena switches it on
+  sekcia(
+    "popup",
+    "Vyskakovacie okno · všetky stránky",
+    {
+      zobrazit: "nie",
+      verzia: "2026-10",
+      nadpis: ["xxx nadpis okna – napr. Vianočný predaj v ateliéri", "xxx window heading – e.g. Christmas sale at the studio"],
+      text: ["xxx krátky text oznamu", "xxx short announcement text"],
+      tlacidlo_text: ["", ""],
+      tlacidlo_href: "",
+      foto_alt: ["", ""],
+    },
+    { foto: "" },
+  ),
+
   sekcia("kontakt", "Kontaktné údaje · hlavička, pätička, /kontakt", {
     ulica: kontakt.ulica,
     mesto: kontakt.mesto,
@@ -948,6 +964,7 @@ export function isFileKey(key: string): boolean {
 export const RICH_TEXT_KEYS: Set<string> = new Set([
   "o_mne_domov.text",
   "o_mne.pribeh_text",
+  "popup.text",
   ...KURZ_SEKCIE.map((s) => `${s}.popis_text`),
   ...[...KURZ_SEKCIE, "pre_firmy"].flatMap((s) => [1, 2, 3, 4].map((n) => `${s}.otazka${n}_odpoved`)),
   ...PRAVNE_SLUGY.map((slug) => `${pravnaSekciaPreSlug(slug)}.text`),
@@ -958,7 +975,7 @@ export function isRichTextKey(key: string): boolean {
 }
 
 /** Keys edited as a Slovak yes/no switch in the admin, not as free text. */
-export const SWITCH_KEYS: Set<string> = new Set(["info_lista.zobrazit"]);
+export const SWITCH_KEYS: Set<string> = new Set(["info_lista.zobrazit", "popup.zobrazit"]);
 
 export function isSwitchKey(key: string): boolean {
   return SWITCH_KEYS.has(key);
@@ -1003,7 +1020,7 @@ export type SectionGroup = {
 };
 
 export const SECTION_GROUPS: SectionGroup[] = [
-  { group: "Celý web", sections: ["info_lista", "kontakt", "paticka", "seo"] },
+  { group: "Celý web", sections: ["info_lista", "popup", "kontakt", "paticka", "seo"] },
   {
     group: "Domovská stránka",
     sections: ["hero", "intro", "diela_domov", "kurzy_domov", "o_mne_domov", "recenzie"],

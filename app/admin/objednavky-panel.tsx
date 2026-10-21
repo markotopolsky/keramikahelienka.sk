@@ -8,9 +8,18 @@ import { supabase } from "@/lib/supabase";
 import { input, outlineButton, primaryButton } from "./styly";
 import { triggerRevalidate } from "./revalidate";
 
-type Stav = "caka_na_platbu" | "zaplatena" | "vybavena" | "zrusena" | "odstupena";
+type Stav =
+  | "caka_na_cenu_dopravy"
+  | "ponuka_odoslana"
+  | "caka_na_platbu"
+  | "zaplatena"
+  | "vybavena"
+  | "zrusena"
+  | "odstupena";
 
 const STAVY: Record<Stav, { nazov: string; farba: string }> = {
+  caka_na_cenu_dopravy: { nazov: "Čaká na cenu dopravy", farba: "bg-note text-ink" },
+  ponuka_odoslana: { nazov: "Ponuka odoslaná zákazníkovi", farba: "bg-note text-ink" },
   caka_na_platbu: { nazov: "Čaká na platbu", farba: "bg-note text-ink" },
   zaplatena: { nazov: "Zaplatená", farba: "bg-mint text-deep" },
   vybavena: { nazov: "Vybavená (odoslaná / odovzdaná)", farba: "bg-deep text-sand" },
@@ -20,7 +29,26 @@ const STAVY: Record<Stav, { nazov: string; farba: string }> = {
 
 const DOPRAVA: Record<string, string> = {
   "osobny-odber": "Osobný odber v ateliéri",
+  dorucenie: "Doručenie (na cenovú ponuku)",
 };
+
+/**
+ * Views of the list; the default shows every order. "Na vybavenie" leaves out unpaid orders, which
+ * cancel themselves when their reservation runs out, but keeps delivery requests, which need
+ * Helena's price before any payment.
+ */
+const POHLADY = {
+  vsetky: { nazov: "Všetky", stavy: null },
+  na_vybavenie: { nazov: "Na vybavenie", stavy: ["zaplatena", "caka_na_cenu_dopravy"] },
+  dorucenie: { nazov: "Žiadosti o doručenie", stavy: ["caka_na_cenu_dopravy", "ponuka_odoslana"] },
+  vybavene: { nazov: "Vybavené a odstúpené", stavy: ["vybavena", "odstupena"] },
+  nezaplatene: { nazov: "Nezaplatené a zrušené", stavy: ["caka_na_platbu", "zrusena"] },
+} satisfies Record<string, { nazov: string; stavy: Stav[] | null }>;
+
+type Pohlad = keyof typeof POHLADY;
+
+/** States the admin may pick by hand; the offer states are set by "Poslať ponuku" and the customer */
+const RUCNE_STAVY: Stav[] = ["caka_na_platbu", "zaplatena", "vybavena", "zrusena", "odstupena"];
 
 type Polozka = {
   id: number;
@@ -48,6 +76,12 @@ type Objednavka = {
   telefon: string;
   doprava: string;
   doprava_cena: number;
+  doprava_sposob: string;
+  ulica: string | null;
+  mesto: string | null;
+  psc: string | null;
+  krajina: string | null;
+  ponuka_token: string | null;
   medzisucet: number;
   spolu: number;
   vop_verzia: string;
@@ -71,12 +105,17 @@ function StavStitok({ stav }: { stav: Stav }) {
   return <span className={`rounded-full px-2 py-0.5 text-xs ${STAVY[stav].farba}`}>{STAVY[stav].nazov}</span>;
 }
 
+function vPohlade(stav: Stav, pohlad: Pohlad) {
+  const stavy: readonly Stav[] | null = POHLADY[pohlad].stavy;
+  return stavy === null || stavy.includes(stav);
+}
+
 export function ObjednavkyPanel() {
   const [objednavky, setObjednavky] = useState<Objednavka[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [query, setQuery] = useState("");
-  const [filter, setFilter] = useState<Stav | "">("");
+  const [pohlad, setPohlad] = useState<Pohlad>("vsetky");
   const [selected, setSelected] = useState<string | null>(null);
 
   const fetchObjednavky = () =>
@@ -103,7 +142,7 @@ export function ObjednavkyPanel() {
   const q = query.trim().toLowerCase();
   const filtered = objednavky.filter(
     (o) =>
-      (!filter || o.stav === filter) &&
+      (q !== "" || vPohlade(o.stav, pohlad)) &&
       (!q ||
         o.cislo.includes(q) ||
         o.meno.toLowerCase().includes(q) ||
@@ -111,7 +150,7 @@ export function ObjednavkyPanel() {
         o.objednavky_polozky.some((p) => p.kod.toLowerCase().includes(q))),
   );
   const otvorena = objednavky.find((o) => o.id === selected) ?? null;
-  const cakajuce = objednavky.filter((o) => o.stav === "caka_na_platbu" || o.stav === "zaplatena").length;
+  const pocet = (p: Pohlad) => objednavky.filter((o) => vPohlade(o.stav, p)).length;
 
   return (
     <>
@@ -125,22 +164,21 @@ export function ObjednavkyPanel() {
         <div className="grid gap-8 md:grid-cols-[22rem_1fr]">
           <div className="md:sticky md:top-6 md:max-h-[calc(100svh-3rem)] md:self-start md:overflow-y-auto">
             <p className="mb-3 text-sm text-drift">
-              {objednavky.length} objednávok, {cakajuce} na vybavenie
+              {objednavky.length} objednávok, {pocet("na_vybavenie")} na vybavenie
             </p>
             <div className="mb-3 flex flex-col gap-2">
               <input
                 type="search"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Číslo, meno, e-mail alebo kód produktu…"
+                placeholder="Hľadať vo všetkých: číslo, meno, e-mail, kód…"
                 className={`${input} py-1.5`}
               />
               <div className="flex gap-2">
-                <select value={filter} onChange={(e) => setFilter(e.target.value as Stav | "")} className={`${input} py-1.5`}>
-                  <option value="">Všetky stavy</option>
-                  {(Object.keys(STAVY) as Stav[]).map((s) => (
-                    <option key={s} value={s}>
-                      {STAVY[s].nazov}
+                <select value={pohlad} onChange={(e) => setPohlad(e.target.value as Pohlad)} className={`${input} py-1.5`}>
+                  {(Object.keys(POHLADY) as Pohlad[]).map((p) => (
+                    <option key={p} value={p}>
+                      {POHLADY[p].nazov} ({pocet(p)})
                     </option>
                   ))}
                 </select>
@@ -171,7 +209,11 @@ export function ObjednavkyPanel() {
                   </button>
                 </li>
               ))}
-              {filtered.length === 0 && <li className="p-2 text-sm text-drift">Nič sa nenašlo.</li>}
+              {filtered.length === 0 && (
+                <li className="p-2 text-sm text-drift">
+                  {q ? "Nič sa nenašlo." : pohlad === "na_vybavenie" ? "Nič nečaká na vybavenie." : "V tomto zozname nič nie je."}
+                </li>
+              )}
             </ul>
           </div>
 
@@ -200,7 +242,46 @@ function ObjednavkaDetail({ objednavka: o, onSaved }: { objednavka: Objednavka; 
   const [error, setError] = useState<string | null>(null);
   const [podmienky, setPodmienky] = useState<string | null>(null);
 
+  const [cenaDopravy, setCenaDopravy] = useState(o.doprava_cena > 0 ? String(o.doprava_cena) : "");
+  const [sposob, setSposob] = useState(o.doprava_sposob);
+  const [posiela, setPosiela] = useState(false);
+  const [skopirovane, setSkopirovane] = useState(false);
+
   const zmenene = stav !== o.stav || poznamka !== o.interna_poznamka;
+  const ponukaMozna = o.doprava === "dorucenie" && (o.stav === "caka_na_cenu_dopravy" || o.stav === "ponuka_odoslana");
+  const odkaz = o.ponuka_token
+    ? `${window.location.origin}${o.jazyk === "en" ? "/en" : ""}/objednavka/${o.ponuka_token}`
+    : null;
+  const moznosti = RUCNE_STAVY.includes(o.stav) ? RUCNE_STAVY : [o.stav, ...RUCNE_STAVY.filter((s) => s === "zrusena")];
+
+  async function handlePonuka() {
+    const cena = Number(cenaDopravy.replace(",", "."));
+    if (!(cena >= 0) || cenaDopravy.trim() === "" || sposob.trim().length < 2) {
+      setError("Zadajte cenu dopravy (napr. 6,90) a spôsob doručenia, ktorý uvidí zákazník.");
+      return;
+    }
+    setPosiela(true);
+    setError(null);
+    const { error } = await supabase!.rpc("posli_ponuku", { p_id: o.id, p_cena: cena, p_sposob: sposob.trim() });
+    if (error) {
+      setPosiela(false);
+      setError(`Ponuku sa nepodarilo uložiť: ${error.message}`);
+      return;
+    }
+    const { data, error: chybaNacitania } = await supabase!.from("objednavky").select(SELECT).eq("id", o.id).single();
+    setPosiela(false);
+    if (chybaNacitania) {
+      setError(chybaNacitania.message);
+      return;
+    }
+    onSaved(data as Objednavka);
+  }
+
+  async function kopirovat() {
+    if (!odkaz) return;
+    await navigator.clipboard.writeText(odkaz);
+    setSkopirovane(true);
+  }
   const zrusena = o.stav === "zrusena";
 
   /** The terms text is long, so it loads only when opened */
@@ -259,9 +340,25 @@ function ObjednavkaDetail({ objednavka: o, onSaved }: { objednavka: Objednavka; 
         <div className="rounded-card bg-white p-4 text-[15px]">
           <h3 className="mb-2 text-sm font-medium text-drift">Doprava a podmienky</h3>
           <p>{DOPRAVA[o.doprava] ?? o.doprava}</p>
-          {o.stav === "caka_na_platbu" && o.rezervovane_do && (
+          {o.doprava === "dorucenie" && (
+            <p className="mt-1 text-sm">
+              {o.ulica}, {o.psc} {o.mesto}, {o.krajina}
+              {o.doprava_sposob && (
+                <>
+                  <br />
+                  {o.doprava_sposob} · {eur(o.doprava_cena)}
+                </>
+              )}
+            </p>
+          )}
+          {["caka_na_cenu_dopravy", "ponuka_odoslana", "caka_na_platbu"].includes(o.stav) && o.rezervovane_do && (
             <p className="mt-2 text-sm">
-              Kusy rezervované do {datum(o.rezervovane_do)}. Potom sa objednávka bez platby sama zruší.
+              Kusy rezervované do {datum(o.rezervovane_do)}.{" "}
+              {o.stav === "caka_na_cenu_dopravy"
+                ? "Dovtedy pošlite ponuku dopravy, inak sa žiadosť sama zruší."
+                : o.stav === "ponuka_odoslana"
+                  ? "Ak ju zákazník dovtedy nepotvrdí, objednávka sa sama zruší."
+                  : "Potom sa objednávka bez platby sama zruší."}
             </p>
           )}
           <details className="mt-2 text-sm" onToggle={(e) => e.currentTarget.open && nacitajPodmienky()}>
@@ -324,6 +421,50 @@ function ObjednavkaDetail({ objednavka: o, onSaved }: { objednavka: Objednavka; 
         </table>
       </div>
 
+      {ponukaMozna && (
+        <div className="flex flex-col gap-3 rounded-card bg-note p-4">
+          <h3 className="text-sm font-medium">
+            {o.stav === "caka_na_cenu_dopravy" ? "Ponuka dopravy pre zákazníka" : "Ponuka je odoslaná – môžete ju zmeniť"}
+          </h3>
+          <div className="grid gap-3 sm:grid-cols-[9rem_1fr]">
+            <label className="flex flex-col gap-1 text-sm">
+              Cena dopravy (€)
+              <input inputMode="decimal" value={cenaDopravy} onChange={(e) => setCenaDopravy(e.target.value)} className={input} />
+            </label>
+            <label className="flex flex-col gap-1 text-sm">
+              Spôsob doručenia (vidí zákazník)
+              <input
+                value={sposob}
+                onChange={(e) => setSposob(e.target.value)}
+                placeholder="napr. Packeta na adresu, kuriér SPS"
+                className={input}
+              />
+            </label>
+          </div>
+          <p className="text-xs text-drift">
+            Spolu so zákazníkovi ukáže {eur(o.medzisucet + (Number(cenaDopravy.replace(",", ".")) || 0))}. Ponuka platí 3 dni.
+          </p>
+          <div className="flex flex-wrap items-center gap-3">
+            <button onClick={handlePonuka} disabled={posiela} className={primaryButton}>
+              {posiela ? "Ukladám…" : o.ponuka_token ? "Zmeniť ponuku" : "Poslať ponuku"}
+            </button>
+          </div>
+          {odkaz && (
+            <div className="flex flex-col gap-1 text-sm">
+              <span>
+                E-maily ešte neodchádzajú (ZAZNAMNIK.md, e-shop krok 4). Pošlite zákazníkovi tento odkaz sami:
+              </span>
+              <div className="flex gap-2">
+                <input readOnly value={odkaz} className={`${input} py-1.5 text-xs`} onFocus={(e) => e.target.select()} />
+                <button onClick={kopirovat} className={`shrink-0 ${outlineButton}`}>
+                  {skopirovane ? "✓ Skopírované" : "Kopírovať"}
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="flex flex-col gap-1 text-sm font-medium">
           Stav
@@ -336,7 +477,7 @@ function ObjednavkaDetail({ objednavka: o, onSaved }: { objednavka: Objednavka; 
             }}
             className={`${input} disabled:bg-mint`}
           >
-            {(Object.keys(STAVY) as Stav[]).map((s) => (
+            {moznosti.map((s) => (
               <option key={s} value={s}>
                 {STAVY[s].nazov}
               </option>

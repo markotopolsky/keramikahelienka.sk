@@ -136,6 +136,33 @@ export async function getInfoLista(lang: Locale): Promise<InfoListaData> {
   };
 }
 
+export type PopupData = {
+  zobrazit: boolean;
+  verzia: string;
+  nadpis: string;
+  text: string;
+  foto: string;
+  fotoAlt: string;
+  tlacidlo: { text: string; href: string } | null;
+};
+
+/** The popup window from /admin (section "popup"); shown only once it has a heading */
+export async function getPopup(lang: Locale): Promise<PopupData> {
+  const c = await getContent("popup", lang);
+  const nadpis = filled(c["popup.nadpis"]);
+  const tlacidloText = filled(c["popup.tlacidlo_text"]);
+  const tlacidloHref = filled(c["popup.tlacidlo_href"]);
+  return {
+    zobrazit: isSwitchOn(c["popup.zobrazit"]) && Boolean(nadpis),
+    verzia: c["popup.verzia"],
+    nadpis,
+    text: filled(c["popup.text"]),
+    foto: c["popup.foto"] ?? "",
+    fotoAlt: filled(c["popup.foto_alt"]),
+    tlacidlo: tlacidloText && tlacidloHref ? { text: tlacidloText, href: tlacidloHref } : null,
+  };
+}
+
 export type Kurz = {
   /** Address of its subpage /kurzy/<slug>; "" for a card without one */
   slug: string;

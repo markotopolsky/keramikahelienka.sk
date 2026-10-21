@@ -39,6 +39,12 @@ const texty = {
   doObchodu: { sk: "Prejsť do obchodu", en: "Go to the shop" },
   cislo: { sk: "Číslo objednávky", en: "Order number" },
   stavCakaNaPlatbu: { sk: "Čaká na platbu", en: "Awaiting payment" },
+  bezDopravy: { sk: "bez dopravy", en: "excluding delivery" },
+  stavZiadost: { sk: "Žiadosť o doručenie", en: "Delivery request" },
+  ziadost: {
+    sk: "Ďakujeme. Do 3 dní vám e-mailom pošleme cenu a spôsob dopravy. Objednávka bude záväzná, až keď ponuku potvrdíte. Kúsky vám držíme do {cas}.",
+    en: "Thank you. Within 3 days we email you the delivery price and method. The order becomes binding only when you confirm the offer. We hold the pieces until {cas}.",
+  },
   rezervacia: { sk: "Kúsky vám držíme do {cas}.", en: "We hold the pieces for you until {cas}." },
   poznamka: {
     sk: "Platbu kartou cez Comgate a potvrdenie e-mailom zapojíme pred spustením obchodu. Zatiaľ sa objednávka iba uložila.",
@@ -67,6 +73,8 @@ export function ObjednavkaHotovo() {
     );
   }
 
+  const ziadost = objednavka.stav === "caka_na_cenu_dopravy";
+
   return (
     <div>
       <div className="flex flex-wrap items-baseline justify-between gap-3 border-b border-sage pb-5">
@@ -74,7 +82,9 @@ export function ObjednavkaHotovo() {
           <p className="eyebrow text-drift">{texty.cislo[lang]}</p>
           <p className="mt-1 font-display text-[22px] text-deep">{objednavka.cislo}</p>
         </div>
-        <span className="rounded-full bg-mint px-4 py-1.5 text-[14px] font-medium text-deep">{texty.stavCakaNaPlatbu[lang]}</span>
+        <span className="rounded-full bg-mint px-4 py-1.5 text-[14px] font-medium text-deep">
+          {ziadost ? texty.stavZiadost[lang] : texty.stavCakaNaPlatbu[lang]}
+        </span>
       </div>
 
       <ul className="mt-5 divide-y divide-sage text-[14px]">
@@ -91,14 +101,18 @@ export function ObjednavkaHotovo() {
       </ul>
       <p className="mt-3 flex items-baseline justify-between border-t border-sage pt-3 font-display text-[20px]">
         <span className="text-deep">{texty.spolu[lang]}</span>
-        <span className="text-ink">{formatPrice(objednavka.spolu, lang)}</span>
+        <span className="text-ink">
+          {formatPrice(objednavka.spolu, lang)}
+          {ziadost && <span className="ml-2 font-sans text-[13px] text-drift">{texty.bezDopravy[lang]}</span>}
+        </span>
       </p>
 
       <p className="mt-8 text-[15px] leading-relaxed text-ink">
-        {texty.rezervacia[lang].replace(
+        {(ziadost ? texty.ziadost : texty.rezervacia)[lang].replace(
           "{cas}",
-          new Date(objednavka.rezervovaneDo).toLocaleTimeString(lang === "sk" ? "sk-SK" : "en-GB", {
+          new Date(objednavka.rezervovaneDo).toLocaleString(lang === "sk" ? "sk-SK" : "en-GB", {
             timeZone: "Europe/Bratislava",
+            ...(ziadost ? { day: "numeric", month: "numeric" } : {}),
             hour: "2-digit",
             minute: "2-digit",
           }),

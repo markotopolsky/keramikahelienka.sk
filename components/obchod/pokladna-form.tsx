@@ -8,7 +8,6 @@ import { formatPrice, localizeHref, type Localized } from "@/lib/i18n";
 import type { Produkt } from "@/lib/produkty-zaklad";
 import { Checkbox, Choice, Field } from "@/components/ui/form-fields";
 import { ButtonLink } from "@/components/ui/button-link";
-import { Doplnit } from "@/components/ui/doplnit";
 import { LocaleLink } from "@/components/ui/locale-link";
 import { odoslatObjednavku } from "@/lib/objednavka-akcia";
 
@@ -21,7 +20,22 @@ const texty = {
   email: { sk: "E-mail", en: "Email" },
   doprava: { sk: "Doprava", en: "Delivery" },
   osobnyOdber: { sk: "Osobný odber v ateliéri – zadarmo", en: "Pickup at the studio – free" },
-  kurier: { sk: "Doručenie kurérom", en: "Courier delivery" },
+  dorucenie: { sk: "Doručenie na Slovensko – cenu dopravy vám pošleme", en: "Delivery in Slovakia – we send you the delivery price" },
+  dorucenieText: {
+    sk: "Každý kus balíme individuálne. Odošlete nezáväznú žiadosť, do 3 dní vám e-mailom pošleme cenu a spôsob dopravy. Objednávka bude záväzná, až keď ponuku potvrdíte. Kúsky vám dovtedy podržíme.",
+    en: "We pack every piece individually. Send a non-binding request and within 3 days we email you the delivery price and method. The order becomes binding only when you confirm the offer. We hold the pieces for you until then.",
+  },
+  ibaOdber: {
+    sk: "Doručenie nie je možné, v košíku je kus iba na osobný odber: {nazvy}.",
+    en: "Delivery is not available, your cart has a piece for pickup only: {nazvy}.",
+  },
+  adresa: { sk: "Adresa doručenia", en: "Delivery address" },
+  ulica: { sk: "Ulica a číslo", en: "Street and number" },
+  mesto: { sk: "Mesto", en: "Town" },
+  psc: { sk: "PSČ", en: "Postcode" },
+  krajina: { sk: "Krajina: Slovensko", en: "Country: Slovakia" },
+  ziadost: { sk: "Odoslať nezáväznú žiadosť", en: "Send a non-binding request" },
+  bezDopravy: { sk: "bez dopravy", en: "excluding delivery" },
   suhrn: { sk: "Súhrn objednávky", en: "Order summary" },
   spolu: { sk: "Spolu", en: "Total" },
   suhlas: { sk: "Súhlasím s ", en: "I agree to the " },
@@ -33,7 +47,10 @@ const texty = {
     sk: "Platbu kartou cez Comgate zapojíme pred spustením obchodu. Zatiaľ sa objednávka iba uloží a kúsky vám podržíme 30 minút.",
     en: "Card payment through Comgate is connected before the shop opens. For now the order is only saved and we hold the pieces for 30 minutes.",
   },
-  chybaUdaje: { sk: "Skontrolujte, prosím, meno, e-mail a telefón.", en: "Please check your name, email and phone." },
+  chybaUdaje: {
+    sk: "Skontrolujte, prosím, meno, e-mail, telefón a pri doručení adresu (PSČ má 5 číslic).",
+    en: "Please check your name, email, phone and, for delivery, the address (the postcode has 5 digits).",
+  },
   chybaNedostupne: {
     sk: "Tieto kúsky medzitým objednal niekto iný: {nazvy}. Odstránili sme ich z košíka. Skontrolujte súhrn a odošlite objednávku znova.",
     en: "Someone else has just ordered these pieces: {nazvy}. We removed them from your cart. Please check the summary and send the order again.",
@@ -63,6 +80,7 @@ export function PokladnaForm({ produkty, ulica }: { produkty: Produkt[]; ulica: 
   const id = useId();
   const [odosiela, setOdosiela] = useState(false);
   const [chyba, setChyba] = useState<string | null>(null);
+  const [doprava, setDoprava] = useState<"osobny-odber" | "dorucenie">("osobny-odber");
 
   const riadky = polozky.map((polozka) => {
     const produkt = produkty.find((p) => p.slug === polozka.slug);
@@ -72,6 +90,8 @@ export function PokladnaForm({ produkty, ulica }: { produkty: Produkt[]; ulica: 
   });
   const platneRiadky = riadky.filter((r) => r.produkt && !r.produkt.vypredane);
   const spolu = platneRiadky.reduce((suma, r) => suma + r.jednotkovaCena * r.polozka.mnozstvo, 0);
+  const ibaOdber = [...new Set(platneRiadky.filter((r) => r.produkt!.ibaOsobnyOdber).map((r) => r.produkt!.nazov[lang]))];
+  const dorucenie = doprava === "dorucenie" && ibaOdber.length === 0;
 
   if (platneRiadky.length === 0) {
     return (
@@ -97,7 +117,15 @@ export function PokladnaForm({ produkty, ulica }: { produkty: Produkt[]; ulica: 
         meno: String(data.get("meno") ?? ""),
         email: String(data.get("email") ?? ""),
         telefon: String(data.get("telefon") ?? ""),
-        doprava: "osobny-odber",
+        doprava: dorucenie ? "dorucenie" : "osobny-odber",
+        adresa: dorucenie
+          ? {
+              ulica: String(data.get("ulica") ?? ""),
+              mesto: String(data.get("mesto") ?? ""),
+              psc: String(data.get("psc") ?? ""),
+              krajina: "SK",
+            }
+          : null,
         suhlas: data.get("suhlas") !== null,
         polozky: platneRiadky.map((r) => ({ slug: r.polozka.slug, variant: r.polozka.variant, pocet: r.polozka.mnozstvo })),
         web: String(data.get("web") ?? ""),
@@ -126,14 +154,26 @@ export function PokladnaForm({ produkty, ulica }: { produkty: Produkt[]; ulica: 
       router.refresh();
     } else {
       setChyba(
-        { udaje: texty.chybaUdaje, limit: texty.chybaLimit, server: texty.chybaServer }[vysledok.chyba][lang],
+        vysledok.chyba === "odber"
+          ? texty.ibaOdber[lang].replace("{nazvy}", ibaOdber.join(", "))
+          : { udaje: texty.chybaUdaje, limit: texty.chybaLimit, server: texty.chybaServer }[vysledok.chyba][lang],
       );
     }
     setOdosiela(false);
   }
 
   return (
-    <form onSubmit={handleSubmit} className="grid gap-8">
+    <form
+      onSubmit={handleSubmit}
+      // Choice is uncontrolled; the delivery choice is read here to show the address fields
+      onChange={(e) => {
+        const pole = e.target;
+        if (pole instanceof HTMLInputElement && pole.name === "doprava") {
+          setDoprava(pole.value === "dorucenie" ? "dorucenie" : "osobny-odber");
+        }
+      }}
+      className="grid gap-8"
+    >
       <fieldset className="grid gap-5 sm:grid-cols-2">
         <legend className="mb-1 text-[15px] font-medium text-deep sm:col-span-2">{texty.udaje[lang]}</legend>
         <Field id={`${id}-meno`} label={texty.meno[lang]} name="meno" autoComplete="name" required className="sm:col-span-2" />
@@ -148,13 +188,29 @@ export function PokladnaForm({ produkty, ulica }: { produkty: Produkt[]; ulica: 
           defaultValue="osobny-odber"
           options={[
             { value: "osobny-odber", label: `${texty.osobnyOdber[lang]} (${ulica})` },
-            { value: "kurier", label: texty.kurier[lang], disabled: true },
+            { value: "dorucenie", label: texty.dorucenie[lang], disabled: ibaOdber.length > 0 },
           ]}
         />
-        <p className="mt-2 text-[13px] text-drift">
-          <Doplnit>ceny a spôsoby dopravy kurérom – otázka 2</Doplnit>
+        <p className="mt-2 text-[13px] leading-relaxed text-drift">
+          {ibaOdber.length > 0 ? texty.ibaOdber[lang].replace("{nazvy}", ibaOdber.join(", ")) : texty.dorucenieText[lang]}
         </p>
       </div>
+
+      {dorucenie && (
+        <fieldset className="grid gap-5 sm:grid-cols-[1fr_8rem]">
+          <legend className="mb-1 text-[15px] font-medium text-deep">{texty.adresa[lang]}</legend>
+          <Field id={`${id}-ulica`} label={texty.ulica[lang]} name="ulica" autoComplete="street-address" required className="sm:col-span-2" />
+          <Field id={`${id}-mesto`} label={texty.mesto[lang]} name="mesto" autoComplete="address-level2" required />
+          <Field
+            id={`${id}-psc`}
+            label={texty.psc[lang]}
+            name="psc"
+            autoComplete="postal-code"
+            required
+          />
+          <p className="text-[13px] text-drift sm:col-span-2">{texty.krajina[lang]}</p>
+        </fieldset>
+      )}
 
       <div>
         <p className="text-[15px] font-medium text-deep">{texty.suhrn[lang]}</p>
@@ -172,7 +228,10 @@ export function PokladnaForm({ produkty, ulica }: { produkty: Produkt[]; ulica: 
         </ul>
         <p className="mt-4 flex items-baseline justify-between font-display text-[20px]">
           <span className="text-deep">{texty.spolu[lang]}</span>
-          <span className="text-ink">{formatPrice(spolu, lang)}</span>
+          <span className="text-ink">
+            {formatPrice(spolu, lang)}
+            {dorucenie && <span className="ml-2 font-sans text-[13px] text-drift">{texty.bezDopravy[lang]}</span>}
+          </span>
         </p>
       </div>
 
@@ -199,7 +258,11 @@ export function PokladnaForm({ produkty, ulica }: { produkty: Produkt[]; ulica: 
         disabled={odosiela}
         className="w-full rounded-full bg-deep px-6 py-3.5 text-[15px] font-medium tracking-[-0.01em] text-sand transition-colors duration-300 hover:bg-ink disabled:opacity-60 sm:w-auto"
       >
-        {odosiela ? texty.odosiela[lang] : `${texty.objednat[lang]} · ${formatPrice(spolu, lang)}`}
+        {odosiela
+          ? texty.odosiela[lang]
+          : dorucenie
+            ? texty.ziadost[lang]
+            : `${texty.objednat[lang]} · ${formatPrice(spolu, lang)}`}
       </button>
     </form>
   );

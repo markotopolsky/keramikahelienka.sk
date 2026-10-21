@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Playfair_Display, PT_Serif } from "next/font/google";
 import { locales } from "@/lib/i18n";
 import { infoListaKluc } from "@/content/info-lista";
-import { getContent, getInfoLista, getKontakt } from "@/lib/content";
+import { getContent, getInfoLista, getKontakt, getPopup } from "@/lib/content";
 import { getLang } from "@/lib/i18n-server";
 import { analytikaZapnuta, suhlasPredvolenySkript } from "@/lib/analytika";
 import { webUrl, zakladOpenGraph } from "@/lib/metadata";
@@ -11,6 +11,7 @@ import { MotionProvider } from "@/components/motion-provider";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { CookieLista } from "@/components/cookie-lista";
+import { Popup } from "@/components/popup";
 import "../globals.css";
 
 // Serif site-wide (fint z muoiatelier.com/en: Playfair Display na nadpisy, PT Serif na text).
@@ -56,7 +57,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
   const lang = await getLang();
-  const [infoLista, kontakt] = await Promise.all([getInfoLista(lang), getKontakt()]);
+  const [infoLista, kontakt, popup] = await Promise.all([getInfoLista(lang), getKontakt(), getPopup(lang)]);
 
   return (
     // suppressHydrationWarning: the script below may add data-info-zavreta before React hydrates
@@ -78,6 +79,7 @@ export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
             <main>{children}</main>
             <SiteFooter />
             <CookieLista />
+            <Popup popup={popup} />
           </MotionProvider>
         </LocaleProvider>
       </body>

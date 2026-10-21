@@ -140,7 +140,8 @@ function LoginForm() {
 }
 
 function Dashboard() {
-  const [tab, setTab] = useState<"texty" | "produkty" | "objednavky">("texty");
+  // The shop is what Helena edits most, so /admin opens on it
+  const [tab, setTab] = useState<"texty" | "produkty" | "objednavky">("produkty");
 
   return (
     <main className="mx-auto max-w-6xl px-6 py-10">
@@ -150,9 +151,9 @@ function Dashboard() {
           <div role="tablist" className="flex rounded-full border border-sage bg-white p-1">
             {(
               [
-                ["texty", "Texty a fotky"],
                 ["produkty", "Produkty"],
                 ["objednavky", "Objednávky"],
+                ["texty", "Texty a fotky"],
               ] as const
             ).map(([id, label]) => (
               <button
@@ -198,6 +199,12 @@ const FIELD_LABEL: Record<string, string> = {
   "info_lista.verzia":
     "Verzia lišty – pri novom ozname ju zmeňte (napr. 2026-11), lišta sa potom znova ukáže aj tým, ktorí ju zavreli",
   "info_lista.odkaz_href": "Kam vedie odkaz (napr. #newsletter alebo /kurzy)",
+  "popup.zobrazit": "Zobraziť vyskakovacie okno?",
+  "popup.verzia":
+    "Verzia okna – pri novom ozname ju zmeňte (napr. 2026-12), okno sa potom znova ukáže aj tým, ktorí ho zavreli",
+  "popup.foto": "Fotka v okne (nepovinná, nahrá sa do Cloudinary)",
+  "popup.tlacidlo_text": "Text tlačidla (nepovinné, napr. Pozrieť obchod)",
+  "popup.tlacidlo_href": "Kam vedie tlačidlo (napr. /obchod alebo /kurzy/workshop)",
   "hero.nadpis": "Veľký nadpis (každé slovo na novom riadku)",
   "recenzie.preklad": "Poznámka pod nadpisom (na anglickej stránke „Translated from Slovak“)",
 };
